@@ -1,24 +1,23 @@
 package br.edu.infnet.franklin.model.domain;
 
+public class IngredienteSeco extends Ingrediente {
 
-public class IngredienteLiquido extends Ingrediente {
-	private float volume;
-	private String tipo; // líquido, pasta
-	
+	// ---------------- Atributos ----------------
+	private Float peso; // Float para poder ser nulo
+	private String tipo; //inteiro, fracionado, em pó
 
 	// ----------------- Métodos -----------------
 
-
 	
-	// ------------ Getters e Setters ------------
+	
+	// ------------ Getters e Setters ------------ 
 
-
-	public float getVolume() {
-		return volume;
+	public Float getPeso() {
+		return peso;
 	}
 
-	public void setVolume(float volume) {
-		this.volume = volume;
+	public void setPeso(Float peso) {
+		this.peso = peso;
 	}
 
 	public String getTipo() {
@@ -28,8 +27,8 @@ public class IngredienteLiquido extends Ingrediente {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-
- 	@Override
+	
+	@Override
 	public String toString() {
 		return String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s",
 				this.getUnidadeMedida(),
@@ -38,7 +37,7 @@ public class IngredienteLiquido extends Ingrediente {
 				this.getDescricao(),
 				this.getImagem(),
 				this.getCodigo(),
-				this.getVolume(),
+				this.getPeso(),
 				this.getPreco(),
 				this.getTipo()
 		);
