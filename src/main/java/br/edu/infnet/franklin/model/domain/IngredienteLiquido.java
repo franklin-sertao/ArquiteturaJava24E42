@@ -1,37 +1,28 @@
 package br.edu.infnet.franklin.model.domain;
 
+import javax.persistence.Entity;
+import java.math.BigDecimal;
 
+@Entity
 public class IngredienteLiquido extends Ingrediente {
-	private float volume;
-	private String tipo; // líquido, pasta
-	
 
-	// ----------------- Métodos -----------------
+    private Integer volumeLiquidoEmML;
 
+    // Construtores
+    public IngredienteLiquido() {}
 
-	
-	// ------------ Getters e Setters ------------
+    // Getters e Setters
 
+    public Integer getVolumeLiquidoEmML() {
+        return volumeLiquidoEmML;
+    }
 
-	public float getVolume() {
-		return volume;
-	}
+    public void setVolumeLiquidoEmML(Integer volumeLiquidoEmML) {
+        this.volumeLiquidoEmML = volumeLiquidoEmML;
+    }
 
-	public void setVolume(float volume) {
-		this.volume = volume;
-	}
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-/* 	@Override
-	public String toString() {
-		return super.toString() + ";" + volume + ";" + unidadeMedida;
-	} */
-	
+    @Override
+    public BigDecimal getPrecoPorUnidade() {
+        return getPrecoTotal().divide(new BigDecimal(getVolumeLiquidoEmML()));
+    }
 }

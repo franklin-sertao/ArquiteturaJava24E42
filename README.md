@@ -1,3 +1,6 @@
+# Introdução
+Este projeto faz parte da disciplina de Arquitetura Java. o sistema tem como principal objetivo a precificação de produtos de confeitaria, onde o usuário poderá cadastrar produtos, embalagens, receitas e ingredientes, além de visualizar os dados cadastrados.
+
 # Definições
 
 ## Produto
@@ -9,7 +12,7 @@ Produto final, após todas as etapas de processamento. Pode conter:
 - Modo de preparo (descrição da etapa final de montagem e embalagem do produto)
 
 ## Embalagens
-Insumos destinados ao transporte e à conservação do produto final, ex: Caixa display de acetato 20x20x10cm, papel celofane.
+Insumos destinados ao transporte e à conservação do produto final, por exemplo, uma Caixa display de acetato 20x20x10cm ou um papel celofane transparente para embalar fatias de bolo.
 Embalagens geralmente não são compradas sozinhas, mas em pacotes fechados com muitas unidades.
 
 >***OBS: O preços das embalagens será calculado pela divisão do preço do pacote, pela quantidade de unidades no pacote***
@@ -23,25 +26,32 @@ Etapa intermediária do processo de confecção do produto. Nesta etapa, as part
 
 Cada um desses itens pode ser considerado uma receita diferente, pois tem ingredientes e modos de preparo diferentes. Porém todos irão compor o produto "Bolo" que, por fim, terá sua embalagem definida para venda ao consumidor final
 
-A receita pode conter:
-- Ingredientes e suas quantidades
-- Modo de preparo
 
 ## Ingrediente
-Insumos para produção de receitas e finalização de produtos. Poderão ser cadastrados manualmente ou obtidos por meio de consulta por número do código de barras.
-No nosso sistema, os ingredientes podem ser de dois tipos:
+Insumos para produção de receitas e finalização de produtos. 
+No nosso sistema, os ingredientes podem ser de três tipos:
 
 ### Ingrediente Seco
 Ingrediente que tem sua medida definida por peso (em gramas).
 >**OBS: O preço por unidade será definido dividindo o preço do ingrediente por seu peso líquido**
+>
+>ex: se 1kg (1000g) de farinha de trigo custa R$ 5,00, então o preço por grama será R$ 0,005
 
 ### Ingrediente Líquido
 Ingrediente que tem sua medida definida por volume (em mililitros).
 >**OBS: O preço por unidade será definido dividindo o preço do ingrediente por seu volume líquido**
+>
+>ex: se 1L (1000ml) de leite custa R$ 6,00, então o preço por mililitro será R$ 0,006
+
+### Ingrediente Unitário
+Ingrediente que tem sua medida definida por unidade.
+>**OBS: O preço por unidade será definido dividindo o preço do lote por pela quandidade de unidades**
+>
+>ex: se uma dúzia de ovos custa R$ 10,00, então o preço por unidade será R$ 0,83
 
 # Requisitos de projeto
 
-FEATURE 01
+## FEATURE 01
 A primeira feature estabelece a base do sistema de precificação de produtos de confeitaria, criando as classes de domínio, definindo atributos, relacionamentos e implementando funcionalidades essenciais para a leitura de dados a partir de arquivos textos e operações de inclusão e recuperação de informações por meio das classes de serviço. Essa é a etapa inicial crucial para o desenvolvimento do software, que servirá como alicerce para as futuras funcionalidades do sistema. Essa feature do projeto visa estabelecer os alicerces do sistema de precificação de produtos de confeitaria, construindo as principais estruturas de domínio e funcionalidades necessárias para o seu funcionamento inicial. Esta feature abrange as seguintes tarefas:
 
 - [x] Criação das quatro classes de domínio de acordo com o diagrama
@@ -52,66 +62,81 @@ A primeira feature estabelece a base do sistema de precificação de produtos de
 		- Ingrediente seco
 		- Ingrediente líquido
 
+`Gerar diagrama de classes`
 ```plantuml
+@startuml
+title Diagrama de Classes - Sistema de Precificação de Produtos de Confeitaria
+skinparam linetype ortho
+
 class Produto {
-	- String descricao
-	- float preco
-	+ getDescricao()
-	+ setDescricao(String descricao)
-	+ getPreco()
-	+ setPreco(float preco)
+    - id: Long
+    - descricao: String
+    - modoPreparo: String
+    - conservadoGelado: boolean
 }
 
 class Embalagem {
-	- String tipo
-	- int quantidade
-	+ getTipo()
-	+ setTipo(String tipo)
-	+ getQuantidade()
-	+ setQuantidade(int quantidade)
+    - id: Long
+    - descricao: String
+    - quantidadePorPacote: Integer
+    - precoPacote: BigDecimal
 }
 
 class Receita {
-	- String nome
-	- String modoPreparo
-	+ getNome()
-	+ setNome(String nome)
-	+ getModoPreparo()
-	+ setModoPreparo(String modoPreparo)
+    - id: Long
+    - nome: String
+    - modoPreparo: String
 }
 
-class Ingrediente {
-	- String nome
-	- float quantidade
-	+ getNome()
-	+ setNome(String nome)
-	+ getQuantidade()
-	+ setQuantidade(float quantidade)
+abstract class Ingrediente {
+    - id: Long
+    - nome: String
+    - precoTotal: BigDecimal
+    - organico: boolean
 }
 
-class IngredienteSeco extends Ingrediente {
-	- float peso
-	+ getPeso()
-	+ setPeso(float peso)
+class IngredienteSeco {
+    - pesoLiquidoEmGramas: Integer
 }
 
-class IngredienteLiquido extends Ingrediente {
-	- float volume
-	+ getVolume()
-	+ setVolume(float volume)
+class IngredienteLiquido {
+    - volumeLiquidoEmML: Integer
 }
 
-Produto "1" -- "0..*" Embalagem
-Produto "1" -- "0..*" Receita
-Produto "1" -- "0..*" Ingrediente
-Receita "1" -- "0..*" Ingrediente
+class IngredienteUnitario {
+    - quantidadeUnidades: Integer
+}
+
+class ReceitaIngrediente {
+    - id: Long
+    - quantidade: Double
+}
+
+class ProdutoReceita {
+    - id: Long
+    - quantidade: Double
+}
+
+Ingrediente <|-u- IngredienteSeco
+Ingrediente <|-u- IngredienteLiquido
+Ingrediente <|-u- IngredienteUnitario
+
+Ingrediente }o--|{ Receita
+Ingrediente }o--|{ Produto
+Receita     }o--|{ Produto
+
+(Receita, Ingrediente) . ReceitaIngrediente
+(Produto, Receita) . ProdutoReceita
+
+Produto }o--o{  Embalagem 
+
+@enduml
 ```
 
 
 - [x] Criação de pelo menos dois atributos por classe: cada uma das quatro classes deve ser dotada de, no mínimo, dois atributos que representam informações relevantes para a entidade em questão. Os atributos existentes no diagrama podem ser considerados mas também existe a possibilidade da definição de novos.
 
-- [ ] Implementar os relacionamentos entre as classes: estabelecer os relacionamentos entre as classes é essencial para a integridade das informações no sistema. 	 
-> Por exemplo, um "Vendedor" está associado a vários "Produto", e existem dois tipos de produtos. Esses relacionamentos devem ser devidamente implementados.
+- [ ] Implementar os relacionamentos entre as classes: estabelecer os relacionamentos entre as classes é essencial para a integridade das informações no sistema. Os relacionamentos podem ser de diferentes tipos, como "um para um", "um para muitos" ou "muitos para muitos", conforme a necessidade de representar a associação entre as entidades.
 
 - [ ] Utilizar os quatro tipos de dados fundamentais: as classes devem empregar os quatro tipos de dados fundamentais: caractere (String), inteiro (int), real (float/double) e lógico (boolean), conforme necessário para representar os atributos e informações das classes do projeto.
 
@@ -122,7 +147,7 @@ Receita "1" -- "0..*" Ingrediente
 - [ ] Criar as classes @Service com os métodos "incluir" e "obterLista": para gerenciar as operações relacionadas às classes de domínio, como a inclusão de novos registros e a recuperação de listas de objetos, é preciso criar as classes de serviço (annotated com @Service) correspondentes a cada classe de domínio. Essas classes conterão os métodos "incluir" e "obterLista" para a manipulação dos dados.
 >Estes métodos devem guardar e recuperar as informações do Map: os métodos "incluir" e "obterLista" das classes @Service devem interagir com uma estrutura de dados, como um Map, para armazenar e recuperar as informações das classes de domínio. Isso permitirá o acesso eficiente e a manipulação dos dados do sistema.
 
-FEATURE 02
+## FEATURE 02
 A segunda feature é essencial para a consolidação do sistema, pois estabelece uma base de dados sólida, configura relacionamentos importantes entre as entidades e prepara o sistema para operações avançadas, como consultas complexas e a manutenção eficiente de dados. Isso permite ao sistema de precificação de produtos de confeitaria gerenciar informações de maneira mais escalável e eficaz. Essa segunda feature do projeto concentra-se em estabelecer uma infraestrutura de banco de dados robusta para o sistema de precificação de produtos de confeitaria. Ela abrange as seguintes tarefas essenciais:
 
 Criação do banco de dados e configuração do datasource para acesso e manipulação: inicialmente, um banco de dados será criado e configurado para possibilitar o armazenamento e a recuperação de dados do sistema. Isso envolve a escolha de um sistema de gerenciamento de banco de dados (DBMS), como MySQL, PostgreSQL ou outro, e a configuração de um datasource para permitir a comunicação com o banco.
@@ -133,7 +158,8 @@ Criação das interfaces @Repository para possibilitar o uso das funcionalidades
 Atuar na injeção de dependência dos repositories nas classes de serviço: os repositórios criados na etapa anterior serão injetados nas classes de serviço correspondentes. Isso permitirá que as classes de serviço acessem o banco de dados de maneira eficiente, implementando as operações de negócios relacionadas a cada entidade.
 Desconsiderar a estrutura Map após a realização da injeção de dependência dos repositories: após a injeção de dependência dos repositories, a estrutura de dados Map, usada na primeira feature para simular o armazenamento temporário, pode ser desconsiderada. As operações de armazenamento e recuperação de dados agora serão realizadas diretamente no banco de dados.
 Atualizar as classes Loader para relacionar os produtos cadastrados com os vendedores existentes: as classes Loader criadas na primeira feature precisam ser atualizadas para preencher o banco de dados com dados relacionados. Isso envolve associar os produtos cadastrados aos vendedores existentes por meio dos relacionamentos definidos.
-FEATURE 03
+
+## FEATURE 03
 A terceira feature tem como objetivo melhorar a usabilidade da aplicação, permitindo que os usuários vejam os dados de forma organizada e compreensível, ao mesmo tempo em que se concentra na qualidade dos dados, validando e tratando exceções durante o processo. A integração com a API de CEP adiciona valor ao fornecer informações geográficas úteis para os registros dos vendedores. Certifique-se de que a interface do usuário seja amigável e intuitiva para os usuários finais.
 
 Essa terceira feature do projeto envolve a criação de recursos de frontend e controle que permitirão a visualização dos dados armazenados nas quatro tabelas do banco de dados, juntamente com informações relevantes. Abaixo estão os principais requisitos e atividades a serem entregues nesta feature:
@@ -146,7 +172,8 @@ Tratamento de Exceções: atualize as classes de carga de dados (Loaders) para p
 Classes de Controle para Exclusão: crie classes de controle separadas para implementar rotas de exclusão de registros. Isso permitirá que os usuários removam dados das tabelas de maneira controlada.
 Classe para Representar o CEP do Vendedor: crie uma classe dedicada para representar o CEP do vendedor. Essa classe deve conter os campos e métodos necessários para armazenar e manipular informações de CEP.
 Consumo da API de CEP: integre uma API de consulta de CEP para recuperar informações com base no número do CEP informado. Atualize os dados obtidos da API no banco de dados, associando-os aos registros dos vendedores. Isso permitirá que os dados de CEP estejam disponíveis para visualização na tela.
-FEATURE 04
+
+## FEATURE 04
 A quarta feature do projeto abrange melhorias significativas na interação com dados, organização e integração por meio do ajuste do processo de exclusão, ordenação mais flexível, busca unificada e a introdução de uma API para manipulação eficiente das informações.
 
 Essa feature visa proporcionar uma experiência mais completa e eficiente aos usuários, permitindo uma interação mais avançada com os dados, organização personalizada e uma integração mais robusta entre o frontend e a API.

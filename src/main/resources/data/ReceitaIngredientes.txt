@@ -1,0 +1,24 @@
+Bolo de Chocolate;Farinha de Trigo;300
+Bolo de Chocolate;Açúcar;200
+Bolo de Chocolate;Ovo;3
+Bolo de Chocolate;Leite;200
+Bolo de Chocolate;Manteiga;100
+Bolo de Chocolate;Chocolate em Pó;50
+
+Cookie Tradicional;Farinha de Trigo;250
+Cookie Tradicional;Açúcar;150
+Cookie Tradicional;Ovo;2
+Cookie Tradicional;Manteiga;100
+Cookie Tradicional;Chocolate em Pó;30
+
+Recheio de Brigadeiro;Leite Condensado;395
+Recheio de Brigadeiro;Chocolate em Pó;30
+Recheio de Brigadeiro;Manteiga;20
+
+Torta Banoffee;Bolacha Maria;200
+Torta Banoffee;Manteiga;100
+Torta Banoffee;Banana;4
+Torta Banoffee;Leite Condensado;395
+Torta Banoffee;Creme de Leite;200
+Torta Banoffee;Açúcar;50
+Torta Banoffee;Canela em Pó;5

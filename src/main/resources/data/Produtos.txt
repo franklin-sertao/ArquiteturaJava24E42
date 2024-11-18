@@ -1,0 +1,3 @@
+Bolo de Chocolate com Recheio de Brigadeiro;Monte o bolo com o recheio e cubra com chocolate.;false
+Cookie Tradicional com Recheio de Nutella;Recheie os cookies com Nutella após assar.;false
+Torta Banoffee;Monte a torta conforme a receita e refrigere.;true

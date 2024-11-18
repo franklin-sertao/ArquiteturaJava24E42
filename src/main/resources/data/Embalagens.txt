@@ -1,0 +1,3 @@
+Caixa para Bolo;10;20.00
+Saquinho para Cookies;50;15.00
+Forma de Torta;5;25.00

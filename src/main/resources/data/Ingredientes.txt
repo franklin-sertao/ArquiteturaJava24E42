@@ -1,0 +1,12 @@
+S;Farinha de Trigo;10.00;false;1000
+S;Açúcar;5.00;false;1000
+U;Ovo;0.50;true;1
+L;Leite;4.00;false;1000
+S;Manteiga;8.00;false;200
+S;Chocolate em Pó;12.00;false;400
+L;Leite Condensado;6.00;false;395
+L;Nutella;15.00;false;350
+S;Bolacha Maria;3.00;false;200
+U;Banana;1.00;true;1
+L;Creme de Leite;5.00;false;200
+S;Canela em Pó;2.00;false;50

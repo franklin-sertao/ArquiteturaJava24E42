@@ -1,49 +1,68 @@
 package br.edu.infnet.franklin.model.domain;
 
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Set;
+
+@Entity
 public class Embalagem {
-	private String nome;
-	private String descricao;
-	private float  capacidade;
-	private String codigo;
-	private String unidadeMedida;
 
-	public String getNome() {
-		return nome;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    private String descricao;
 
-	public String getDescricao() {
-		return descricao;
-	}
+    private Integer quantidadePorPacote;
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    private BigDecimal precoPacote;
 
-	public float getCapacidade() {
-		return capacidade;
-	}
+    @ManyToMany(mappedBy = "embalagens")
+    private Set<Produto> produtos;
 
-	public void setCapacidade(float capacidade) {
-		this.capacidade = capacidade;
-	}
+    // Construtores
+    public Embalagem() {}
 
-	public String getCodigo() {
-		return codigo;
-	}
+    // Getters e Setters
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getUnidadeMedida() {
-		return unidadeMedida;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public void setUnidadeMedida(String unidadeMedida) {
-		this.unidadeMedida = unidadeMedida;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Integer getQuantidadePorPacote() {
+        return quantidadePorPacote;
+    }
+
+    public void setQuantidadePorPacote(Integer quantidadePorPacote) {
+        this.quantidadePorPacote = quantidadePorPacote;
+    }
+
+    public BigDecimal getPrecoPacote() {
+        return precoPacote;
+    }
+
+    public void setPrecoPacote(BigDecimal precoPacote) {
+        this.precoPacote = precoPacote;
+    }
+
+    public Set<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(Set<Produto> produtos) {
+        this.produtos = produtos;
+    }
+
+    // Método para calcular o preço por unidade
+    public BigDecimal getPrecoPorUnidade() {
+        return precoPacote.divide(new BigDecimal(quantidadePorPacote));
+    }
 }

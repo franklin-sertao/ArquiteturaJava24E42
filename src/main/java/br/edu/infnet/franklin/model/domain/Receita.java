@@ -1,72 +1,77 @@
 package br.edu.infnet.franklin.model.domain;
 
-import java.util.List;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
 public class Receita {
 
-	private String nome;
-	private String descricao;
-	private List <Ingrediente> ingredientes;
-	private String modoPreparo;
-	private int tempoPreparo;
-	private int rendimento;
-	private String unidadeRendimento;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nome;
+
+    private String modoPreparo;
+
+    @OneToMany(mappedBy = "receita", cascade = CascadeType.ALL)
+    private Set<ReceitaIngrediente> receitaIngredientes = new HashSet<>();
+
+    @OneToMany(mappedBy = "receita", cascade = CascadeType.ALL)
+    private Set<ProdutoReceita> produtoReceitas = new HashSet<>();
+
+    // Construtores
+    public Receita() {}
+
+    // Getters e Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
 
-	public String getNome() {
-		return nome;
-	}
+    public String getModoPreparo() {
+        return modoPreparo;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public void setModoPreparo(String modoPreparo) {
+        this.modoPreparo = modoPreparo;
+    }
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public Set<ReceitaIngrediente> getReceitaIngredientes() {
+        return receitaIngredientes;
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setReceitaIngredientes(Set<ReceitaIngrediente> receitaIngredientes) {
+        this.receitaIngredientes = receitaIngredientes;
+    }
 
-	public List<Ingrediente> getIngredientes() {
-		return ingredientes;
-	}
+    public Set<ProdutoReceita> getProdutoReceitas() {
+        return produtoReceitas;
+    }
 
-	public void setIngredientes(List<Ingrediente> ingredientes) {
-		this.ingredientes = ingredientes;
-	}
+    public void setProdutoReceitas(Set<ProdutoReceita> produtoReceitas) {
+        this.produtoReceitas = produtoReceitas;
+    }
 
-	public String getModoPreparo() {
-		return modoPreparo;
-	}
-
-	public void setModoPreparo(String modoPreparo) {
-		this.modoPreparo = modoPreparo;
-	}
-
-	public int getTempoPreparo() {
-		return tempoPreparo;
-	}
-
-	public void setTempoPreparo(int tempoPreparo) {
-		this.tempoPreparo = tempoPreparo;
-	}
-
-	public int getRendimento() {
-		return rendimento;
-	}
-
-	public void setRendimento(int rendimento) {
-		this.rendimento = rendimento;
-	}
-
-	public String getUnidadeRendimento() {
-		return unidadeRendimento;
-	}
-
-	public void setUnidadeRendimento(String unidadeRendimento) {
-		this.unidadeRendimento = unidadeRendimento;
-	}
-
+    // Método para calcular o custo total da receita
+    public BigDecimal getCustoTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        if (receitaIngredientes != null) {
+            for (ReceitaIngrediente ri : receitaIngredientes) {
+                total = total.add(ri.getIngrediente().getPrecoPorUnidade().multiply(BigDecimal.valueOf(ri.getQuantidade())));
+            }
+        }
+        return total;
+    }
 }

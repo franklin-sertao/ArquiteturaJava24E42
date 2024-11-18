@@ -1,55 +1,68 @@
 package br.edu.infnet.franklin.model.domain;
 
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Set;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Ingrediente {
-	private String nome;
-	private String descricao;
-	private float  densidade;
-	private String codigo;
-	private String unidadeMedida;
 
-	// ----------------- Métodos -----------------
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nome;
+
+    private BigDecimal precoTotal;
+
+    private boolean organico;
+
+    @ManyToMany(mappedBy = "ingredientes")
+    private Set<Produto> produtos;
+
+    // Construtores
+    public Ingrediente() {}
+
+    // Getters e Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
 
-	
-	// ------------ Getters e Setters ------------
-	public String getNome() {
-		return nome;
-	}
+    public BigDecimal getPrecoTotal() {
+        return precoTotal;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public void setPrecoTotal(BigDecimal precoTotal) {
+        this.precoTotal = precoTotal;
+    }
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public boolean isOrganico() {
+        return organico;
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setOrganico(boolean organico) {
+        this.organico = organico;
+    }
 
-	public float getDensidade() {
-		return densidade;
-	}
+    public Set<Produto> getProdutos() {
+        return produtos;
+    }
 
-	public void setDensidade(float densidade) {
-		this.densidade = densidade;
-	}
+    public void setProdutos(Set<Produto> produtos) {
+        this.produtos = produtos;
+    }
 
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	public String getUnidadeMedida() {
-		return unidadeMedida;
-	}
-
-	public void setUnidadeMedida(String unidadeMedida) {
-		this.unidadeMedida = unidadeMedida;
-	}
+    // Método abstrato para obter o preço por unidade
+    public abstract BigDecimal getPrecoPorUnidade();
 }
