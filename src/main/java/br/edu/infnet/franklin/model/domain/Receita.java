@@ -1,6 +1,6 @@
 package br.edu.infnet.franklin.model.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,10 +16,10 @@ public class Receita {
 
     private String modoPreparo;
 
-    @OneToMany(mappedBy = "receita", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "receita", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ReceitaIngrediente> receitaIngredientes = new HashSet<>();
 
-    @OneToMany(mappedBy = "receita", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "receita", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProdutoReceita> produtoReceitas = new HashSet<>();
 
     // Construtores
@@ -62,6 +62,12 @@ public class Receita {
 
     public void setProdutoReceitas(Set<ProdutoReceita> produtoReceitas) {
         this.produtoReceitas = produtoReceitas;
+    }
+
+    // Método para adicionar ReceitaIngrediente
+    public void adicionarIngrediente(ReceitaIngrediente receitaIngrediente) {
+        receitaIngredientes.add(receitaIngrediente);
+        receitaIngrediente.setReceita(this);
     }
 
     // Método para calcular o custo total da receita

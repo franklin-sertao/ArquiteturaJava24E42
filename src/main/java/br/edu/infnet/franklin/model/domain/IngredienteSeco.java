@@ -1,7 +1,8 @@
 package br.edu.infnet.franklin.model.domain;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 public class IngredienteSeco extends Ingrediente {
@@ -23,6 +24,6 @@ public class IngredienteSeco extends Ingrediente {
 
     @Override
     public BigDecimal getPrecoPorUnidade() {
-        return getPrecoTotal().divide(new BigDecimal(getPesoLiquidoEmGramas()));
+        return getPrecoTotal().divide(new BigDecimal(getPesoLiquidoEmGramas()), RoundingMode.HALF_UP);
     }
 }

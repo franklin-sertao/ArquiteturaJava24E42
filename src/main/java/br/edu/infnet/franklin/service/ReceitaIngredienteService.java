@@ -21,6 +21,10 @@ public class ReceitaIngredienteService {
         return receitaIngredienteRepository.findAll();
     }
 
+    public ReceitaIngrediente obterPorId(Long id) {
+        return receitaIngredienteRepository.findById(id).orElse(null);
+    }
+
     public void excluir(Long id) {
         receitaIngredienteRepository.deleteById(id);
     }

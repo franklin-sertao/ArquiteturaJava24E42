@@ -5,9 +5,11 @@ import br.edu.infnet.franklin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ProdutoLoader {
@@ -23,9 +25,6 @@ public class ProdutoLoader {
 
     @Autowired
     private EmbalagemService embalagemService;
-
-    @Autowired
-    private ProdutoReceitaService produtoReceitaService;
 
     @PostConstruct
     public void loadProdutos() {
@@ -56,14 +55,15 @@ public class ProdutoLoader {
                 Double quantidade = Double.parseDouble(campos[2]);
 
                 Produto produto = produtoService.findByDescricao(produtoDescricao);
-                Receita receita = receitaService.findByNome(receitaNome);
+                Receita receita = receitaService.obterPorNome(receitaNome);
 
                 if (produto != null && receita != null) {
                     ProdutoReceita produtoReceita = new ProdutoReceita();
                     produtoReceita.setProduto(produto);
                     produtoReceita.setReceita(receita);
                     produtoReceita.setQuantidade(quantidade);
-                    produtoReceitaService.incluir(produtoReceita);
+                    produto.getProdutoReceitas().add(produtoReceita);
+                    produtoService.incluir(produto);
                 }
             }
             produtoReceitaReader.close();
@@ -78,7 +78,7 @@ public class ProdutoLoader {
                 String ingredienteNome = campos[1];
 
                 Produto produto = produtoService.findByDescricao(produtoDescricao);
-                Ingrediente ingrediente = ingredienteService.findByNome(ingredienteNome);
+                Ingrediente ingrediente = ingredienteService.obterPorNome(ingredienteNome);
 
                 if (produto != null && ingrediente != null) {
                     produto.getIngredientes().add(ingrediente);

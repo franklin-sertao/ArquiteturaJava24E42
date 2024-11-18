@@ -21,11 +21,15 @@ public class IngredienteService {
         return ingredienteRepository.findAll();
     }
 
+    public Ingrediente obterPorId(Long id) {
+        return ingredienteRepository.findById(id).orElse(null);
+    }
+
     public void excluir(Long id) {
         ingredienteRepository.deleteById(id);
     }
 
-    public Ingrediente findByNome(String nome) {
+    public Ingrediente obterPorNome(String nome) {
         return ingredienteRepository.findByNome(nome);
     }
 }

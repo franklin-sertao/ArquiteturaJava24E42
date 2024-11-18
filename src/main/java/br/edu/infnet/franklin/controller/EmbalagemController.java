@@ -3,34 +3,47 @@ package br.edu.infnet.franklin.controller;
 import br.edu.infnet.franklin.model.domain.Embalagem;
 import br.edu.infnet.franklin.service.EmbalagemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/embalagens")
 public class EmbalagemController {
 
     @Autowired
     private EmbalagemService embalagemService;
 
-    @PostMapping
-    public void incluir(@RequestBody Embalagem embalagem) {
-        embalagemService.incluir(embalagem);
-    }
-
     @GetMapping
-    public List<Embalagem> obterLista() {
-        return embalagemService.obterLista();
+    public String lista(Model model) {
+        List<Embalagem> embalagens = embalagemService.obterLista();
+        model.addAttribute("embalagens", embalagens);
+        return "embalagens/lista";
     }
 
-    @GetMapping("/{id}")
-    public Embalagem obterPorId(@PathVariable Long id) {
-        return embalagemService.obterPorId(id);
+    @GetMapping("/novo")
+    public String novo(Model model) {
+        model.addAttribute("embalagem", new Embalagem());
+        return "embalagens/formulario";
     }
 
-    @DeleteMapping("/{id}")
-    public void excluir(@PathVariable Long id) {
+    @PostMapping("/salvar")
+    public String salvar(@ModelAttribute Embalagem embalagem) {
+        embalagemService.incluir(embalagem);
+        return "redirect:/embalagens";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        Embalagem embalagem = embalagemService.obterPorId(id);
+        model.addAttribute("embalagem", embalagem);
+        return "embalagens/formulario";
+    }
+
+    @GetMapping("/excluir/{id}")
+    public String excluir(@PathVariable Long id) {
         embalagemService.excluir(id);
+        return "redirect:/embalagens";
     }
 }

@@ -1,6 +1,6 @@
 package br.edu.infnet.franklin.model.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -17,6 +17,9 @@ public abstract class Ingrediente {
     private BigDecimal precoTotal;
 
     private boolean organico;
+
+    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReceitaIngrediente> receitaIngredientes;
 
     @ManyToMany(mappedBy = "ingredientes")
     private Set<Produto> produtos;
@@ -53,6 +56,14 @@ public abstract class Ingrediente {
 
     public void setOrganico(boolean organico) {
         this.organico = organico;
+    }
+
+    public Set<ReceitaIngrediente> getReceitaIngredientes() {
+        return receitaIngredientes;
+    }
+
+    public void setReceitaIngredientes(Set<ReceitaIngrediente> receitaIngredientes) {
+        this.receitaIngredientes = receitaIngredientes;
     }
 
     public Set<Produto> getProdutos() {

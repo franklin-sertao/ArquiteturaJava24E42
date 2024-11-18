@@ -21,6 +21,10 @@ public class EmbalagemService {
         return embalagemRepository.findAll();
     }
 
+    public Embalagem obterPorId(Long id) {
+        return embalagemRepository.findById(id).orElse(null);
+    }
+
     public void excluir(Long id) {
         embalagemRepository.deleteById(id);
     }

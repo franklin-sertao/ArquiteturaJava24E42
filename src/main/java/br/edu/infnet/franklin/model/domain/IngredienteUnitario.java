@@ -1,6 +1,6 @@
 package br.edu.infnet.franklin.model.domain;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.math.BigDecimal;
 
 @Entity
@@ -23,6 +23,6 @@ public class IngredienteUnitario extends Ingrediente {
 
     @Override
     public BigDecimal getPrecoPorUnidade() {
-        return getPrecoTotal().divide(new BigDecimal(getQuantidadeUnidades()));
+        return getPrecoTotal().divide(new BigDecimal(getQuantidadeUnidades()), BigDecimal.ROUND_HALF_UP);
     }
 }

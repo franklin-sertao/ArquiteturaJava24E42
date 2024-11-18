@@ -3,13 +3,14 @@ package br.edu.infnet.franklin.loader;
 import br.edu.infnet.franklin.model.domain.*;
 import br.edu.infnet.franklin.service.IngredienteService;
 import br.edu.infnet.franklin.service.ReceitaService;
-import br.edu.infnet.franklin.service.ReceitaIngredienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ReceitaLoader {
@@ -19,9 +20,6 @@ public class ReceitaLoader {
 
     @Autowired
     private IngredienteService ingredienteService;
-
-    @Autowired
-    private ReceitaIngredienteService receitaIngredienteService;
 
     @PostConstruct
     public void loadReceitas() {
@@ -36,7 +34,7 @@ public class ReceitaLoader {
                 Receita receita = new Receita();
                 receita.setNome(campos[0]);
                 receita.setModoPreparo(campos[1]);
-                receitaService.incluir(receita);
+                receitaService.obterLista().add(receita);
             }
             receitaReader.close();
 
@@ -44,23 +42,39 @@ public class ReceitaLoader {
             BufferedReader receitaIngredienteReader = new BufferedReader(new InputStreamReader(
                     getClass().getResourceAsStream("/data/ReceitaIngredientes.txt"), "UTF-8"));
 
+            String receitaNomeAtual = "";
+            Receita receitaAtual = null;
+            List<Long> ingredientesIds = new ArrayList<>();
+            List<Double> quantidades = new ArrayList<>();
+
             while ((line = receitaIngredienteReader.readLine()) != null) {
                 String[] campos = line.split(";");
                 String receitaNome = campos[0];
                 String ingredienteNome = campos[1];
                 Double quantidade = Double.parseDouble(campos[2]);
 
-                Receita receita = receitaService.findByNome(receitaNome);
-                Ingrediente ingrediente = ingredienteService.findByNome(ingredienteNome);
+                if (!receitaNome.equals(receitaNomeAtual)) {
+                    if (receitaAtual != null) {
+                        receitaService.incluir(receitaAtual, ingredientesIds, quantidades);
+                        ingredientesIds.clear();
+                        quantidades.clear();
+                    }
+                    receitaAtual = receitaService.obterPorNome(receitaNome);
+                    receitaNomeAtual = receitaNome;
+                }
 
-                if (receita != null && ingrediente != null) {
-                    ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
-                    receitaIngrediente.setReceita(receita);
-                    receitaIngrediente.setIngrediente(ingrediente);
-                    receitaIngrediente.setQuantidade(quantidade);
-                    receitaIngredienteService.incluir(receitaIngrediente);
+                Ingrediente ingrediente = ingredienteService.obterPorNome(ingredienteNome);
+                if (ingrediente != null) {
+                    ingredientesIds.add(ingrediente.getId());
+                    quantidades.add(quantidade);
                 }
             }
+
+            // Incluir a última receita
+            if (receitaAtual != null && !ingredientesIds.isEmpty()) {
+                receitaService.incluir(receitaAtual, ingredientesIds, quantidades);
+            }
+
             receitaIngredienteReader.close();
 
         } catch (Exception e) {

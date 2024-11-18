@@ -21,6 +21,10 @@ public class ProdutoReceitaService {
         return produtoReceitaRepository.findAll();
     }
 
+    public ProdutoReceita obterPorId(Long id) {
+        return produtoReceitaRepository.findById(id).orElse(null);
+    }
+
     public void excluir(Long id) {
         produtoReceitaRepository.deleteById(id);
     }

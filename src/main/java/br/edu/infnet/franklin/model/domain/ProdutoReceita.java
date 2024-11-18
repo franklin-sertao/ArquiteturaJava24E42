@@ -1,6 +1,6 @@
 package br.edu.infnet.franklin.model.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class ProdutoReceita {
@@ -11,11 +11,11 @@ public class ProdutoReceita {
 
     private Double quantidade;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receita_id")
     private Receita receita;
 

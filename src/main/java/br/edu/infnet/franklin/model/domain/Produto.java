@@ -1,6 +1,6 @@
 package br.edu.infnet.franklin.model.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +18,7 @@ public class Produto {
 
     private boolean conservadoGelado;
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProdutoReceita> produtoReceitas = new HashSet<>();
 
     @ManyToMany
@@ -92,6 +92,12 @@ public class Produto {
 
     public void setEmbalagens(Set<Embalagem> embalagens) {
         this.embalagens = embalagens;
+    }
+
+    // Método para adicionar ProdutoReceita
+    public void adicionarReceita(ProdutoReceita produtoReceita) {
+        produtoReceitas.add(produtoReceita);
+        produtoReceita.setProduto(this);
     }
 
     // Método para calcular o preço de custo total

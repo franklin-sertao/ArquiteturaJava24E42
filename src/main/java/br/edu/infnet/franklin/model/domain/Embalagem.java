@@ -1,6 +1,6 @@
 package br.edu.infnet.franklin.model.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -63,6 +63,6 @@ public class Embalagem {
 
     // Método para calcular o preço por unidade
     public BigDecimal getPrecoPorUnidade() {
-        return precoPacote.divide(new BigDecimal(quantidadePorPacote));
+        return precoPacote.divide(new BigDecimal(quantidadePorPacote), BigDecimal.ROUND_HALF_UP);
     }
 }
