@@ -1,7 +1,6 @@
 package br.edu.infnet.franklin.model.domain;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,13 +20,8 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProdutoReceita> produtoReceitas = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-        name = "produto_ingrediente",
-        joinColumns = @JoinColumn(name = "produto_id"),
-        inverseJoinColumns = @JoinColumn(name = "ingrediente_id")
-    )
-    private Set<Ingrediente> ingredientes = new HashSet<>();
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProdutoIngrediente> produtoIngredientes = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -37,13 +31,14 @@ public class Produto {
     )
     private Set<Embalagem> embalagens = new HashSet<>();
 
-    // Construtores
-    public Produto() {}
-
     // Getters e Setters
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescricao() {
@@ -78,12 +73,12 @@ public class Produto {
         this.produtoReceitas = produtoReceitas;
     }
 
-    public Set<Ingrediente> getIngredientes() {
-        return ingredientes;
+    public Set<ProdutoIngrediente> getProdutoIngredientes() {
+        return produtoIngredientes;
     }
 
-    public void setIngredientes(Set<Ingrediente> ingredientes) {
-        this.ingredientes = ingredientes;
+    public void setProdutoIngredientes(Set<ProdutoIngrediente> produtoIngredientes) {
+        this.produtoIngredientes = produtoIngredientes;
     }
 
     public Set<Embalagem> getEmbalagens() {
@@ -92,36 +87,5 @@ public class Produto {
 
     public void setEmbalagens(Set<Embalagem> embalagens) {
         this.embalagens = embalagens;
-    }
-
-    // Método para adicionar ProdutoReceita
-    public void adicionarReceita(ProdutoReceita produtoReceita) {
-        produtoReceitas.add(produtoReceita);
-        produtoReceita.setProduto(this);
-    }
-
-    // Método para calcular o preço de custo total
-    public BigDecimal getPrecoCustoTotal() {
-        BigDecimal total = BigDecimal.ZERO;
-
-        if (produtoReceitas != null) {
-            for (ProdutoReceita pr : produtoReceitas) {
-                total = total.add(pr.getReceita().getCustoTotal().multiply(BigDecimal.valueOf(pr.getQuantidade())));
-            }
-        }
-
-        if (ingredientes != null) {
-            for (Ingrediente ingrediente : ingredientes) {
-                total = total.add(ingrediente.getPrecoTotal());
-            }
-        }
-
-        if (embalagens != null) {
-            for (Embalagem embalagem : embalagens) {
-                total = total.add(embalagem.getPrecoPorUnidade());
-            }
-        }
-
-        return total;
     }
 }

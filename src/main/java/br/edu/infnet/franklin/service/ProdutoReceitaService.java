@@ -13,7 +13,7 @@ public class ProdutoReceitaService {
     @Autowired
     private ProdutoReceitaRepository produtoReceitaRepository;
 
-    public void incluir(ProdutoReceita produtoReceita) {
+    public void salvar(ProdutoReceita produtoReceita) {
         produtoReceitaRepository.save(produtoReceita);
     }
 

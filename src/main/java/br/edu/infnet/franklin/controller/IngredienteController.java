@@ -1,6 +1,9 @@
 package br.edu.infnet.franklin.controller;
 
 import br.edu.infnet.franklin.model.domain.Ingrediente;
+import br.edu.infnet.franklin.model.domain.IngredienteLiquido;
+import br.edu.infnet.franklin.model.domain.IngredienteSeco;
+import br.edu.infnet.franklin.model.domain.IngredienteUnitario;
 import br.edu.infnet.franklin.service.IngredienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,11 +25,14 @@ public class IngredienteController {
         return "ingredientes/lista";
     }
 
-    @GetMapping("/novo")
-    public String novo(Model model) {
-        model.addAttribute("ingrediente", new Ingrediente());
-        return "ingredientes/formulario";
-    }
+	@GetMapping("/novo")
+	public String novo(Model model) {
+		model.addAttribute("ingredienteSeco", new IngredienteSeco());
+		model.addAttribute("ingredienteLiquido", new IngredienteLiquido());
+		model.addAttribute("ingredienteUnitario", new IngredienteUnitario());
+		return "ingredientes/formulario";
+	}
+
 
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Ingrediente ingrediente) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProdutoService {
@@ -22,13 +23,17 @@ public class ProdutoService {
     @Autowired
     private ProdutoReceitaService produtoReceitaService;
 
-    public void incluir(Produto produto, List<Long> receitasIds, List<Double> quantidadesReceitas, List<Long> ingredientesIds) {
+    @Autowired
+    private ProdutoIngredienteService produtoIngredienteService;
+
+    public void salvar(Produto produto, Map<Long, Double> receitasQuantidade, Map<Long, Double> ingredientesQuantidade) {
+        // Salvar o produto inicialmente para gerar o ID (em caso de inclusão)
         produtoRepository.save(produto);
 
-        // Adicionar receitas ao produto
-        for (int i = 0; i < receitasIds.size(); i++) {
-            Long receitaId = receitasIds.get(i);
-            Double quantidade = quantidadesReceitas.get(i);
+        // Adicionar receitas ao produto com suas quantidades
+        for (Map.Entry<Long, Double> entry : receitasQuantidade.entrySet()) {
+            Long receitaId = entry.getKey();
+            Double quantidade = entry.getValue();
 
             Receita receita = receitaService.obterPorId(receitaId);
 
@@ -37,15 +42,25 @@ public class ProdutoService {
             pr.setReceita(receita);
             pr.setQuantidade(quantidade);
 
-            produtoReceitaService.incluir(pr);
+            produtoReceitaService.salvar(pr);
         }
 
-        // Adicionar ingredientes ao produto
-        for (Long ingredienteId : ingredientesIds) {
+        // Adicionar ingredientes ao produto com suas quantidades
+        for (Map.Entry<Long, Double> entry : ingredientesQuantidade.entrySet()) {
+            Long ingredienteId = entry.getKey();
+            Double quantidade = entry.getValue();
+
             Ingrediente ingrediente = ingredienteService.obterPorId(ingredienteId);
-            produto.getIngredientes().add(ingrediente);
+
+            ProdutoIngrediente produtoIngrediente = new ProdutoIngrediente();
+            produtoIngrediente.setProduto(produto);
+            produtoIngrediente.setIngrediente(ingrediente);
+            produtoIngrediente.setQuantidade(quantidade);
+
+            produtoIngredienteService.salvar(produtoIngrediente);
         }
 
+        // Salvar o produto novamente com as associações atualizadas
         produtoRepository.save(produto);
     }
 
@@ -57,11 +72,11 @@ public class ProdutoService {
         return produtoRepository.findById(id).orElse(null);
     }
 
+	public Produto obterPorDescricao(String descricao) {
+		return produtoRepository.findByDescricao(descricao);
+	}
+
     public void excluir(Long id) {
         produtoRepository.deleteById(id);
-    }
-
-    public Produto findByDescricao(String descricao) {
-        return produtoRepository.findByDescricao(descricao);
     }
 }

@@ -1,6 +1,6 @@
 package br.edu.infnet.franklin.model.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class ProdutoIngrediente {
@@ -9,30 +9,23 @@ public class ProdutoIngrediente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double quantidade;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ingrediente_id")
     private Ingrediente ingrediente;
 
-    // Construtores
-    public ProdutoIngrediente() {}
+    private Double quantidade;
 
     // Getters e Setters
     public Long getId() {
         return id;
     }
 
-    public Double getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Double quantidade) {
-        this.quantidade = quantidade;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Produto getProduto() {
@@ -49,5 +42,13 @@ public class ProdutoIngrediente {
 
     public void setIngrediente(Ingrediente ingrediente) {
         this.ingrediente = ingrediente;
+    }
+
+    public Double getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Double quantidade) {
+        this.quantidade = quantidade;
     }
 }
