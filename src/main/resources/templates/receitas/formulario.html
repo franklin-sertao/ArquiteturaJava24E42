@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cadastro de Receita</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h1 th:text="${receita.id == null ? 'Nova Receita' : 'Editar Receita'}"></h1>
+    <form th:action="@{/receitas/salvar}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" th:field="*{nome}" required><br/>
+
+        <label for="modoPreparo">Modo de Preparo:</label>
+        <textarea id="modoPreparo" th:field="*{modoPreparo}" required></textarea><br/>
+
+        <button type="submit">Salvar</button>
+    </form>
+    <a th:href="@{/receitas}">Voltar</a>
+</body>
+</html>

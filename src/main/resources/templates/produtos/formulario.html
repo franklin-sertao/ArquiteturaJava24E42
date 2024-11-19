@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cadastro de Produto</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h1 th:text="${produto.id == null ? 'Novo Produto' : 'Editar Produto'}"></h1>
+    <form th:action="@{/produtos/salvar}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label for="descricao">Descrição:</label>
+        <input type="text" id="descricao" th:field="*{descricao}" required><br/>
+
+        <label for="modoPreparo">Modo de Preparo:</label>
+        <textarea id="modoPreparo" th:field="*{modoPreparo}" required></textarea><br/>
+
+        <label for="conservadoGelado">Conservado Gelado:</label>
+        <input type="checkbox" id="conservadoGelado" th:field="*{conservadoGelado}"><br/>
+
+        <label>Receitas:</label>
+        <div th:each="receita : ${receitas}">
+            <input type="checkbox" name="receitasQuantidade[__${receita.id}__]"
+                   th:value="1.0" id="receita_${receita.id}">
+            <label th:for="receita_${receita.id}" th:text="${receita.nome}"></label><br/>
+        </div>
+
+        <label>Ingredientes:</label>
+        <div th:each="ingrediente : ${ingredientes}">
+            <input type="checkbox" name="ingredientesQuantidade[__${ingrediente.id}__]"
+                   th:value="1.0" id="ingrediente_${ingrediente.id}">
+            <label th:for="ingrediente_${ingrediente.id}" th:text="${ingrediente.nome}"></label><br/>
+        </div>
+
+        <label>Embalagens:</label>
+        <div th:each="embalagem : ${embalagens}">
+            <input type="checkbox" name="embalagens[__${embalagem.id}__]"
+                   th:value="${embalagem.id}" id="embalagem_${embalagem.id}">
+            <label th:for="embalagem_${embalagem.id}" th:text="${embalagem.descricao}"></label><br/>
+        </div>
+
+        <button type="submit">Salvar</button>
+    </form>
+    <a th:href="@{/produtos}">Voltar</a>
+</body>
+</html>

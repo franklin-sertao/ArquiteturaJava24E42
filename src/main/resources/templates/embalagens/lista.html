@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Embalagens</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h1>Lista de Embalagens</h1>
+    <a th:href="@{/embalagens/novo}">Adicionar Nova Embalagem</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Quantidade por Pacote</th>
+                <th>Preço do Pacote</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="embalagem : ${embalagens}">
+                <td th:text="${embalagem.descricao}"></td>
+                <td th:text="${embalagem.quantidadePorPacote}"></td>
+                <td th:text="${embalagem.precoPacote}"></td>
+                <td>
+                    <a th:href="@{/embalagens/editar/{id}(id=${embalagem.id})}">Editar</a>
+                    <a th:href="@{/embalagens/excluir/{id}(id=${embalagem.id})}">Excluir</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/}">Voltar</a>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cadastro de Ingrediente</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h1 th:text="${ingrediente.id == null ? 'Novo Ingrediente' : 'Editar Ingrediente'}"></h1>
+    <form th:action="@{/ingredientes/salvar}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" th:field="*{nome}" required><br/>
+
+        <label for="precoTotal">Preço Total:</label>
+        <input type="number" id="precoTotal" th:field="*{precoTotal}" step="0.01" required><br/>
+
+        <label for="organico">Orgânico:</label>
+        <input type="checkbox" id="organico" th:field="*{organico}"><br/>
+
+        <div th:if="${ingrediente instanceof T(br.edu.infnet.franklin.model.domain.IngredienteSeco)}">
+            <label for="pesoLiquidoEmGramas">Peso Líquido (g):</label>
+            <input type="number" id="pesoLiquidoEmGramas" th:field="*{pesoLiquidoEmGramas}"><br/>
+        </div>
+
+        <div th:if="${ingrediente instanceof T(br.edu.infnet.franklin.model.domain.IngredienteLiquido)}">
+            <label for="volumeLiquidoEmML">Volume Líquido (ml):</label>
+            <input type="number" id="volumeLiquidoEmML" th:field="*{volumeLiquidoEmML}"><br/>
+        </div>
+
+        <div th:if="${ingrediente instanceof T(br.edu.infnet.franklin.model.domain.IngredienteUnitario)}">
+            <label for="quantidadeUnidades">Quantidade de Unidades:</label>
+            <input type="number" id="quantidadeUnidades" th:field="*{quantidadeUnidades}"><br/>
+        </div>
+
+        <button type="submit">Salvar</button>
+    </form>
+    <a th:href="@{/ingredientes}">Voltar</a>
+</body>
+</html>

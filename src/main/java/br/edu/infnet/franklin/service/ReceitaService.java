@@ -4,10 +4,12 @@ import br.edu.infnet.franklin.model.domain.Ingrediente;
 import br.edu.infnet.franklin.model.domain.Receita;
 import br.edu.infnet.franklin.model.domain.ReceitaIngrediente;
 import br.edu.infnet.franklin.repository.ReceitaRepository;
+import br.edu.infnet.franklin.service.ReceitaIngredienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReceitaService {
@@ -21,21 +23,23 @@ public class ReceitaService {
     @Autowired
     private ReceitaIngredienteService receitaIngredienteService;
 
-    public void incluir(Receita receita, List<Long> ingredientesIds, List<Double> quantidades) {
+    public void salvar(Receita receita, Map<Long, Double> ingredientesQuantidade) {
+        // Salva a receita inicial para obter o ID
         receitaRepository.save(receita);
 
-        for (int i = 0; i < ingredientesIds.size(); i++) {
-            Long ingredienteId = ingredientesIds.get(i);
-            Double quantidade = quantidades.get(i);
+        // Adiciona os ingredientes e suas quantidades
+        for (Map.Entry<Long, Double> entry : ingredientesQuantidade.entrySet()) {
+            Long ingredienteId = entry.getKey();
+            Double quantidade = entry.getValue();
 
             Ingrediente ingrediente = ingredienteService.obterPorId(ingredienteId);
 
-            ReceitaIngrediente ri = new ReceitaIngrediente();
-            ri.setReceita(receita);
-            ri.setIngrediente(ingrediente);
-            ri.setQuantidade(quantidade);
+            ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
+            receitaIngrediente.setReceita(receita);
+            receitaIngrediente.setIngrediente(ingrediente);
+            receitaIngrediente.setQuantidade(quantidade);
 
-            receitaIngredienteService.incluir(ri);
+            receitaIngredienteService.salvar(receitaIngrediente);
         }
     }
 
@@ -43,15 +47,4 @@ public class ReceitaService {
         return receitaRepository.findAll();
     }
 
-    public Receita obterPorId(Long id) {
-        return receitaRepository.findById(id).orElse(null);
-    }
-
-    public void excluir(Long id) {
-        receitaRepository.deleteById(id);
-    }
-
-    public Receita obterPorNome(String nome) {
-        return receitaRepository.findByNome(nome);
-    }
-}
+    public Receita obterPorId(Long id)

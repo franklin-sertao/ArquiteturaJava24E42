@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ingredientes</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h1>Lista de Ingredientes</h1>
+    <a th:href="@{/ingredientes/novo}">Adicionar Novo Ingrediente</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Preço Total</th>
+                <th>Orgânico</th>
+                <th>Tipo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ingrediente : ${ingredientes}">
+                <td th:text="${ingrediente.nome}"></td>
+                <td th:text="${ingrediente.precoTotal}"></td>
+                <td th:text="${ingrediente.organico ? 'Sim' : 'Não'}"></td>
+                <td th:text="${ingrediente.class.simpleName}"></td>
+                <td>
+                    <a th:href="@{/ingredientes/editar/{id}(id=${ingrediente.id})}">Editar</a>
+                    <a th:href="@{/ingredientes/excluir/{id}(id=${ingrediente.id})}">Excluir</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/}">Voltar</a>
+</body>
+</html>
