@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProdutoIngredienteRepository extends JpaRepository<ProdutoIngrediente, Long> {
-    // Métodos adicionais, se necessário
+    // Métodos adicionais se necessário
 }

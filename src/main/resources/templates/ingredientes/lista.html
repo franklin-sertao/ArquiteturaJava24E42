@@ -22,7 +22,7 @@
                 <td th:text="${ingrediente.nome}"></td>
                 <td th:text="${ingrediente.precoTotal}"></td>
                 <td th:text="${ingrediente.organico ? 'Sim' : 'Não'}"></td>
-                <td th:text="${ingrediente.class.simpleName}"></td>
+                <td th:text="${ingrediente.getClass().getSimpleName()}"></td>
                 <td>
                     <a th:href="@{/ingredientes/editar/{id}(id=${ingrediente.id})}">Editar</a>
                     <a th:href="@{/ingredientes/excluir/{id}(id=${ingrediente.id})}">Excluir</a>

@@ -29,7 +29,7 @@ public class EmbalagemLoader {
                 embalagem.setDescricao(campos[0]);
                 embalagem.setQuantidadePorPacote(Integer.parseInt(campos[1]));
                 embalagem.setPrecoPacote(new BigDecimal(campos[2]));
-                embalagemService.incluir(embalagem);
+                embalagemService.salvar(embalagem);
             }
             reader.close();
         } catch (Exception e) {

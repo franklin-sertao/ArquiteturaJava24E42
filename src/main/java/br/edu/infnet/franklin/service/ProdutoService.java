@@ -27,7 +27,7 @@ public class ProdutoService {
     private ProdutoIngredienteService produtoIngredienteService;
 
     public void salvar(Produto produto, Map<Long, Double> receitasQuantidade, Map<Long, Double> ingredientesQuantidade) {
-        // Salvar o produto inicialmente para gerar o ID (em caso de inclusão)
+        // Salva o produto inicialmente para obter o ID
         produtoRepository.save(produto);
 
         // Adicionar receitas ao produto com suas quantidades
@@ -71,10 +71,6 @@ public class ProdutoService {
     public Produto obterPorId(Long id) {
         return produtoRepository.findById(id).orElse(null);
     }
-
-	public Produto obterPorDescricao(String descricao) {
-		return produtoRepository.findByDescricao(descricao);
-	}
 
     public void excluir(Long id) {
         produtoRepository.deleteById(id);

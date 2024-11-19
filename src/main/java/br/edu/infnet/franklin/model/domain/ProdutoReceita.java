@@ -20,35 +20,23 @@ public class ProdutoReceita {
     private Receita receita;
 
     // Construtores
-    public ProdutoReceita() {}
+    public ProdutoReceita() {
+    }
 
     // Getters e Setters
-
     public Long getId() {
         return id;
     }
 
-    public Double getQuantidade() {
-        return quantidade;
-    }
+    public Double getQuantidade() { return quantidade; }
 
-    public void setQuantidade(Double quantidade) {
-        this.quantidade = quantidade;
-    }
+    public void setQuantidade(Double quantidade) { this.quantidade = quantidade; }
 
-    public Produto getProduto() {
-        return produto;
-    }
+    public Produto getProduto() { return produto; }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
+    public void setProduto(Produto produto) { this.produto = produto; }
 
-    public Receita getReceita() {
-        return receita;
-    }
+    public Receita getReceita() { return receita; }
 
-    public void setReceita(Receita receita) {
-        this.receita = receita;
-    }
+    public void setReceita(Receita receita) { this.receita = receita; }
 }

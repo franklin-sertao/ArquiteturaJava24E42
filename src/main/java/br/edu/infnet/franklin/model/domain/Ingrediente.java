@@ -13,22 +13,20 @@ public abstract class Ingrediente {
     private Long id;
 
     private String nome;
-
     private BigDecimal precoTotal;
-
     private boolean organico;
 
     @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ReceitaIngrediente> receitaIngredientes;
 
-    @ManyToMany(mappedBy = "ingredientes")
-    private Set<Produto> produtos;
+    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProdutoIngrediente> produtoIngredientes;
 
     // Construtores
-    public Ingrediente() {}
+    public Ingrediente() {
+    }
 
     // Getters e Setters
-
     public Long getId() {
         return id;
     }
@@ -66,12 +64,12 @@ public abstract class Ingrediente {
         this.receitaIngredientes = receitaIngredientes;
     }
 
-    public Set<Produto> getProdutos() {
-        return produtos;
+    public Set<ProdutoIngrediente> getProdutoIngredientes() {
+        return produtoIngredientes;
     }
 
-    public void setProdutos(Set<Produto> produtos) {
-        this.produtos = produtos;
+    public void setProdutoIngredientes(Set<ProdutoIngrediente> produtoIngredientes) {
+        this.produtoIngredientes = produtoIngredientes;
     }
 
     // Método abstrato para obter o preço por unidade

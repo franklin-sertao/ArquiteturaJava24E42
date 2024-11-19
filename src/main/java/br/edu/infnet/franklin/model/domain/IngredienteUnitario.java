@@ -9,10 +9,10 @@ public class IngredienteUnitario extends Ingrediente {
     private Integer quantidadeUnidades;
 
     // Construtores
-    public IngredienteUnitario() {}
+    public IngredienteUnitario() {
+    }
 
     // Getters e Setters
-
     public Integer getQuantidadeUnidades() {
         return quantidadeUnidades;
     }

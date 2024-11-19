@@ -12,54 +12,34 @@ public class Embalagem {
     private Long id;
 
     private String descricao;
-
     private Integer quantidadePorPacote;
-
     private BigDecimal precoPacote;
 
     @ManyToMany(mappedBy = "embalagens")
     private Set<Produto> produtos;
 
     // Construtores
-    public Embalagem() {}
+    public Embalagem() {
+    }
 
     // Getters e Setters
+    public Long getId() { return id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getDescricao() { return descricao; }
 
-    public String getDescricao() {
-        return descricao;
-    }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+    public Integer getQuantidadePorPacote() { return quantidadePorPacote; }
 
-    public Integer getQuantidadePorPacote() {
-        return quantidadePorPacote;
-    }
+    public void setQuantidadePorPacote(Integer quantidadePorPacote) { this.quantidadePorPacote = quantidadePorPacote; }
 
-    public void setQuantidadePorPacote(Integer quantidadePorPacote) {
-        this.quantidadePorPacote = quantidadePorPacote;
-    }
+    public BigDecimal getPrecoPacote() { return precoPacote; }
 
-    public BigDecimal getPrecoPacote() {
-        return precoPacote;
-    }
+    public void setPrecoPacote(BigDecimal precoPacote) { this.precoPacote = precoPacote; }
 
-    public void setPrecoPacote(BigDecimal precoPacote) {
-        this.precoPacote = precoPacote;
-    }
+    public Set<Produto> getProdutos() { return produtos; }
 
-    public Set<Produto> getProdutos() {
-        return produtos;
-    }
-
-    public void setProdutos(Set<Produto> produtos) {
-        this.produtos = produtos;
-    }
+    public void setProdutos(Set<Produto> produtos) { this.produtos = produtos; }
 
     // Método para calcular o preço por unidade
     public BigDecimal getPrecoPorUnidade() {

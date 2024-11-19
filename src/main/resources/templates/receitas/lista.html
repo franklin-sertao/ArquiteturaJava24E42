@@ -12,6 +12,7 @@
             <tr>
                 <th>Nome</th>
                 <th>Modo de Preparo</th>
+                <th>Custo Total</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -19,6 +20,7 @@
             <tr th:each="receita : ${receitas}">
                 <td th:text="${receita.nome}"></td>
                 <td th:text="${receita.modoPreparo}"></td>
+                <td th:text="${receita.getCustoTotal()}"></td>
                 <td>
                     <a th:href="@{/receitas/editar/{id}(id=${receita.id})}">Editar</a>
                     <a th:href="@{/receitas/excluir/{id}(id=${receita.id})}">Excluir</a>

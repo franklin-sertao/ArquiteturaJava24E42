@@ -13,7 +13,6 @@ public class Receita {
     private Long id;
 
     private String nome;
-
     private String modoPreparo;
 
     @OneToMany(mappedBy = "receita", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -23,10 +22,10 @@ public class Receita {
     private Set<ProdutoReceita> produtoReceitas = new HashSet<>();
 
     // Construtores
-    public Receita() {}
+    public Receita() {
+    }
 
     // Getters e Setters
-
     public Long getId() {
         return id;
     }

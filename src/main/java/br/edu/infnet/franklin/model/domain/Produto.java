@@ -1,6 +1,7 @@
 package br.edu.infnet.franklin.model.domain;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,9 +13,7 @@ public class Produto {
     private Long id;
 
     private String descricao;
-
     private String modoPreparo;
-
     private boolean conservadoGelado;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -25,67 +24,71 @@ public class Produto {
 
     @ManyToMany
     @JoinTable(
-        name = "produto_embalagem",
-        joinColumns = @JoinColumn(name = "produto_id"),
-        inverseJoinColumns = @JoinColumn(name = "embalagem_id")
+            name = "produto_embalagem",
+            joinColumns = @JoinColumn(name = "produto_id"),
+            inverseJoinColumns = @JoinColumn(name = "embalagem_id")
     )
     private Set<Embalagem> embalagens = new HashSet<>();
 
-    // Getters e Setters
+    // Construtores
+    public Produto() {
+    }
 
+    // Getters e Setters
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     public String getDescricao() {
         return descricao;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public String getModoPreparo() {
-        return modoPreparo;
-    }
+    public String getModoPreparo() { return modoPreparo; }
 
-    public void setModoPreparo(String modoPreparo) {
-        this.modoPreparo = modoPreparo;
-    }
+    public void setModoPreparo(String modoPreparo) { this.modoPreparo = modoPreparo; }
 
-    public boolean isConservadoGelado() {
-        return conservadoGelado;
-    }
+    public boolean isConservadoGelado() { return conservadoGelado; }
 
-    public void setConservadoGelado(boolean conservadoGelado) {
-        this.conservadoGelado = conservadoGelado;
-    }
+    public void setConservadoGelado(boolean conservadoGelado) { this.conservadoGelado = conservadoGelado; }
 
-    public Set<ProdutoReceita> getProdutoReceitas() {
-        return produtoReceitas;
-    }
+    public Set<ProdutoReceita> getProdutoReceitas() { return produtoReceitas; }
 
-    public void setProdutoReceitas(Set<ProdutoReceita> produtoReceitas) {
-        this.produtoReceitas = produtoReceitas;
-    }
+    public void setProdutoReceitas(Set<ProdutoReceita> produtoReceitas) { this.produtoReceitas = produtoReceitas; }
 
-    public Set<ProdutoIngrediente> getProdutoIngredientes() {
-        return produtoIngredientes;
-    }
+    public Set<ProdutoIngrediente> getProdutoIngredientes() { return produtoIngredientes; }
 
-    public void setProdutoIngredientes(Set<ProdutoIngrediente> produtoIngredientes) {
-        this.produtoIngredientes = produtoIngredientes;
-    }
+    public void setProdutoIngredientes(Set<ProdutoIngrediente> produtoIngredientes) { this.produtoIngredientes = produtoIngredientes; }
 
-    public Set<Embalagem> getEmbalagens() {
-        return embalagens;
-    }
+    public Set<Embalagem> getEmbalagens() { return embalagens; }
 
-    public void setEmbalagens(Set<Embalagem> embalagens) {
-        this.embalagens = embalagens;
+    public void setEmbalagens(Set<Embalagem> embalagens) { this.embalagens = embalagens; }
+
+    // Método para calcular o preço de custo total
+    public BigDecimal getPrecoCustoTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+
+        if (produtoReceitas != null) {
+            for (ProdutoReceita pr : produtoReceitas) {
+                total = total.add(pr.getReceita().getCustoTotal().multiply(BigDecimal.valueOf(pr.getQuantidade())));
+            }
+        }
+
+        if (produtoIngredientes != null) {
+            for (ProdutoIngrediente pi : produtoIngredientes) {
+                total = total.add(pi.getIngrediente().getPrecoPorUnidade().multiply(BigDecimal.valueOf(pi.getQuantidade())));
+            }
+        }
+
+        if (embalagens != null) {
+            for (Embalagem embalagem : embalagens) {
+                total = total.add(embalagem.getPrecoPorUnidade());
+            }
+        }
+
+        return total;
     }
 }

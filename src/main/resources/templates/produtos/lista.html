@@ -13,6 +13,7 @@
                 <th>Descrição</th>
                 <th>Modo de Preparo</th>
                 <th>Conservado Gelado</th>
+                <th>Preço de Custo</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -21,6 +22,7 @@
                 <td th:text="${produto.descricao}"></td>
                 <td th:text="${produto.modoPreparo}"></td>
                 <td th:text="${produto.conservadoGelado ? 'Sim' : 'Não'}"></td>
+                <td th:text="${produto.getPrecoCustoTotal()}"></td>
                 <td>
                     <a th:href="@{/produtos/editar/{id}(id=${produto.id})}">Editar</a>
                     <a th:href="@{/produtos/excluir/{id}(id=${produto.id})}">Excluir</a>

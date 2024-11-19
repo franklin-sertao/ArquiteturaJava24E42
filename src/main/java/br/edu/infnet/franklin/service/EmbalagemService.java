@@ -13,7 +13,7 @@ public class EmbalagemService {
     @Autowired
     private EmbalagemRepository embalagemRepository;
 
-    public void incluir(Embalagem embalagem) {
+    public void salvar(Embalagem embalagem) {
         embalagemRepository.save(embalagem);
     }
 
@@ -29,7 +29,7 @@ public class EmbalagemService {
         embalagemRepository.deleteById(id);
     }
 
-    public Embalagem findByDescricao(String descricao) {
+    public Embalagem obterPorDescricao(String descricao) {
         return embalagemRepository.findByDescricao(descricao);
     }
 }

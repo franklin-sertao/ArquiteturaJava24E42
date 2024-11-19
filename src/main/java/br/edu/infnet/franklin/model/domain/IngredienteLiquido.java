@@ -9,10 +9,10 @@ public class IngredienteLiquido extends Ingrediente {
     private Integer volumeLiquidoEmML;
 
     // Construtores
-    public IngredienteLiquido() {}
+    public IngredienteLiquido() {
+    }
 
     // Getters e Setters
-
     public Integer getVolumeLiquidoEmML() {
         return volumeLiquidoEmML;
     }

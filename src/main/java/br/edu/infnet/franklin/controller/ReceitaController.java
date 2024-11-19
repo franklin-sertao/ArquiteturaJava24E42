@@ -1,16 +1,16 @@
 package br.edu.infnet.franklin.controller;
 
+import br.edu.infnet.franklin.model.domain.Ingrediente;
 import br.edu.infnet.franklin.model.domain.Receita;
-import br.edu.infnet.franklin.model.domain.ReceitaIngrediente;
-import br.edu.infnet.franklin.service.ReceitaService;
 import br.edu.infnet.franklin.service.IngredienteService;
+import br.edu.infnet.franklin.service.ReceitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/receitas")
@@ -24,7 +24,8 @@ public class ReceitaController {
 
     @GetMapping
     public String lista(Model model) {
-        model.addAttribute("receitas", receitaService.obterLista());
+        List<Receita> receitas = receitaService.obterLista();
+        model.addAttribute("receitas", receitas);
         return "receitas/lista";
     }
 
@@ -37,7 +38,16 @@ public class ReceitaController {
 
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Receita receita,
-                         @RequestParam Map<Long, Double> ingredientesQuantidade) {
+                         @RequestParam Map<String, String> allRequestParams) {
+
+        // Filtrar os parâmetros para obter os ingredientes e quantidades
+        Map<Long, Double> ingredientesQuantidade = allRequestParams.entrySet().stream()
+                .filter(e -> e.getKey().startsWith("ingrediente_"))
+                .collect(Collectors.toMap(
+                        e -> Long.parseLong(e.getKey().replace("ingrediente_", "")),
+                        e -> Double.parseDouble(e.getValue())
+                ));
+
         receitaService.salvar(receita, ingredientesQuantidade);
         return "redirect:/receitas";
     }

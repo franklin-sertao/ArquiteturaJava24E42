@@ -4,7 +4,6 @@ import br.edu.infnet.franklin.model.domain.Ingrediente;
 import br.edu.infnet.franklin.model.domain.Receita;
 import br.edu.infnet.franklin.model.domain.ReceitaIngrediente;
 import br.edu.infnet.franklin.repository.ReceitaRepository;
-import br.edu.infnet.franklin.service.ReceitaIngredienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,4 +46,15 @@ public class ReceitaService {
         return receitaRepository.findAll();
     }
 
-    public Receita obterPorId(Long id)
+    public Receita obterPorId(Long id) {
+        return receitaRepository.findById(id).orElse(null);
+    }
+
+    public Receita obterPorNome(String nome) {
+        return receitaRepository.findByNome(nome);
+    }
+
+    public void excluir(Long id) {
+        receitaRepository.deleteById(id);
+    }
+}

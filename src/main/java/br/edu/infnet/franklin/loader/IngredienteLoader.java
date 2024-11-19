@@ -50,7 +50,7 @@ public class IngredienteLoader {
                 ingrediente.setPrecoTotal(new BigDecimal(campos[2]));
                 ingrediente.setOrganico(Boolean.parseBoolean(campos[3]));
 
-                ingredienteService.incluir(ingrediente);
+                ingredienteService.salvar(ingrediente);
             }
 
             reader.close();

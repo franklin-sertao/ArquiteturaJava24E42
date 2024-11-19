@@ -20,10 +20,10 @@ public class ReceitaIngrediente {
     private Ingrediente ingrediente;
 
     // Construtores
-    public ReceitaIngrediente() {}
+    public ReceitaIngrediente() {
+    }
 
     // Getters e Setters
-
     public Long getId() {
         return id;
     }

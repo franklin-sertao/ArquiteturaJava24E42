@@ -13,7 +13,7 @@ public class IngredienteService {
     @Autowired
     private IngredienteRepository ingredienteRepository;
 
-    public void incluir(Ingrediente ingrediente) {
+    public void salvar(Ingrediente ingrediente) {
         ingredienteRepository.save(ingrediente);
     }
 
