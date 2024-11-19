@@ -1,12 +1,15 @@
 package br.edu.infnet.franklin.controller;
 
-import br.edu.infnet.franklin.model.domain.*;
+import br.edu.infnet.franklin.model.domain.Ingrediente;
+import br.edu.infnet.franklin.model.domain.IngredienteLiquido;
+import br.edu.infnet.franklin.model.domain.IngredienteSeco;
+import br.edu.infnet.franklin.model.domain.IngredienteUnitario;
 import br.edu.infnet.franklin.service.IngredienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
+
 import java.util.List;
 
 @Controller
@@ -24,58 +27,38 @@ public class IngredienteController {
     }
 
     @GetMapping("/novo")
-    public String novo(Model model) {
-        model.addAttribute("ingrediente", new IngredienteSeco()); // Por padrão, usando IngredienteSeco
+    public String novo(@RequestParam(required = false, defaultValue = "seco") String tipo, Model model) {
+        Ingrediente ingrediente;
+        switch (tipo.toLowerCase()) {
+            case "liquido":
+                ingrediente = new IngredienteLiquido();
+                break;
+            case "unitario":
+                ingrediente = new IngredienteUnitario();
+                break;
+            default:
+                ingrediente = new IngredienteSeco();
+        }
+        model.addAttribute("ingrediente", ingrediente);
+        model.addAttribute("tipos", List.of("seco", "liquido", "unitario"));
         return "ingredientes/formulario";
     }
 
     @PostMapping("/salvar")
-    public String salvar(@RequestParam String tipoIngrediente,
-                         @RequestParam String nome,
-                         @RequestParam BigDecimal precoTotal,
-                         @RequestParam(required = false) Boolean organico,
-                         @RequestParam(required = false) Integer pesoLiquidoEmGramas,
-                         @RequestParam(required = false) Integer volumeLiquidoEmML,
-                         @RequestParam(required = false) Integer quantidadeUnidades) {
-
-        Ingrediente ingrediente;
-
-        switch (tipoIngrediente.toLowerCase()) {
-            case "seco":
-                IngredienteSeco seco = new IngredienteSeco();
-                seco.setPesoLiquidoEmGramas(pesoLiquidoEmGramas);
-                ingrediente = seco;
-                break;
-            case "liquido":
-                IngredienteLiquido liquido = new IngredienteLiquido();
-                liquido.setVolumeLiquidoEmML(volumeLiquidoEmML);
-                ingrediente = liquido;
-                break;
-            case "unitario":
-                IngredienteUnitario unitario = new IngredienteUnitario();
-                unitario.setQuantidadeUnidades(quantidadeUnidades);
-                ingrediente = unitario;
-                break;
-            default:
-                throw new IllegalArgumentException("Tipo de ingrediente inválido: " + tipoIngrediente);
-        }
-
-        ingrediente.setNome(nome);
-        ingrediente.setPrecoTotal(precoTotal);
-        ingrediente.setOrganico(organico != null && organico);
-
+    public String salvar(@ModelAttribute Ingrediente ingrediente) {
         ingredienteService.salvar(ingrediente);
         return "redirect:/ingredientes";
     }
 
-    @GetMapping("/editar/{id}")
+    @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model) {
         Ingrediente ingrediente = ingredienteService.obterPorId(id);
         model.addAttribute("ingrediente", ingrediente);
+        model.addAttribute("tipos", List.of("seco", "liquido", "unitario"));
         return "ingredientes/formulario";
     }
 
-    @GetMapping("/excluir/{id}")
+    @GetMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id) {
         ingredienteService.excluir(id);
         return "redirect:/ingredientes";

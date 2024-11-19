@@ -1,5 +1,6 @@
 package br.edu.infnet.franklin.service;
 
+import br.edu.infnet.franklin.model.domain.Receita;
 import br.edu.infnet.franklin.model.domain.ReceitaIngrediente;
 import br.edu.infnet.franklin.repository.ReceitaIngredienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,10 @@ public class ReceitaIngredienteService {
 
     public void salvar(ReceitaIngrediente receitaIngrediente) {
         receitaIngredienteRepository.save(receitaIngrediente);
+    }
+
+    public void excluirPorReceita(Receita receita) {
+        receitaIngredienteRepository.deleteByReceita(receita);
     }
 
     public List<ReceitaIngrediente> obterLista() {

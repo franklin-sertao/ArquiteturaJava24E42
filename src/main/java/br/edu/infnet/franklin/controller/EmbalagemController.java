@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/embalagens")
@@ -18,31 +16,30 @@ public class EmbalagemController {
 
     @GetMapping
     public String lista(Model model) {
-        List<Embalagem> embalagens = embalagemService.obterLista();
-        model.addAttribute("embalagens", embalagens);
+        model.addAttribute("embalagens", embalagemService.obterLista());
         return "embalagens/lista";
     }
 
-    @GetMapping("/novo")
-    public String novo(Model model) {
+    @GetMapping("/nova")
+    public String nova(Model model) {
         model.addAttribute("embalagem", new Embalagem());
         return "embalagens/formulario";
     }
 
     @PostMapping("/salvar")
-    public String salvar(@ModelAttribute Embalagem embalagem) {
-        embalagemService.salvar(embalagem);
+    public String salvar(@RequestParam(required = false) Long id, @ModelAttribute Embalagem embalagem) {
+        embalagemService.salvar(id, embalagem);
         return "redirect:/embalagens";
     }
 
-    @GetMapping("/editar/{id}")
+    @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model) {
         Embalagem embalagem = embalagemService.obterPorId(id);
         model.addAttribute("embalagem", embalagem);
         return "embalagens/formulario";
     }
 
-    @GetMapping("/excluir/{id}")
+    @GetMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id) {
         embalagemService.excluir(id);
         return "redirect:/embalagens";

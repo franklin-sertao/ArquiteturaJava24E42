@@ -9,46 +9,45 @@ public class ReceitaIngrediente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double quantidade;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "receita_id")
     private Receita receita;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "ingrediente_id")
     private Ingrediente ingrediente;
 
-    // Construtores
-    public ReceitaIngrediente() {
-    }
+    private Double quantidade;
 
-    // Getters e Setters
     public Long getId() {
         return id;
-    }
-
-    public Double getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Double quantidade) {
-        this.quantidade = quantidade;
     }
 
     public Receita getReceita() {
         return receita;
     }
 
-    public void setReceita(Receita receita) {
-        this.receita = receita;
-    }
-
     public Ingrediente getIngrediente() {
         return ingrediente;
     }
 
+    public Double getQuantidade() {
+        return quantidade;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setReceita(Receita receita) {
+        this.receita = receita;
+    }
+
     public void setIngrediente(Ingrediente ingrediente) {
         this.ingrediente = ingrediente;
+    }
+
+    public void setQuantidade(Double quantidade) {
+        this.quantidade = quantidade;
     }
 }

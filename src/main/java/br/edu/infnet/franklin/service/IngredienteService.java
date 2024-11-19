@@ -28,8 +28,4 @@ public class IngredienteService {
     public void excluir(Long id) {
         ingredienteRepository.deleteById(id);
     }
-
-    public Ingrediente obterPorNome(String nome) {
-        return ingredienteRepository.findByNome(nome);
-    }
 }

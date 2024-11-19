@@ -7,8 +7,8 @@ import br.edu.infnet.franklin.repository.ReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 @Service
 public class ReceitaService {
@@ -23,22 +23,24 @@ public class ReceitaService {
     private ReceitaIngredienteService receitaIngredienteService;
 
     public void salvar(Receita receita, Map<Long, Double> ingredientesQuantidade) {
-        // Salva a receita inicial para obter o ID
+        // Salva ou atualiza a receita
         receitaRepository.save(receita);
+        
+        // Remove associações antigas
+        receitaIngredienteService.excluirPorReceita(receita);
 
-        // Adiciona os ingredientes e suas quantidades
+        // Adiciona novas associações
         for (Map.Entry<Long, Double> entry : ingredientesQuantidade.entrySet()) {
             Long ingredienteId = entry.getKey();
             Double quantidade = entry.getValue();
-
             Ingrediente ingrediente = ingredienteService.obterPorId(ingredienteId);
-
-            ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
-            receitaIngrediente.setReceita(receita);
-            receitaIngrediente.setIngrediente(ingrediente);
-            receitaIngrediente.setQuantidade(quantidade);
-
-            receitaIngredienteService.salvar(receitaIngrediente);
+            if (ingrediente != null) {
+                ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
+                receitaIngrediente.setReceita(receita);
+                receitaIngrediente.setIngrediente(ingrediente);
+                receitaIngrediente.setQuantidade(quantidade);
+                receitaIngredienteService.salvar(receitaIngrediente);
+            }
         }
     }
 
@@ -50,11 +52,11 @@ public class ReceitaService {
         return receitaRepository.findById(id).orElse(null);
     }
 
-    public Receita obterPorNome(String nome) {
-        return receitaRepository.findByNome(nome);
-    }
-
     public void excluir(Long id) {
-        receitaRepository.deleteById(id);
+        Receita receita = obterPorId(id);
+        if (receita != null) {
+            receitaIngredienteService.excluirPorReceita(receita);
+            receitaRepository.deleteById(id);
+        }
     }
 }

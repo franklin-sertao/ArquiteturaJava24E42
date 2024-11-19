@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmbalagemRepository extends JpaRepository<Embalagem, Long> {
-
-    Embalagem findByDescricao(String descricao);
 }

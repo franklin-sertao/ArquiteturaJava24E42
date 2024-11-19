@@ -1,5 +1,6 @@
 package br.edu.infnet.franklin.service;
 
+import br.edu.infnet.franklin.model.domain.Produto;
 import br.edu.infnet.franklin.model.domain.ProdutoReceita;
 import br.edu.infnet.franklin.repository.ProdutoReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,10 @@ public class ProdutoReceitaService {
 
     public void salvar(ProdutoReceita produtoReceita) {
         produtoReceitaRepository.save(produtoReceita);
+    }
+
+    public void excluirPorProduto(Produto produto) {
+        produtoReceitaRepository.deleteByProduto(produto);
     }
 
     public List<ProdutoReceita> obterLista() {
