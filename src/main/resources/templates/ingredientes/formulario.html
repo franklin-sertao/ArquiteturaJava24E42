@@ -1,54 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Cadastro de Ingrediente</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Formulário de Ingrediente</title>
+    <script>
+        function atualizarCampos() {
+            var tipo = document.getElementById("tipo").value;
+            document.getElementById("seco-fields").style.display = (tipo === "seco") ? "block" : "none";
+            document.getElementById("liquido-fields").style.display = (tipo === "liquido") ? "block" : "none";
+            document.getElementById("unitario-fields").style.display = (tipo === "unitario") ? "block" : "none";
+        }
+
+        window.onload = function() {
+            atualizarCampos();
+            document.getElementById("tipo").addEventListener("change", atualizarCampos);
+        };
+    </script>
 </head>
 <body>
-    <h1 th:text="${ingrediente.id == null ? 'Novo Ingrediente' : 'Editar Ingrediente'}"></h1>
-    <form th:action="@{/ingredientes/salvar}" method="post">
-        <input type="hidden" th:value="${ingrediente.id}" name="id"/>
-
-        <label>Tipo de Ingrediente:</label><br/>
-        <input type="radio" name="tipoIngrediente" value="seco" id="seco"
-               th:checked="${ingrediente instanceof T(br.edu.infnet.franklin.model.domain.IngredienteSeco)}">
-        <label for="seco">Seco</label><br/>
-        <input type="radio" name="tipoIngrediente" value="liquido" id="liquido"
-               th:checked="${ingrediente instanceof T(br.edu.infnet.franklin.model.domain.IngredienteLiquido)}">
-        <label for="liquido">Líquido</label><br/>
-        <input type="radio" name="tipoIngrediente" value="unitario" id="unitario"
-               th:checked="${ingrediente instanceof T(br.edu.infnet.franklin.model.domain.IngredienteUnitario)}">
-        <label for="unitario">Unitário</label><br/>
+    <h1 th:text="${ingredienteForm.tipo != null} ? 'Editar Ingrediente' : 'Novo Ingrediente'">Título</h1>
+    <form th:action="@{/ingredientes/salvar}" th:object="${ingredienteForm}" method="post">
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo" th:value="${ingredienteForm.tipo}" required>
+            <option value="" disabled selected>Selecione o tipo</option>
+            <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo.capitalize()}"
+                    th:selected="${tipo == ingredienteForm.tipo}">Tipo</option>
+        </select>
+        <br/><br/>
 
         <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" th:value="${ingrediente.nome}" required><br/>
+        <input type="text" id="nome" th:field="*{nome}" required />
+        <br/><br/>
 
         <label for="precoTotal">Preço Total:</label>
-        <input type="number" id="precoTotal" name="precoTotal" th:value="${ingrediente.precoTotal}" step="0.01" required><br/>
+        <input type="number" step="0.01" id="precoTotal" th:field="*{precoTotal}" required />
+        <br/><br/>
 
         <label for="organico">Orgânico:</label>
-        <input type="checkbox" id="organico" name="organico" th:checked="${ingrediente.organico}"><br/>
+        <input type="checkbox" id="organico" th:field="*{organico}" />
+        <br/><br/>
 
-        <div id="camposSeco" th:if="${ingrediente instanceof T(br.edu.infnet.franklin.model.domain.IngredienteSeco)}">
-            <label for="pesoLiquidoEmGramas">Peso Líquido (g):</label>
-            <input type="number" id="pesoLiquidoEmGramas" name="pesoLiquidoEmGramas"
-                   th:value="${ingrediente.pesoLiquidoEmGramas}"><br/>
+        <div id="seco-fields" style="display:none;">
+            <label for="pesoLiquidoEmGramas">Peso Líquido em Gramas:</label>
+            <input type="number" id="pesoLiquidoEmGramas" th:field="*{pesoLiquidoEmGramas}" min="0" />
+            <br/><br/>
         </div>
 
-        <div id="camposLiquido" th:if="${ingrediente instanceof T(br.edu.infnet.franklin.model.domain.IngredienteLiquido)}">
-            <label for="volumeLiquidoEmML">Volume Líquido (ml):</label>
-            <input type="number" id="volumeLiquidoEmML" name="volumeLiquidoEmML"
-                   th:value="${ingrediente.volumeLiquidoEmML}"><br/>
+        <div id="liquido-fields" style="display:none;">
+            <label for="volumeLiquidoEmML">Volume Líquido em ML:</label>
+            <input type="number" id="volumeLiquidoEmML" th:field="*{volumeLiquidoEmML}" min="0" />
+            <br/><br/>
         </div>
 
-        <div id="camposUnitario" th:if="${ingrediente instanceof T(br.edu.infnet.franklin.model.domain.IngredienteUnitario)}">
+        <div id="unitario-fields" style="display:none;">
             <label for="quantidadeUnidades">Quantidade de Unidades:</label>
-            <input type="number" id="quantidadeUnidades" name="quantidadeUnidades"
-                   th:value="${ingrediente.quantidadeUnidades}"><br/>
+            <input type="number" id="quantidadeUnidades" th:field="*{quantidadeUnidades}" min="0" />
+            <br/><br/>
         </div>
 
         <button type="submit">Salvar</button>
+        <a href="/ingredientes">Cancelar</a>
     </form>
-    <a th:href="@{/ingredientes}">Voltar</a>
 </body>
 </html>

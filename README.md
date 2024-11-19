@@ -127,6 +127,70 @@ Receita     }o--|{ Produto
 
 (Receita, Ingrediente) . ReceitaIngrediente
 (Produto, Receita) . ProdutoReceita
+@startuml
+title Diagrama de Classes - Sistema de Precificação de Produtos de Confeitaria
+skinparam linetype ortho
+
+class Produto {
+    - id: Long
+    - descricao: String
+    - modoPreparo: String
+    - conservadoGelado: boolean
+}
+
+class Embalagem {
+    - id: Long
+    - descricao: String
+    - quantidadePorPacote: Integer
+    - precoPacote: BigDecimal
+}
+
+class Receita {
+    - id: Long
+    - nome: String
+    - modoPreparo: String
+}
+
+abstract class Ingrediente {
+    - id: Long
+    - nome: String
+    - precoTotal: BigDecimal
+    - organico: boolean
+}
+
+class IngredienteSeco {
+    - pesoLiquidoEmGramas: Integer
+}
+
+class IngredienteLiquido {
+    - volumeLiquidoEmML: Integer
+}
+
+class IngredienteUnitario {
+    - quantidadeUnidades: Integer
+}
+
+class ReceitaIngrediente {
+    - id: Long
+    - quantidade: Double
+}
+
+class ProdutoReceita {
+    - id: Long
+    - quantidade: Double
+}
+
+Ingrediente <|-u- IngredienteSeco
+Ingrediente <|-u- IngredienteLiquido
+Ingrediente <|-u- IngredienteUnitario
+
+Ingrediente }o--|{ Receita
+Ingrediente }o--|{ Produto
+Receita     }o--|{ Produto
+
+(Receita, Ingrediente) . ReceitaIngrediente
+(Produto, Ingrediente) . ProdutoIngrediente
+(Produto, Receita) . ProdutoReceita
 
 Produto }o--o{  Embalagem 
 

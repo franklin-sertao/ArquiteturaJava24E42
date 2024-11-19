@@ -1,3 +1,3 @@
-Bolo de Chocolate com Recheio de Brigadeiro;Monte o bolo com o recheio e cubra com chocolate.;false
-Cookie Tradicional com Recheio de Nutella;Recheie os cookies com Nutella após assar.;false
-Torta Banoffee;Monte a torta conforme a receita e refrigere.;true
+1;Bolo de Chocolate com Recheio de Brigadeiro;Combine a massa do bolo, o recheio de brigadeiro e a cobertura de chocolate para montar o bolo.;false;1;1.0;2;1.0;3;1.0
+2;Cookie Tradicional com Recheio de Nutella;Prepare a massa de cookie e recheie com Nutella.;false;4;1.0;5;1.0
+3;Torta Banoffe;Monte a base de biscoitos e manteiga, adicione o creme de banoffee e cubra com chocolate.;true;6;1.0;7;1.0;8;1.0

@@ -1,102 +1,72 @@
 package br.edu.infnet.franklin.loader;
 
-import br.edu.infnet.franklin.model.domain.*;
-import br.edu.infnet.franklin.service.*;
+import br.edu.infnet.franklin.model.domain.Produto;
+import br.edu.infnet.franklin.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
-public class ProdutoLoader {
+public class ProdutoLoader implements CommandLineRunner {
 
     @Autowired
     private ProdutoService produtoService;
 
-    @Autowired
-    private ReceitaService receitaService;
+    @Override
+    public void run(String... args) throws Exception {
+        carregarProdutos();
+    }
 
-    @Autowired
-    private IngredienteService ingredienteService;
+    private void carregarProdutos() throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                this.getClass().getResourceAsStream("/data/produtos.txt")));
 
-    @Autowired
-    private EmbalagemService embalagemService;
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] campos = line.split(";", 5); // id,descricao,modoPreparo,conservadoGelado,resto
+            Long id = Long.parseLong(campos[0]);
+            String descricao = campos[1];
+            String modoPreparo = campos[2];
+            boolean conservadoGelado = Boolean.parseBoolean(campos[3]);
+            String resto = campos[4];
 
-    @PostConstruct
-    public void loadProdutos() {
-        try {
-            BufferedReader produtoReader = new BufferedReader(new InputStreamReader(
-                    getClass().getResourceAsStream("/data/Produtos.txt"), "UTF-8"));
+            Produto produto = new Produto();
+            produto.setId(id);
+            produto.setDescricao(descricao);
+            produto.setModoPreparo(modoPreparo);
+            produto.setConservadoGelado(conservadoGelado);
 
-            String line;
-            while ((line = produtoReader.readLine()) != null) {
-                String[] campos = line.split(";");
-                Produto produto = new Produto();
-                produto.setDescricao(campos[0]);
-                produto.setModoPreparo(campos[1]);
-                produto.setConservadoGelado(Boolean.parseBoolean(campos[2]));
+            // Processa receitas e ingredientes
+            String[] elementos = resto.split(",");
+            Map<Long, Double> receitasQuantidade = new HashMap<>();
+            Map<Long, Double> ingredientesQuantidade = new HashMap<>();
 
-                // Mapas para receitas e ingredientes com suas quantidades
-                Map<Long, Double> receitasQuantidade = new HashMap<>();
-                Map<Long, Double> ingredientesQuantidade = new HashMap<>();
-
-                // Carregar receitas relacionadas ao produto
-                BufferedReader produtoReceitaReader = new BufferedReader(new InputStreamReader(
-                        getClass().getResourceAsStream("/data/ProdutoReceitas.txt"), "UTF-8"));
-
-                String prLine;
-                while ((prLine = produtoReceitaReader.readLine()) != null) {
-                    String[] prCampos = prLine.split(";");
-                    if (prCampos[0].equals(produto.getDescricao())) {
-                        Receita receita = receitaService.obterPorNome(prCampos[1]);
-                        Double quantidade = Double.parseDouble(prCampos[2]);
-                        receitasQuantidade.put(receita.getId(), quantidade);
-                    }
+            // Assumindo que as receitas e ingredientes estão divididos igualmente
+            int meio = elementos.length / 2;
+            for (int i = 0; i < meio; i += 2) {
+                if (i + 1 < meio) {
+                    Long receitaId = Long.parseLong(elementos[i]);
+                    Double quantidade = Double.parseDouble(elementos[i + 1]);
+                    receitasQuantidade.put(receitaId, quantidade);
                 }
-                produtoReceitaReader.close();
-
-                // Carregar ingredientes relacionados ao produto
-                BufferedReader produtoIngredienteReader = new BufferedReader(new InputStreamReader(
-                        getClass().getResourceAsStream("/data/ProdutoIngredientes.txt"), "UTF-8"));
-
-                String piLine;
-                while ((piLine = produtoIngredienteReader.readLine()) != null) {
-                    String[] piCampos = piLine.split(";");
-                    if (piCampos[0].equals(produto.getDescricao())) {
-                        Ingrediente ingrediente = ingredienteService.obterPorNome(piCampos[1]);
-                        Double quantidade = Double.parseDouble(piCampos[2]);
-                        ingredientesQuantidade.put(ingrediente.getId(), quantidade);
-                    }
-                }
-                produtoIngredienteReader.close();
-
-                // Carregar embalagens relacionadas ao produto
-                BufferedReader produtoEmbalagemReader = new BufferedReader(new InputStreamReader(
-                        getClass().getResourceAsStream("/data/ProdutoEmbalagens.txt"), "UTF-8"));
-
-                String peLine;
-                Set<Embalagem> embalagens = new HashSet<>();
-                while ((peLine = produtoEmbalagemReader.readLine()) != null) {
-                    String[] peCampos = peLine.split(";");
-                    if (peCampos[0].equals(produto.getDescricao())) {
-                        Embalagem embalagem = embalagemService.obterPorDescricao(peCampos[1]);
-                        embalagens.add(embalagem);
-                    }
-                }
-                produtoEmbalagemReader.close();
-
-                produto.setEmbalagens(embalagens);
-
-                // Salvar o produto com receitas e ingredientes
-                produtoService.salvar(produto, receitasQuantidade, ingredientesQuantidade);
             }
-            produtoReader.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            for (int i = meio; i < elementos.length; i += 2) {
+                if (i + 1 < elementos.length) {
+                    Long ingredienteId = Long.parseLong(elementos[i]);
+                    Double quantidade = Double.parseDouble(elementos[i + 1]);
+                    ingredientesQuantidade.put(ingredienteId, quantidade);
+                }
+            }
+
+            produtoService.salvar(id, produto, receitasQuantidade, ingredientesQuantidade);
         }
+
+        reader.close();
     }
 }

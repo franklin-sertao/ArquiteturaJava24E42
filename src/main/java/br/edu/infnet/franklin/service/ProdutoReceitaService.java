@@ -14,8 +14,8 @@ public class ProdutoReceitaService {
     @Autowired
     private ProdutoReceitaRepository produtoReceitaRepository;
 
-    public void salvar(ProdutoReceita produtoReceita) {
-        produtoReceitaRepository.save(produtoReceita);
+    public ProdutoReceita salvar(ProdutoReceita produtoReceita) {
+        return produtoReceitaRepository.save(produtoReceita);
     }
 
     public void excluirPorProduto(Produto produto) {

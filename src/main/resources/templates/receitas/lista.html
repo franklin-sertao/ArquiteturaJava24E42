@@ -1,33 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Receitas</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Lista de Receitas</title>
 </head>
 <body>
-    <h1>Lista de Receitas</h1>
-    <a th:href="@{/receitas/novo}">Adicionar Nova Receita</a>
-    <table>
+    <h1>Receitas</h1>
+    <a href="/receitas/nova">Nova Receita</a>
+    <table border="1">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Nome</th>
                 <th>Modo de Preparo</th>
-                <th>Custo Total</th>
+                <th>Ingredientes</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="receita : ${receitas}">
-                <td th:text="${receita.nome}"></td>
-                <td th:text="${receita.modoPreparo}"></td>
-                <td th:text="${receita.getCustoTotal()}"></td>
+                <td th:text="${receita.id}">1</td>
+                <td th:text="${receita.nome}">Nome</td>
+                <td th:text="${receita.modoPreparo}">Modo</td>
                 <td>
-                    <a th:href="@{/receitas/editar/{id}(id=${receita.id})}">Editar</a>
-                    <a th:href="@{/receitas/excluir/{id}(id=${receita.id})}">Excluir</a>
+                    <ul>
+                        <li th:each="ri : ${receita.receitaIngredientes}">
+                            <span th:text="${ri.ingrediente.nome}">Ingrediente</span> - 
+                            <span th:text="${ri.quantidade}">Quantidade</span>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <a th:href="@{/receitas/{id}/editar(id=${receita.id})}">Editar</a>
+                    <a th:href="@{/receitas/{id}/excluir(id=${receita.id})}"
+                       onclick="return confirm('Deseja realmente excluir esta receita?');">Excluir</a>
                 </td>
             </tr>
         </tbody>
     </table>
-    <a th:href="@{/}">Voltar</a>
 </body>
 </html>

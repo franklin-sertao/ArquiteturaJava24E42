@@ -7,8 +7,8 @@ import br.edu.infnet.franklin.repository.ReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReceitaService {
@@ -22,12 +22,12 @@ public class ReceitaService {
     @Autowired
     private ReceitaIngredienteService receitaIngredienteService;
 
-    public void salvar(Receita receita, Map<Long, Double> ingredientesQuantidade) {
+    public Receita salvar(Receita receita, Map<Long, Double> ingredientesQuantidade) {
         // Salva ou atualiza a receita
-        receitaRepository.save(receita);
-        
+        Receita receitaSalva = receitaRepository.save(receita);
+
         // Remove associações antigas
-        receitaIngredienteService.excluirPorReceita(receita);
+        receitaIngredienteService.excluirPorReceita(receitaSalva);
 
         // Adiciona novas associações
         for (Map.Entry<Long, Double> entry : ingredientesQuantidade.entrySet()) {
@@ -36,20 +36,14 @@ public class ReceitaService {
             Ingrediente ingrediente = ingredienteService.obterPorId(ingredienteId);
             if (ingrediente != null) {
                 ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente();
-                receitaIngrediente.setReceita(receita);
+                receitaIngrediente.setReceita(receitaSalva);
                 receitaIngrediente.setIngrediente(ingrediente);
                 receitaIngrediente.setQuantidade(quantidade);
                 receitaIngredienteService.salvar(receitaIngrediente);
             }
         }
-    }
 
-    public List<Receita> obterLista() {
-        return receitaRepository.findAll();
-    }
-
-    public Receita obterPorId(Long id) {
-        return receitaRepository.findById(id).orElse(null);
+        return receitaSalva;
     }
 
     public void excluir(Long id) {
@@ -58,5 +52,13 @@ public class ReceitaService {
             receitaIngredienteService.excluirPorReceita(receita);
             receitaRepository.deleteById(id);
         }
+    }
+
+    public Receita obterPorId(Long id) {
+        return receitaRepository.findById(id).orElse(null);
+    }
+
+    public List<Receita> obterLista() {
+        return receitaRepository.findAll();
     }
 }

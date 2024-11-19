@@ -9,6 +9,8 @@ public class ProdutoIngrediente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Double quantidade;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "produto_id")
     private Produto produto;
@@ -17,10 +19,13 @@ public class ProdutoIngrediente {
     @JoinColumn(name = "ingrediente_id")
     private Ingrediente ingrediente;
 
-    private Double quantidade;
-
+    // Getters e Setters
     public Long getId() {
         return id;
+    }
+
+    public Double getQuantidade() {
+        return quantidade;
     }
 
     public Produto getProduto() {
@@ -31,12 +36,12 @@ public class ProdutoIngrediente {
         return ingrediente;
     }
 
-    public Double getQuantidade() {
-        return quantidade;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setQuantidade(Double quantidade) {
+        this.quantidade = quantidade;
     }
 
     public void setProduto(Produto produto) {
@@ -45,9 +50,5 @@ public class ProdutoIngrediente {
 
     public void setIngrediente(Ingrediente ingrediente) {
         this.ingrediente = ingrediente;
-    }
-
-    public void setQuantidade(Double quantidade) {
-        this.quantidade = quantidade;
     }
 }

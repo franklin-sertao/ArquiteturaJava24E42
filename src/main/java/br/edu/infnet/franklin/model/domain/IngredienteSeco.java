@@ -1,16 +1,13 @@
 package br.edu.infnet.franklin.model.domain;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import java.math.BigDecimal;
 
 @Entity
+@DiscriminatorValue("seco")
 public class IngredienteSeco extends Ingrediente {
 
     private Integer pesoLiquidoEmGramas;
-
-    // Construtores
-    public IngredienteSeco() {
-    }
 
     // Getters e Setters
     public Integer getPesoLiquidoEmGramas() {
@@ -22,7 +19,7 @@ public class IngredienteSeco extends Ingrediente {
     }
 
     @Override
-    public BigDecimal getPrecoPorUnidade() {
-        return getPrecoTotal().divide(new BigDecimal(getPesoLiquidoEmGramas()), BigDecimal.ROUND_HALF_UP);
+    public String getTipo() {
+        return "Seco";
     }
 }

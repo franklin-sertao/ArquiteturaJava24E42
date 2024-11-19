@@ -3,37 +3,44 @@ package br.edu.infnet.franklin.loader;
 import br.edu.infnet.franklin.model.domain.Embalagem;
 import br.edu.infnet.franklin.service.EmbalagemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 
 @Component
-public class EmbalagemLoader {
+public class EmbalagemLoader implements CommandLineRunner {
 
     @Autowired
     private EmbalagemService embalagemService;
 
-    @PostConstruct
-    public void loadEmbalagens() {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getClass().getResourceAsStream("/data/Embalagens.txt"), "UTF-8"));
+    @Override
+    public void run(String... args) throws Exception {
+        carregarEmbalagens();
+    }
 
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] campos = line.split(";");
-                Embalagem embalagem = new Embalagem();
-                embalagem.setDescricao(campos[0]);
-                embalagem.setQuantidadePorPacote(Integer.parseInt(campos[1]));
-                embalagem.setPrecoPacote(new BigDecimal(campos[2]));
-                embalagemService.salvar(embalagem);
-            }
-            reader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void carregarEmbalagens() throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                this.getClass().getResourceAsStream("/data/embalagens.txt")));
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] campos = line.split(";");
+            Long id = Long.parseLong(campos[0]);
+            String descricao = campos[1];
+            Integer quantidadePorPacote = Integer.parseInt(campos[2]);
+            java.math.BigDecimal precoPacote = new java.math.BigDecimal(campos[3]);
+
+            Embalagem embalagem = new Embalagem();
+            embalagem.setId(id);
+            embalagem.setDescricao(descricao);
+            embalagem.setQuantidadePorPacote(quantidadePorPacote);
+            embalagem.setPrecoPacote(precoPacote);
+
+            embalagemService.salvar(id, embalagem);
         }
+
+        reader.close();
     }
 }

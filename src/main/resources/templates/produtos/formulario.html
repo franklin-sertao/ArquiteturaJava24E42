@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Cadastro de Produto</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Formulário de Produto</title>
 </head>
 <body>
-    <h1 th:text="${produto.id == null ? 'Novo Produto' : 'Editar Produto'}"></h1>
-    <form th:action="@{/produtos/salvar}" method="post">
-        <input type="hidden" th:value="${produto.id}" name="id"/>
-
+    <h1 th:text="${produto.id != null} ? 'Editar Produto' : 'Novo Produto'">Título</h1>
+    <form th:action="@{/produtos/salvar}" th:object="${produto}" method="post">
+        <input type="hidden" th:field="*{id}" />
         <label for="descricao">Descrição:</label>
-        <input type="text" id="descricao" name="descricao" th:value="${produto.descricao}" required><br/>
-
+        <input type="text" id="descricao" th:field="*{descricao}" required />
+        <br/><br/>
         <label for="modoPreparo">Modo de Preparo:</label>
-        <textarea id="modoPreparo" name="modoPreparo" required th:text="${produto.modoPreparo}"></textarea><br/>
-
+        <textarea id="modoPreparo" th:field="*{modoPreparo}" required></textarea>
+        <br/><br/>
         <label for="conservadoGelado">Conservado Gelado:</label>
-        <input type="checkbox" id="conservadoGelado" name="conservadoGelado" th:checked="${produto.conservadoGelado}"><br/>
+        <input type="checkbox" id="conservadoGelado" th:field="*{conservadoGelado}" />
+        <br/><br/>
 
-        <label>Receitas:</label><br/>
-        <div th:each="receita : ${receitas}">
-            <input type="checkbox" th:id="'receita_' + ${receita.id}" 
-                   th:name="'receita_' + ${receita.id}" value="1.0"
-                   th:checked="${#lists.contains(produto.produtoReceitas.?[receita.id == receita.id], receita)}">
-            <label th:for="'receita_' + ${receita.id}" th:text="${receita.nome}"></label>
-            <input type="number" th:name="'quantidade_receita_' + ${receita.id}" placeholder="Quantidade" step="0.01"><br/>
+        <h3>Receitas</h3>
+        <div id="receitas-container">
+            <div th:each="receita : ${receitas}">
+                <input type="checkbox" th:id="'receita_' + ${receita.id}" 
+                       th:name="'quantidade_receita_' + ${receita.id}"
+                       th:value="${receita.id}" />
+                <label th:for="'receita_' + ${receita.id}" th:text="${receita.nome}">Receita</label>
+                <input type="number" step="0.01" min="0" name="quantidade_receita_${receita.id}" placeholder="Quantidade" />
+                <br/>
+            </div>
         </div>
 
-        <label>Ingredientes:</label><br/>
-        <div th:each="ingrediente : ${ingredientes}">
-            <input type="checkbox" th:id="'ingrediente_' + ${ingrediente.id}" 
-                   th:name="'ingrediente_' + ${ingrediente.id}" value="1.0"
-                   th:checked="${#lists.contains(produto.produtoIngredientes.?[ingrediente.id == ingrediente.id], ingrediente)}">
-            <label th:for="'ingrediente_' + ${ingrediente.id}" th:text="${ingrediente.nome}"></label>
-            <input type="number" th:name="'quantidade_ingrediente_' + ${ingrediente.id}" placeholder="Quantidade" step="0.01"><br/>
+        <h3>Ingredientes</h3>
+        <div id="ingredientes-container">
+            <div th:each="ingrediente : ${ingredientes}">
+                <input type="checkbox" th:id="'ingrediente_' + ${ingrediente.id}" 
+                       th:name="'quantidade_ingrediente_' + ${ingrediente.id}"
+                       th:value="${ingrediente.id}" />
+                <label th:for="'ingrediente_' + ${ingrediente.id}" th:text="${ingrediente.nome}">Ingrediente</label>
+                <input type="number" step="0.01" min="0" name="quantidade_ingrediente_${ingrediente.id}" placeholder="Quantidade" />
+                <br/>
+            </div>
         </div>
 
-        <label>Embalagens:</label><br/>
-        <div th:each="embalagem : ${embalagens}">
-            <input type="checkbox" th:id="'embalagem_' + ${embalagem.id}" 
-                   th:name="'embalagem_' + ${embalagem.id}" th:value="${embalagem.id}"
-                   th:checked="${produto.embalagens.contains(embalagem)}">
-            <label th:for="'embalagem_' + ${embalagem.id}" th:text="${embalagem.descricao}"></label><br/>
+        <h3>Embalagens</h3>
+        <div id="embalagens-container">
+            <div th:each="embalagem : ${embalagens}">
+                <input type="checkbox" th:id="'embalagem_' + ${embalagem.id}" 
+                       th:name="'embalagem_' + ${embalagem.id}"
+                       th:value="${embalagem.id}" />
+                <label th:for="'embalagem_' + ${embalagem.id}" th:text="${embalagem.descricao}">Embalagem</label>
+                <br/>
+            </div>
         </div>
 
         <button type="submit">Salvar</button>
+        <a href="/produtos">Cancelar</a>
     </form>
-    <a th:href="@{/produtos}">Voltar</a>
 </body>
 </html>

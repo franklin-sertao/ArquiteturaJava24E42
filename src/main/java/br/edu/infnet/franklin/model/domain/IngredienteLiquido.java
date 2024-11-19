@@ -1,16 +1,13 @@
 package br.edu.infnet.franklin.model.domain;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import java.math.BigDecimal;
 
 @Entity
+@DiscriminatorValue("liquido")
 public class IngredienteLiquido extends Ingrediente {
 
     private Integer volumeLiquidoEmML;
-
-    // Construtores
-    public IngredienteLiquido() {
-    }
 
     // Getters e Setters
     public Integer getVolumeLiquidoEmML() {
@@ -22,7 +19,7 @@ public class IngredienteLiquido extends Ingrediente {
     }
 
     @Override
-    public BigDecimal getPrecoPorUnidade() {
-        return getPrecoTotal().divide(new BigDecimal(getVolumeLiquidoEmML()), BigDecimal.ROUND_HALF_UP);
+    public String getTipo() {
+        return "Líquido";
     }
 }

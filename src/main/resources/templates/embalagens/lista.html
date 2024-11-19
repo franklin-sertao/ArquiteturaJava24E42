@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Embalagens</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Lista de Embalagens</title>
 </head>
 <body>
-    <h1>Lista de Embalagens</h1>
-    <a th:href="@{/embalagens/novo}">Adicionar Nova Embalagem</a>
-    <table>
+    <h1>Embalagens</h1>
+    <a href="/embalagens/nova">Nova Embalagem</a>
+    <table border="1">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Descrição</th>
                 <th>Quantidade por Pacote</th>
-                <th>Preço do Pacote</th>
+                <th>Preço Pacote</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="embalagem : ${embalagens}">
-                <td th:text="${embalagem.descricao}"></td>
-                <td th:text="${embalagem.quantidadePorPacote}"></td>
-                <td th:text="${embalagem.precoPacote}"></td>
+                <td th:text="${embalagem.id}">1</td>
+                <td th:text="${embalagem.descricao}">Descrição</td>
+                <td th:text="${embalagem.quantidadePorPacote}">10</td>
+                <td th:text="${embalagem.precoPacote}">15.00</td>
                 <td>
-                    <a th:href="@{/embalagens/editar/{id}(id=${embalagem.id})}">Editar</a>
-                    <a th:href="@{/embalagens/excluir/{id}(id=${embalagem.id})}">Excluir</a>
+                    <a th:href="@{/embalagens/{id}/editar(id=${embalagem.id})}">Editar</a>
+                    <a th:href="@{/embalagens/{id}/excluir(id=${embalagem.id})}"
+                       onclick="return confirm('Deseja realmente excluir esta embalagem?');">Excluir</a>
                 </td>
             </tr>
         </tbody>
     </table>
-    <a th:href="@{/}">Voltar</a>
 </body>
 </html>

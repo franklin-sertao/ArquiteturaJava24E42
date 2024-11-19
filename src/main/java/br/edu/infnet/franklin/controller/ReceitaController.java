@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @Controller
@@ -26,7 +25,7 @@ public class ReceitaController {
         return "receitas/lista";
     }
 
-    @GetMapping("/nova")
+    @GetMapping("/novo")
     public String nova(Model model) {
         model.addAttribute("receita", new Receita());
         model.addAttribute("ingredientes", ingredienteService.obterLista());
@@ -34,7 +33,17 @@ public class ReceitaController {
     }
 
     @PostMapping("/salvar")
-    public String salvar(@ModelAttribute Receita receita, @RequestParam Map<Long, Double> ingredientesQuantidade) {
+    public String salvar(@ModelAttribute Receita receita,
+                         @RequestParam Map<String, String> params) {
+        // Extrai ingredientes e quantidades
+        Map<Long, Double> ingredientesQuantidade = params.entrySet().stream()
+                .filter(e -> e.getKey().startsWith("quantidade_"))
+                .collect(
+                        java.util.stream.Collectors.toMap(
+                                e -> Long.parseLong(e.getKey().split("_")[1]),
+                                e -> Double.parseDouble(e.getValue())
+                        )
+                );
         receitaService.salvar(receita, ingredientesQuantidade);
         return "redirect:/receitas";
     }

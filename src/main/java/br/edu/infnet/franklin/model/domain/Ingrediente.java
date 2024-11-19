@@ -1,11 +1,10 @@
 package br.edu.infnet.franklin.model.domain;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 public abstract class Ingrediente {
 
     @Id
@@ -13,18 +12,8 @@ public abstract class Ingrediente {
     private Long id;
 
     private String nome;
-    private BigDecimal precoTotal;
+    private java.math.BigDecimal precoTotal;
     private boolean organico;
-
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ReceitaIngrediente> receitaIngredientes;
-
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProdutoIngrediente> produtoIngredientes;
-
-    // Construtores
-    public Ingrediente() {
-    }
 
     // Getters e Setters
     public Long getId() {
@@ -35,43 +24,29 @@ public abstract class Ingrediente {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-
-    public BigDecimal getPrecoTotal() {
+    public java.math.BigDecimal getPrecoTotal() {
         return precoTotal;
-    }
-
-    public void setPrecoTotal(BigDecimal precoTotal) {
-        this.precoTotal = precoTotal;
     }
 
     public boolean isOrganico() {
         return organico;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setPrecoTotal(java.math.BigDecimal precoTotal) {
+        this.precoTotal = precoTotal;
+    }
+
     public void setOrganico(boolean organico) {
         this.organico = organico;
     }
 
-    public Set<ReceitaIngrediente> getReceitaIngredientes() {
-        return receitaIngredientes;
-    }
-
-    public void setReceitaIngredientes(Set<ReceitaIngrediente> receitaIngredientes) {
-        this.receitaIngredientes = receitaIngredientes;
-    }
-
-    public Set<ProdutoIngrediente> getProdutoIngredientes() {
-        return produtoIngredientes;
-    }
-
-    public void setProdutoIngredientes(Set<ProdutoIngrediente> produtoIngredientes) {
-        this.produtoIngredientes = produtoIngredientes;
-    }
-
-    // Método abstrato para obter o preço por unidade
-    public abstract BigDecimal getPrecoPorUnidade();
+    public abstract String getTipo();
 }

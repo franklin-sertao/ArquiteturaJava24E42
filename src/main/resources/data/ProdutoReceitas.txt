@@ -1,6 +1,0 @@
-Bolo de Chocolate com Recheio de Brigadeiro;Bolo de Chocolate;1
-Bolo de Chocolate com Recheio de Brigadeiro;Recheio de Brigadeiro;1
-
-Cookie Tradicional com Recheio de Nutella;Cookie Tradicional;1
-
-Torta Banoffee;Torta Banoffee;1

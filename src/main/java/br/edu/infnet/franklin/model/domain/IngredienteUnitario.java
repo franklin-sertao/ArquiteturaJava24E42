@@ -1,16 +1,13 @@
 package br.edu.infnet.franklin.model.domain;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import java.math.BigDecimal;
 
 @Entity
+@DiscriminatorValue("unitario")
 public class IngredienteUnitario extends Ingrediente {
 
     private Integer quantidadeUnidades;
-
-    // Construtores
-    public IngredienteUnitario() {
-    }
 
     // Getters e Setters
     public Integer getQuantidadeUnidades() {
@@ -22,7 +19,7 @@ public class IngredienteUnitario extends Ingrediente {
     }
 
     @Override
-    public BigDecimal getPrecoPorUnidade() {
-        return getPrecoTotal().divide(new BigDecimal(getQuantidadeUnidades()), BigDecimal.ROUND_HALF_UP);
+    public String getTipo() {
+        return "Unitário";
     }
 }

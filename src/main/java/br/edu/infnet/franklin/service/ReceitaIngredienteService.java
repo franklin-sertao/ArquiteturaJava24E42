@@ -14,8 +14,8 @@ public class ReceitaIngredienteService {
     @Autowired
     private ReceitaIngredienteRepository receitaIngredienteRepository;
 
-    public void salvar(ReceitaIngrediente receitaIngrediente) {
-        receitaIngredienteRepository.save(receitaIngrediente);
+    public ReceitaIngrediente salvar(ReceitaIngrediente receitaIngrediente) {
+        return receitaIngredienteRepository.save(receitaIngrediente);
     }
 
     public void excluirPorReceita(Receita receita) {
