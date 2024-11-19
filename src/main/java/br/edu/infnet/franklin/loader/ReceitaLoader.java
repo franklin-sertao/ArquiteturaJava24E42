@@ -40,7 +40,7 @@ public class ReceitaLoader implements CommandLineRunner {
             receita.setModoPreparo(modoPreparo);
 
             // Processa os ingredientes e quantidades
-            String[] ingredientesCampos = resto.split(",");
+            String[] ingredientesCampos = resto.split(";");
             Map<Long, Double> ingredientesQuantidade = new HashMap<>();
             for (int i = 0; i < ingredientesCampos.length; i += 2) {
                 if (i + 1 < ingredientesCampos.length) {

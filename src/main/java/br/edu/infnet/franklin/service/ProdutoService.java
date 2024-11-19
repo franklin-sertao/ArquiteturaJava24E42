@@ -29,7 +29,7 @@ public class ProdutoService {
     @Autowired
     private ProdutoIngredienteService produtoIngredienteService;
 
-    public Produto salvar(Long id, Produto produto, Map<Long, Double> receitasQuantidade, Map<Long, Double> ingredientesQuantidade) {
+    public void salvar(Long id, Produto produto, Map<Long, Double> receitasQuantidade, Map<Long, Double> ingredientesQuantidade) {
         if (id != null && produtoRepository.existsById(id)) {
             Produto produtoExistente = produtoRepository.findById(id).orElse(null);
             if (produtoExistente != null) {
@@ -70,7 +70,7 @@ public class ProdutoService {
                     }
                 }
 
-                return produtoRepository.save(produtoExistente);
+                produtoRepository.save(produtoExistente);
             }
         } else {
             // Salva novo produto
@@ -103,10 +103,7 @@ public class ProdutoService {
                     produtoIngredienteService.salvar(produtoIngrediente);
                 }
             }
-
-            return novoProduto;
         }
-        return null;
     }
 
     public void excluir(Long id) {

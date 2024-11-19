@@ -1,36 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" class="h-full bg-gray-100">
 <head>
     <title>Lista de Ingredientes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Ingredientes</h1>
-    <a href="/ingredientes/novo">Novo Ingrediente</a>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Nome</th>
-                <th>Preço Total</th>
-                <th>Organico</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="ingrediente : ${ingredientes}">
-                <td th:text="${ingrediente.id}">1</td>
-                <td th:text="${ingrediente.tipo}">Tipo</td>
-                <td th:text="${ingrediente.nome}">Nome</td>
-                <td th:text="${ingrediente.precoTotal}">Preço</td>
-                <td th:text="${ingrediente.organico ? 'Sim' : 'Não'}">Orgânico</td>
-                <td>
-                    <a th:href="@{/ingredientes/{id}/editar(id=${ingrediente.id})}">Editar</a>
-                    <a th:href="@{/ingredientes/{id}/excluir(id=${ingrediente.id})}"
-                       onclick="return confirm('Deseja realmente excluir este ingrediente?');">Excluir</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<body class="h-full">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-gray-700 mb-6">Ingredientes</h1>
+
+        <div class="mb-6">
+            <a href="/ingredientes/novo" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                Novo Ingrediente
+            </a>
+        </div>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço Total</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Orgânico</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200" th:each="ingrediente : ${ingredientes}">
+                    <tr>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.id}">1</td>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.tipo}">Tipo</td>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.nome}">Nome</td>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.precoTotal}">Preço</td>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.organico ? 'Sim' : 'Não'}">Orgânico</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            <a th:href="@{/ingredientes/{id}/editar(id=${ingrediente.id})}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                            <span class="text-gray-400 mx-2">|</span>
+                            <a th:href="@{/ingredientes/{id}/excluir(id=${ingrediente.id})}" class="text-red-600 hover:text-red-900" 
+                               onclick="return confirm('Deseja realmente excluir este ingrediente?');">Excluir</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,6 +1,8 @@
 package br.edu.infnet.franklin.model.dto;
 
 public class IngredienteForm {
+
+    private Long id;
     private String tipo;
     private String nome;
     private java.math.BigDecimal precoTotal;
@@ -8,10 +10,17 @@ public class IngredienteForm {
 
     // Campos específicos
     private Integer pesoLiquidoEmGramas;      // Para "seco"
-    private Integer volumeLiquidoEmML;         // Para "liquido"
-    private Integer quantidadeUnidades;        // Para "unitario"
+    private Integer volumeLiquidoEmML;        // Para "liquido"
+    private Integer quantidadeUnidades;       // Para "unitario"
 
     // Getters e Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTipo() {
         return tipo;
@@ -28,7 +37,7 @@ public class IngredienteForm {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
+
     public java.math.BigDecimal getPrecoTotal() {
         return precoTotal;
     }

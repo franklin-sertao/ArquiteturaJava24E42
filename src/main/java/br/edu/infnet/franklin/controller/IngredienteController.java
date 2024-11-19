@@ -31,35 +31,49 @@ public class IngredienteController {
     }
 
     @PostMapping("/salvar")
-    public String salvar(@ModelAttribute IngredienteForm ingredienteForm) {
-        Ingrediente ingrediente = null;
-        switch (ingredienteForm.getTipo().toLowerCase()) {
-            case "liquido":
-                IngredienteLiquido liquido = new IngredienteLiquido();
-                liquido.setVolumeLiquidoEmML(ingredienteForm.getVolumeLiquidoEmML());
-                ingrediente = liquido;
-                break;
-            case "unitario":
-                IngredienteUnitario unitario = new IngredienteUnitario();
-                unitario.setQuantidadeUnidades(ingredienteForm.getQuantidadeUnidades());
-                ingrediente = unitario;
-                break;
-            case "seco":
-            default:
-                IngredienteSeco seco = new IngredienteSeco();
-                seco.setPesoLiquidoEmGramas(ingredienteForm.getPesoLiquidoEmGramas());
-                ingrediente = seco;
-                break;
-        }
+	public String salvar(@ModelAttribute IngredienteForm ingredienteForm) {
+		Ingrediente ingrediente;
 
-        // Configurar os campos comuns
-        ingrediente.setNome(ingredienteForm.getNome());
-        ingrediente.setPrecoTotal(ingredienteForm.getPrecoTotal());
-        ingrediente.setOrganico(ingredienteForm.isOrganico());
+		if (ingredienteForm.getId() != null) {
+			// Buscar ingrediente existente para edição
+			ingrediente = ingredienteService.obterPorId(ingredienteForm.getId());
+			if (ingrediente == null) {
+				// Caso o ID seja inválido, tratar adequadamente (opcional)
+				return "redirect:/ingredientes";
+			}
+		} else {
+			// Criar novo ingrediente
+			switch (ingredienteForm.getTipo().toLowerCase()) {
+				case "liquido":
+					ingrediente = new IngredienteLiquido();
+					break;
+				case "unitario":
+					ingrediente = new IngredienteUnitario();
+					break;
+				case "seco":
+				default:
+					ingrediente = new IngredienteSeco();
+					break;
+			}
+		}
 
-        ingredienteService.salvar(ingrediente);
-        return "redirect:/ingredientes";
-    }
+		// Atualizar os campos comuns
+		ingrediente.setNome(ingredienteForm.getNome());
+		ingrediente.setPrecoTotal(ingredienteForm.getPrecoTotal());
+		ingrediente.setOrganico(ingredienteForm.isOrganico());
+
+		// Atualizar campos específicos
+		if (ingrediente instanceof IngredienteSeco) {
+			((IngredienteSeco) ingrediente).setPesoLiquidoEmGramas(ingredienteForm.getPesoLiquidoEmGramas());
+		} else if (ingrediente instanceof IngredienteLiquido) {
+			((IngredienteLiquido) ingrediente).setVolumeLiquidoEmML(ingredienteForm.getVolumeLiquidoEmML());
+		} else if (ingrediente instanceof IngredienteUnitario) {
+			((IngredienteUnitario) ingrediente).setQuantidadeUnidades(ingredienteForm.getQuantidadeUnidades());
+		}
+
+		ingredienteService.salvar(ingrediente);
+		return "redirect:/ingredientes";
+	}
 
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model) {
@@ -71,6 +85,7 @@ public class IngredienteController {
 
         // Mapear os dados para o DTO
         IngredienteForm ingredienteForm = new IngredienteForm();
+		ingredienteForm.setId(ingrediente.getId());
         ingredienteForm.setTipo(ingrediente.getTipo());
         ingredienteForm.setNome(ingrediente.getNome());
         ingredienteForm.setPrecoTotal(ingrediente.getPrecoTotal());
