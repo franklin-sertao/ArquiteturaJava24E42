@@ -1,49 +1,58 @@
 package br.edu.infnet.franklin.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.*;
+
+@Entity
 public class ReceitaIngrediente {
-	
-	// ---------------- Atributos ----------------
-	private int id;
-	private Receita receita;
-	private Ingrediente ingrediente;
-	private float quantidade;
 
-	// --------------- Construtor ----------------
-	public ReceitaIngrediente(Receita receita, Ingrediente ingrediente, float quantidade) {
-		this.receita = receita;
-		this.ingrediente = ingrediente;
-		this.quantidade = quantidade;
-	}
-	
-	// ----------------- Métodos -----------------
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	
+    private Double quantidade;
 
-	// ------------ Getters e Setters ------------
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idReceita")
+	@JsonIgnore
+    private Receita receita;
 
-	public int getId() {
-		return id;
-	}
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idIngrediente")
+	@JsonIgnore
+    private Ingrediente ingrediente;
 
-	public Receita getReceita() {
-		return receita;
-	}
+    // Getters e Setters
+    public Long getId() {
+        return id;
+    }
 
-	public Ingrediente getIngrediente() {
-		return ingrediente;
-	}
+    public Double getQuantidade() {
+        return quantidade;
+    }
 
-	public float getQuantidade() {
-		return quantidade;
-	}
+    public Receita getReceita() {
+        return receita;
+    }
 
-	public void setQuantidade(float quantidade){
-		this.quantidade = quantidade;
-	}
+    public Ingrediente getIngrediente() {
+        return ingrediente;
+    }
 
-	public float getPreco() {
-		return this.ingrediente.getPreco() * this.quantidade;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	
+    public void setQuantidade(Double quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public void setReceita(Receita receita) {
+        this.receita = receita;
+    }
+
+    public void setIngrediente(Ingrediente ingrediente) {
+        this.ingrediente = ingrediente;
+    }
 }

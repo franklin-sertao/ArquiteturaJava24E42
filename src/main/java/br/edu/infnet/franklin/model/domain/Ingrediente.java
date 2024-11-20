@@ -1,84 +1,52 @@
 package br.edu.infnet.franklin.model.domain;
 
+import jakarta.persistence.*;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 public abstract class Ingrediente {
-	
-	private int id;
-	private String nome;
-	private String fabricante;
-	private String descricao;
-	private String codigo;
-	private String unidadeMedida;
-	private String imagem;
-	private float preco;
 
-	// ----------------- Métodos -----------------
-	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	
-	// ------------ Getters e Setters ------------
+    private String nome;
+    private java.math.BigDecimal precoTotal;
+    private boolean organico;
 
-	public int getId() {
-		return id;
-	}
+    // Getters e Setters
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public java.math.BigDecimal getPrecoTotal() {
+        return precoTotal;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public boolean isOrganico() {
+        return organico;
+    }
 
-	public String getFabricante() {
-		return fabricante;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setFabricante(String fabricante) {
-		this.fabricante = fabricante;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public void setPrecoTotal(java.math.BigDecimal precoTotal) {
+        this.precoTotal = precoTotal;
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setOrganico(boolean organico) {
+        this.organico = organico;
+    }
 
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	public String getUnidadeMedida() {
-		return unidadeMedida;
-	}
-
-	public void setUnidadeMedida(String unidadeMedida) {
-		this.unidadeMedida = unidadeMedida;
-	}
-
-	public float getPreco() {
-		return preco;
-	}
-
-	public String getImagem() {
-		return imagem;
-	}
-
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
-	}
-
-	public void setPreco(float preco) {
-		this.preco = preco;
-	}
+    public abstract String getTipo();
 }

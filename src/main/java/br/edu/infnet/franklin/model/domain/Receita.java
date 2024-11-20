@@ -1,115 +1,63 @@
 package br.edu.infnet.franklin.model.domain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+@Entity
 public class Receita {
 
-	// ---------------- Atributos ----------------
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String nome;
-	private String descricao;
-	private String modoPreparo;
-	private int tempoPreparo;
-	private int rendimento;
-	private String unidadeRendimento; // porção, fatia, unidade, etc.
+    private String nome;
+    private String modoPreparo;
 
-	// ----------------- Métodos -----------------
+    @OneToMany(mappedBy = "receita", fetch = FetchType.EAGER,  cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    private List<ReceitaIngrediente> receitaIngredientes = new ArrayList<>();
 
-	public float getPreco() {
-		float preco = 0;
-		
-		for (ReceitaIngrediente receitaIngrediente : ingredientes) {
-			preco += receitaIngrediente.getPreco();
-		}
+    // Getters e Setters
+    public Long getId() {
+        return id;
+    }
 
-		return preco;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	@Override
-	public String toString() {
-		String out = "";
-		
-		out += String.format("Receita: %s%n", nome);
-		out += String.format("Descrição: %s%n", descricao);
-		out += String.format("Tempo de preparo: %d minutos%n", tempoPreparo);
-		out += String.format("Rendimento: %d %s%n", rendimento, unidadeRendimento);
-		out += String.format("Preço: R$ %.2f%n", getPreco());
-		out += String.format("Ingredientes:%n");
+    public String getModoPreparo() {
+        return modoPreparo;
+    }
 
-		for (ReceitaIngrediente receitaIngrediente : ingredientes) {
-			Ingrediente ingrediente = receitaIngrediente.getIngrediente();
-			out += String.format("%s%s de %s$n",
-					receitaIngrediente.getQuantidade(),
-					ingrediente.getUnidadeMedida(),
-					ingrediente.getNome()
-			);
-		}
+    public List<ReceitaIngrediente> getReceitaIngredientes() {
+        return receitaIngredientes;
+    }
 
-		out += String.format("Modo de preparo: %s%n", modoPreparo);
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-		return out;
-	}
-	
-	public void addIngrediente(Ingrediente ingrediente, float quantidade) {
-		ReceitaIngrediente receitaIngrediente = new ReceitaIngrediente(this, ingrediente, quantidade);
-		ingredientes.add(receitaIngrediente);
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	// ------------ Getters e Setters ------------
+    public void setModoPreparo(String modoPreparo) {
+        this.modoPreparo = modoPreparo;
+    }
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public List<ReceitaIngrediente> getIngredientes() {
-		return ingredientes;
-	}
-
-	public String getModoPreparo() {
-		return modoPreparo;
-	}
-
-	public void setModoPreparo(String modoPreparo) {
-		this.modoPreparo = modoPreparo;
-	}
-
-	public int getTempoPreparo() {
-		return tempoPreparo;
-	}
-
-	public void setTempoPreparo(int tempoPreparo) {
-		this.tempoPreparo = tempoPreparo;
-	}
-
-	public int getRendimento() {
-		return rendimento;
-	}
-
-	public void setRendimento(int rendimento) {
-		this.rendimento = rendimento;
-	}
-
-	public String getUnidadeRendimento() {
-		return unidadeRendimento;
-	}
-
-	public void setUnidadeRendimento(String unidadeRendimento) {
-		this.unidadeRendimento = unidadeRendimento;
-	}
-
+    public void setReceitaIngredientes(List<ReceitaIngrediente> receitaIngredientes) {
+        this.receitaIngredientes = receitaIngredientes;
+    }
 }

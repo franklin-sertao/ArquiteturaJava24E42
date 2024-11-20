@@ -1,49 +1,62 @@
 package br.edu.infnet.franklin.model.domain;
 
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Embalagem {
-	private String nome;
-	private String descricao;
-	private float  capacidade;
-	private String codigo;
-	private String unidadeMedida;
 
-	public String getNome() {
-		return nome;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    private String descricao;
+    private Integer quantidadePorPacote;
+    private BigDecimal precoPacote;
 
-	public String getDescricao() {
-		return descricao;
-	}
+    @ManyToMany(mappedBy = "embalagens", fetch = FetchType.EAGER)
+    private List<Produto> produtos = new ArrayList<>();
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    // Getters e Setters
+    public Long getId() {
+        return id;
+    }
 
-	public float getCapacidade() {
-		return capacidade;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public void setCapacidade(float capacidade) {
-		this.capacidade = capacidade;
-	}
+    public Integer getQuantidadePorPacote() {
+        return quantidadePorPacote;
+    }
 
-	public String getCodigo() {
-		return codigo;
-	}
+    public BigDecimal getPrecoPacote() {
+        return precoPacote;
+    }
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
 
-	public String getUnidadeMedida() {
-		return unidadeMedida;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setUnidadeMedida(String unidadeMedida) {
-		this.unidadeMedida = unidadeMedida;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setQuantidadePorPacote(Integer quantidadePorPacote) {
+        this.quantidadePorPacote = quantidadePorPacote;
+    }
+
+    public void setPrecoPacote(BigDecimal precoPacote) {
+        this.precoPacote = precoPacote;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
 }

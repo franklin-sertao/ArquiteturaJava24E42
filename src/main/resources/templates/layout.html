@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout">
+<head>
+    <title th:text="${pageTitle}">Sistema de Precificação</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css"
+		integrity="sha512-9xKTRVabjVeZmc+GUW8GgSmcREDunMM+Dt/GrzchfN8tkwHizc5RP4Ok/MXFFy5rIjJjzhndFScTceq5e6GvVQ=="
+		crossorigin="anonymous"
+		referrerpolicy="no-referrer"
+	/>
+</head>
+<body  class="bg-[url('/img/bg.jpg')] h-screen">
+    <header>
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
+    </header>
+	<main class="rounded-lg bg-white backdrop-blur-lg bg-opacity-60 h-[calc(100vh-116px-1rem)] w-[1200px] mx-auto my-[0.5rem] overflow-auto p-2">
+		<div class="m-3">
+			<div th:replace="~{::page}"></div>
+		</div>
+	</main>
+    <footer>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </footer>
+</body>
+</html>

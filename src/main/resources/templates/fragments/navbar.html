@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <nav class="bg-white shadow-lg" th:fragment="navbar">
+        <div class="max-w-7xl mx-auto px-4" >
+            <div class="flex justify-between">
+                <div class="flex space-x-4">
+                    <a th:href="@{/}" class="flex items-center py-5 px-2 text-gray-700 hover:text-gray-900">
+                        <i class="fa-solid fa-house h-6 w-6 mr-2 text-indigo-600"></i>
+                        <span class="font-bold">Home</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a th:href="@{/ingredientes}" class="py-5 px-3 text-gray-700 hover:text-indigo-600 flex items-center transition duration-300">
+                        <i class="fa-solid fa-cubes h-5 w-5 mr-1 text-indigo-600"></i>
+                        Gerenciar Ingredientes
+                    </a>
+                    <a th:href="@{/receitas}" class="py-5 px-3 text-gray-700 hover:text-indigo-600 flex items-center transition duration-300">
+                        <i class="fa-solid fa-clipboard-list h-5 w-5 mr-1 text-indigo-600"></i>
+                        Gerenciar Receitas
+                    </a>
+                    <a th:href="@{/embalagens}" class="py-5 px-3 text-gray-700 hover:text-indigo-600 flex items-center transition duration-300">
+                        <i class="fa-solid fa-box-open h-5 w-5 mr-1 text-indigo-600"></i>
+                        Gerenciar Embalagens
+                    </a>
+                    <a th:href="@{/produtos}" class="py-5 px-3 text-gray-700 hover:text-indigo-600 flex items-center transition duration-300">
+                        <i class="fa-solid fa-shopping-bag h-5 w-5 mr-1 text-indigo-600"></i>
+                        Gerenciar Produtos
+                    </a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="menu-button" class="mobile-menu-button focus:outline-none">
+                        <i class="fa-solid fa-bars h-6 w-6 text-gray-700 hover:text-gray-900"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-menu hidden md:hidden">
+            <a th:href="@{/ingredientes}" class="block py-2 px-4 text-sm hover:bg-indigo-600 hover:text-white flex items-center transition duration-300">
+                <i class="fa-solid fa-cubes h-5 w-5 mr-2 text-indigo-600"></i>
+                Gerenciar Ingredientes
+            </a>
+            <a th:href="@{/receitas}" class="block py-2 px-4 text-sm hover:bg-indigo-600 hover:text-white flex items-center transition duration-300">
+                <i class="fa-solid fa-clipboard-list h-5 w-5 mr-2 text-indigo-600"></i>
+                Gerenciar Receitas
+            </a>
+            <a th:href="@{/embalagens}" class="block py-2 px-4 text-sm hover:bg-indigo-600 hover:text-white flex items-center transition duration-300">
+                <i class="fa-solid fa-box-open h-5 w-5 mr-2 text-indigo-600"></i>
+                Gerenciar Embalagens
+            </a>
+            <a th:href="@{/produtos}" class="block py-2 px-4 text-sm hover:bg-indigo-600 hover:text-white flex items-center transition duration-300">
+                <i class="fa-solid fa-shopping-bag h-5 w-5 mr-2 text-indigo-600"></i>
+                Gerenciar Produtos
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Toggle do Menu Mobile
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

@@ -1,25 +1,25 @@
 package br.edu.infnet.franklin.model.domain;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("unitario")
 public class IngredienteUnitario extends Ingrediente {
-	private int quantidadePorLote;
-	private String tipo;
 
-	public int getQuantidadePorLote() {
-		return quantidadePorLote;
-	}
+    private Integer quantidadeUnidades;
 
-	public void setQuantidadePorLote(int quantidadePorLote) {
-		this.quantidadePorLote = quantidadePorLote;
-	}
+    // Getters e Setters
+    public Integer getQuantidadeUnidades() {
+        return quantidadeUnidades;
+    }
 
-	public String getTipo(){
-		return tipo;
-	}
+    public void setQuantidadeUnidades(Integer quantidadeUnidades) {
+        this.quantidadeUnidades = quantidadeUnidades;
+    }
 
-	public void setTipo(String tipo){
-		this.tipo = tipo;
-	}
-
-
-
+    @Override
+    public String getTipo() {
+        return "Unitário";
+    }
 }

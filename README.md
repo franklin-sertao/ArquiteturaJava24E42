@@ -107,6 +107,11 @@ class IngredienteUnitario {
     - quantidadeUnidades: Integer
 }
 
+class ProdutoIngrediente {
+    - id: Long
+    - quantidade: Double
+}
+
 class ReceitaIngrediente {
     - id: Long
     - quantidade: Double
@@ -121,11 +126,12 @@ Ingrediente <|-u- IngredienteSeco
 Ingrediente <|-u- IngredienteLiquido
 Ingrediente <|-u- IngredienteUnitario
 
-Ingrediente }o--|{ Receita
-Ingrediente }o--|{ Produto
-Receita     }o--|{ Produto
+Ingrediente }o-l-|{ Receita
+Ingrediente }o-u-|{ Produto
+Receita     }o-d-|{ Produto
 
 (Receita, Ingrediente) . ReceitaIngrediente
+(Produto, Ingrediente) . ProdutoIngrediente
 (Produto, Receita) . ProdutoReceita
 
 Produto }o--o{  Embalagem 
@@ -208,4 +214,4 @@ Criação de um Arquivo PDF de Documentação: o aluno deve criar um arquivo PDF
 README do Repositório: o aluno também pode criar um arquivo README.md no repositório do GitHub para fornecer informações adicionais sobre o projeto, como uma breve visão geral, requisitos de configuração e execução, e quaisquer outras informações relevantes.
 Atualização e Manutenção do Repositório: é importante manter o repositório atualizado ao longo do desenvolvimento do projeto, fazendo commits regulares à medida que novas funcionalidades são adicionadas ou problemas são corrigidos.
 Entrega e Compartilhamento: o link para o repositório do GitHub, juntamente com o arquivo PDF de documentação, deve ser compartilhado com o professor ou avaliador, garantindo que eles tenham acesso fácil ao projeto e às informações necessárias para avaliação.
-Essa abordagem permite uma entrega organizada e documentada do projeto, facilitando a avaliação por parte do professor e a rastreabilidade do desenvolvimento ao longo do tempo. Além disso, o GitHub oferece recursos de controle de versão que podem ser úteis durante o processo de desenvolvimento. Certifique-se de seguir as diretrizes específicas da instituição e do professor, caso haja requisitos adicionais.
+Essa abordagem permite uma entrega organizada e documentada do projeto, facilitando a avaliação por parte do professor e a rastreabilidade do desenvolvimento ao longo do tempo. Além disso, o GitHub oferece recursos de controle de versão que podem ser úteis durante o processo de desenvolvimento. Certifique-se de seguir as diretrizes específicas da instituição e do professor, caso haja requisitos adicionais.|
