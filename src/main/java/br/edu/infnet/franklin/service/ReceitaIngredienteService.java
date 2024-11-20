@@ -3,12 +3,11 @@ package br.edu.infnet.franklin.service;
 import br.edu.infnet.franklin.model.domain.Receita;
 import br.edu.infnet.franklin.model.domain.ReceitaIngrediente;
 import br.edu.infnet.franklin.repository.ReceitaIngredienteRepository;
+
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ReceitaIngredienteService {
