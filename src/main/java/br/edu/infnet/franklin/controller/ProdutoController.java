@@ -1,6 +1,8 @@
 package br.edu.infnet.franklin.controller;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,7 +73,15 @@ public class ProdutoController {
                     )
             );
 
-    produtoService.salvar(id, produto, receitasQuantidade, ingredientesQuantidade);
+	// Extrai embalagens
+	List<Long> embalagens = params.entrySet().stream()
+			.filter(e -> e.getKey().matches("embalagens\\[\\d+\\]"))
+			.map(e -> Long.parseLong(params.get(e.getKey())))
+			.collect(Collectors.toList());
+
+	
+
+    produtoService.salvar(id, produto, receitasQuantidade, ingredientesQuantidade, embalagens);
     return "redirect:/produtos";
 }
 

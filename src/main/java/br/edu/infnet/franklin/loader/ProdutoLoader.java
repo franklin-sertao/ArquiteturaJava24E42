@@ -2,7 +2,9 @@ package br.edu.infnet.franklin.loader;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +31,19 @@ public class ProdutoLoader {
 
 		while ((line = reader.readLine()) != null) {
 			
-			String[] campos = line.split(";", 5); // id, descricao, modoPreparo, conservadoGelado, resto
+
+			String[] items = line.split("#", -1);
+
+			String[] camposProduto      = items[0].split(";", -1);
+			String[] camposReceitas     = items[1].split(";", -1);
+			String[] camposIngredientes = items[2].split(";", -1);
+			String[] stringsEmbalagens  = items[3].split(";", -1);
 			
-			Long id = Long.parseLong(campos[0]);
-			String descricao = campos[1];
+			Long id = Long.parseLong(camposProduto[0]);
+			String descricao = camposProduto[1];
 			
-			String modoPreparo = campos[2];
-			boolean conservadoGelado = Boolean.parseBoolean(campos[3]);
-			String resto = campos[4];
+			String modoPreparo = camposProduto[2];
+			boolean conservadoGelado = Boolean.parseBoolean(camposProduto[3]);
 
 			if(produtoService.obterPorId(id) != null) {
 				System.out.println("Produto " + descricao + " já cadastrado.");
@@ -55,14 +62,13 @@ public class ProdutoLoader {
 			Map<Long, Double> receitasQuantidade = new HashMap<>();
 			Map<Long, Double> ingredientesQuantidade = new HashMap<>();
 	
-			String[] elementos = resto.split("#", -1);
-			if (elementos.length > 0 && !elementos[0].isEmpty()) {
-				String[] receitasCampos = elementos[0].split(";", -1);
-				for (int i = 0; i < receitasCampos.length; i += 2) {
-					if (i + 1 < receitasCampos.length) {
+			// Cria a relação entre produto e receitas
+			if(camposReceitas.length > 0) {
+				for (int i = 0; i < camposReceitas.length; i += 2) {
+					if (i + 1 < camposReceitas.length) {
 						try {
-							Long receitaId = Long.parseLong(receitasCampos[i]);
-							Double quantidade = Double.parseDouble(receitasCampos[i + 1]);
+							Long receitaId = Long.parseLong(camposReceitas[i]);
+							Double quantidade = Double.parseDouble(camposReceitas[i + 1]);
 							receitasQuantidade.put(receitaId, quantidade);
 						} catch (NumberFormatException e) {
 							System.err.println("Erro ao processar receitas: " + e.getMessage());
@@ -70,14 +76,14 @@ public class ProdutoLoader {
 					}
 				}
 			}
-	
-			if (elementos.length > 1 && !elementos[1].isEmpty()) {
-				String[] ingredientesCampos = elementos[1].split(";", -1);
-				for (int i = 0; i < ingredientesCampos.length; i += 2) {
-					if (i + 1 < ingredientesCampos.length) {
+			
+			// Cria a relação entre produto e ingredientes
+			if(camposIngredientes.length > 0) {
+				for (int i = 0; i < camposIngredientes.length; i += 2) {
+					if (i + 1 < camposIngredientes.length) {
 						try {
-							Long ingredienteId = Long.parseLong(ingredientesCampos[i]);
-							Double quantidade = Double.parseDouble(ingredientesCampos[i + 1]);
+							Long ingredienteId = Long.parseLong(camposIngredientes[i]);
+							Double quantidade = Double.parseDouble(camposIngredientes[i + 1]);
 							ingredientesQuantidade.put(ingredienteId, quantidade);
 						} catch (NumberFormatException e) {
 							System.err.println("Erro ao processar ingredientes: " + e.getMessage());
@@ -85,8 +91,23 @@ public class ProdutoLoader {
 					}
 				}
 			}
+
+			List<Long> embalagens = new ArrayList<>();
+
+			// Converte a lista de ids de embalagem de String para Long
+			if(stringsEmbalagens.length > 0) {
+				for (String embalagemId : stringsEmbalagens) {
+					try {
+						embalagens.add(Long.parseLong(embalagemId));
+					} catch (NumberFormatException e) {
+						System.err.println("Erro ao processar embalagens: " + e.getMessage());
+					}
+				}
+			}
+
+
 	
-			produtoService.salvar(id, produto, receitasQuantidade, ingredientesQuantidade);
+			produtoService.salvar(id, produto, receitasQuantidade, ingredientesQuantidade, embalagens);
 		}
 	
 		reader.close();

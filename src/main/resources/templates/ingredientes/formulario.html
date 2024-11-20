@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
 <body>
     <div th:fragment="page">
-        <h1 class="text-2xl font-bold text-gray-700 mb-6 text-center" th:text="${ingredienteForm.id != null} ? 'Editar Ingrediente' : 'Novo Ingrediente'"></h1>
+        <h1 class="text-2xl font-bold text-indigo-600 mb-6 text-center" th:text="${ingredienteForm.id != null} ? 'Editar Ingrediente' : 'Novo Ingrediente'"></h1>
         <form th:action="@{/ingredientes/salvar}" th:object="${ingredienteForm}" method="post" class="bg-white p-6 rounded-lg shadow-lg">
             <input type="hidden" th:field="*{id}" />
             <div class="mb-4">
