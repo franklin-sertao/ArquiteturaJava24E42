@@ -1,0 +1,14 @@
+1;seco;Farinha de Trigo;2.50;true;500
+2;seco;Açúcar;1.80;false;300
+3;unitario;Ovos;0.50;true;12
+4;liquido;Leite;1.20;false;1000
+5;seco;Manteiga;3.00;true;250
+6;seco;Chocolate em Pó;4.00;false;200
+7;seco;Fermento em Pó;1.00;false;50
+8;liquido;Leite Condensado;2.00;false;400
+9;seco;Chocolate Chips;3.50;false;150
+10;liquido;Nutella;3.00;false;500
+11;unitario;Biscoitos;2.50;false;100
+12;unitario;Bananas;1.20;true;6
+13;liquido;Creme de Leite;2.50;false;500
+14;seco;Chocolate para Cobertura;3.00;false;200
