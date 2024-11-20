@@ -1,12 +1,11 @@
 package br.edu.infnet.franklin.service;
 
-import br.edu.infnet.franklin.model.domain.Produto;
-import br.edu.infnet.franklin.model.domain.ProdutoReceita;
-import br.edu.infnet.franklin.repository.ProdutoReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import br.edu.infnet.franklin.model.domain.ProdutoReceita;
+import br.edu.infnet.franklin.repository.ProdutoReceitaRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProdutoReceitaService {
@@ -14,15 +13,21 @@ public class ProdutoReceitaService {
     @Autowired
     private ProdutoReceitaRepository produtoReceitaRepository;
 
-    public ProdutoReceita salvar(ProdutoReceita produtoReceita) {
+    @Transactional
+	public ProdutoReceita salvar(ProdutoReceita produtoReceita) {
         return produtoReceitaRepository.save(produtoReceita);
     }
 
-    public void excluirPorProduto(Produto produto) {
-        produtoReceitaRepository.deleteByProduto(produto);
-    }
+	@Transactional
+	public void excluirPorIdProduto(Long id) {
+		if(id == null) {
+            throw new IllegalArgumentException("Produto não informado!");
+		}
+		
+		produtoReceitaRepository.deleteByProdutoId(id);
+	}
 
-    public List<ProdutoReceita> obterLista() {
+    public Iterable<ProdutoReceita> obterLista() {
         return produtoReceitaRepository.findAll();
     }
 
@@ -30,6 +35,7 @@ public class ProdutoReceitaService {
         return produtoReceitaRepository.findById(id).orElse(null);
     }
 
+	@Transactional
     public void excluir(Long id) {
         produtoReceitaRepository.deleteById(id);
     }

@@ -1,45 +1,55 @@
 package br.edu.infnet.franklin.loader;
 
-import br.edu.infnet.franklin.model.domain.Produto;
-import br.edu.infnet.franklin.service.ProdutoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
-public class ProdutoLoader implements CommandLineRunner {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-    @Autowired
+import br.edu.infnet.franklin.model.domain.Produto;
+import br.edu.infnet.franklin.service.ProdutoService;
+
+
+@Component
+public class ProdutoLoader {
+
+	@Autowired
     private ProdutoService produtoService;
 
-    @Override
-    public void run(String... args) throws Exception {
-        carregarProdutos();
-    }
+	public void carregarProdutos() throws Exception {
 
-	private void carregarProdutos() throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				this.getClass().getResourceAsStream("/data/produtos.txt")));
 	
 		String line;
+
+		System.out.println("Carregando produtos...");
+
 		while ((line = reader.readLine()) != null) {
+			
 			String[] campos = line.split(";", 5); // id, descricao, modoPreparo, conservadoGelado, resto
+			
 			Long id = Long.parseLong(campos[0]);
 			String descricao = campos[1];
+			
 			String modoPreparo = campos[2];
 			boolean conservadoGelado = Boolean.parseBoolean(campos[3]);
 			String resto = campos[4];
-	
+
+			if(produtoService.obterPorId(id) != null) {
+				System.out.println("Produto " + descricao + " já cadastrado.");
+				continue;
+			}
+			
 			Produto produto = new Produto();
 			produto.setId(id);
 			produto.setDescricao(descricao);
 			produto.setModoPreparo(modoPreparo);
 			produto.setConservadoGelado(conservadoGelado);
+			
+			System.out.println("Carregando produto " + produto.getDescricao() + "...");
 	
 			// Processa receitas e ingredientes
 			Map<Long, Double> receitasQuantidade = new HashMap<>();

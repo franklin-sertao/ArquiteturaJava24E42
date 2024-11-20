@@ -1,23 +1,22 @@
 package br.edu.infnet.franklin.service;
 
-import br.edu.infnet.franklin.model.domain.Ingrediente;
-import br.edu.infnet.franklin.repository.IngredienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import br.edu.infnet.franklin.model.domain.Ingrediente;
+import br.edu.infnet.franklin.repository.IngredienteRepository;
 
 @Service
 public class IngredienteService {
 
-    @Autowired
-    private IngredienteRepository ingredienteRepository;
+	@Autowired
+	private IngredienteRepository ingredienteRepository;
 
     public Ingrediente salvar(Ingrediente ingrediente) {
         return ingredienteRepository.save(ingrediente);
     }
 
-    public List<Ingrediente> obterLista() {
+    public Iterable<Ingrediente> obterLista() {
         return ingredienteRepository.findAll();
     }
 

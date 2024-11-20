@@ -1,6 +1,15 @@
 package br.edu.infnet.franklin.model.domain;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class ProdutoReceita {
@@ -11,12 +20,14 @@ public class ProdutoReceita {
 
     private Double quantidade;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "produto_id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "idProduto")
+	@JsonBackReference
     private Produto produto;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "receita_id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "idReceita")
+	@JsonManagedReference
     private Receita receita;
 
     // Getters e Setters

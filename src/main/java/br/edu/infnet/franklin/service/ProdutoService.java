@@ -1,15 +1,17 @@
 package br.edu.infnet.franklin.service;
 
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import br.edu.infnet.franklin.model.domain.Ingrediente;
 import br.edu.infnet.franklin.model.domain.Produto;
 import br.edu.infnet.franklin.model.domain.ProdutoIngrediente;
 import br.edu.infnet.franklin.model.domain.ProdutoReceita;
 import br.edu.infnet.franklin.model.domain.Receita;
-import br.edu.infnet.franklin.model.domain.Ingrediente;
 import br.edu.infnet.franklin.repository.ProdutoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Map;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProdutoService {
@@ -29,18 +31,19 @@ public class ProdutoService {
     @Autowired
     private ProdutoIngredienteService produtoIngredienteService;
 
+	@Transactional
     public void salvar(Long id, Produto produto, Map<Long, Double> receitasQuantidade, Map<Long, Double> ingredientesQuantidade) {
         if (id != null && produtoRepository.existsById(id)) {
             Produto produtoExistente = produtoRepository.findById(id).orElse(null);
             if (produtoExistente != null) {
-                // Atualiza os campos do produto existente
-                produtoExistente.setDescricao(produto.getDescricao());
-                produtoExistente.setModoPreparo(produto.getModoPreparo());
-                produtoExistente.setConservadoGelado(produto.isConservadoGelado());
-
                 // Remove associações antigas
-                produtoReceitaService.excluirPorProduto(produtoExistente);
-                produtoIngredienteService.excluirPorProduto(produtoExistente);
+                produtoExistente.getProdutoReceitas().clear();
+                produtoExistente.getProdutoIngredientes().clear();
+
+				// Atualiza os campos do produto existente
+				produtoExistente.setDescricao(produto.getDescricao());
+				produtoExistente.setModoPreparo(produto.getModoPreparo());
+				produtoExistente.setConservadoGelado(produto.isConservadoGelado());
 
                 // Adiciona novas associações de Receitas
                 for (Map.Entry<Long, Double> entry : receitasQuantidade.entrySet()) {
@@ -107,10 +110,9 @@ public class ProdutoService {
     }
 
     public void excluir(Long id) {
-        Produto produto = obterPorId(id);
-        if (produto != null) {
-            produtoReceitaService.excluirPorProduto(produto);
-            produtoIngredienteService.excluirPorProduto(produto);
+        if (id != null) {
+            produtoReceitaService.excluirPorIdProduto(id);
+            produtoIngredienteService.excluirPorIdProduto(id);
             produtoRepository.deleteById(id);
         }
     }

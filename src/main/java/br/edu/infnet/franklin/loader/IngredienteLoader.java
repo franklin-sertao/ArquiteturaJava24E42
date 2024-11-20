@@ -1,30 +1,31 @@
 package br.edu.infnet.franklin.loader;
 
-import br.edu.infnet.franklin.model.domain.*;
-import br.edu.infnet.franklin.service.IngredienteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-@Component
-public class IngredienteLoader implements CommandLineRunner {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-    @Autowired
+import br.edu.infnet.franklin.model.domain.Ingrediente;
+import br.edu.infnet.franklin.model.domain.IngredienteLiquido;
+import br.edu.infnet.franklin.model.domain.IngredienteSeco;
+import br.edu.infnet.franklin.model.domain.IngredienteUnitario;
+import br.edu.infnet.franklin.service.IngredienteService;
+
+@Component
+public class IngredienteLoader {
+
+	@Autowired
     private IngredienteService ingredienteService;
 
-    @Override
-    public void run(String... args) throws Exception {
-        carregarIngredientes();
-    }
-
-    private void carregarIngredientes() throws Exception {
+	public void carregarIngredientes() throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(
                 this.getClass().getResourceAsStream("/data/ingredientes.txt")));
 
         String line;
+
+		System.out.println("Carregando ingredientes...");
+
         while ((line = reader.readLine()) != null) {
             String[] campos = line.split(";");
             if(campos.length < 5) {
@@ -33,28 +34,35 @@ public class IngredienteLoader implements CommandLineRunner {
             }
 
             Long id = Long.parseLong(campos[0]);
-            String tipo = campos[1];
-            String nome = campos[2];
-            java.math.BigDecimal precoTotal = new java.math.BigDecimal(campos[3]);
-            boolean organico = Boolean.parseBoolean(campos[4]);
+			String nome = campos[2];
+			String tipo = campos[1];
+			java.math.BigDecimal precoTotal = new java.math.BigDecimal(campos[3]);
+			boolean organico = Boolean.parseBoolean(campos[4]);
+
+			if(ingredienteService.obterPorId(id) != null) {
+				System.out.println("Ingrediente " + nome + " já cadastrado.");
+				continue;
+			}
+
+			System.out.println("Carregando ingrediente " + nome + "...");
 
             Ingrediente ingrediente = null;
             switch (tipo.toLowerCase()) {
                 case "liquido":
-                    if(campos.length < 6) continue; // Campo específico ausente
+                    if(campos.length < 6) continue;
                     IngredienteLiquido liquido = new IngredienteLiquido();
                     liquido.setVolumeLiquidoEmML(Integer.parseInt(campos[5]));
                     ingrediente = liquido;
                     break;
                 case "unitario":
-                    if(campos.length < 6) continue; // Campo específico ausente
+                    if(campos.length < 6) continue;
                     IngredienteUnitario unitario = new IngredienteUnitario();
                     unitario.setQuantidadeUnidades(Integer.parseInt(campos[5]));
                     ingrediente = unitario;
                     break;
                 case "seco":
                 default:
-                    if(campos.length < 6) continue; // Campo específico ausente
+                    if(campos.length < 6) continue;
                     IngredienteSeco seco = new IngredienteSeco();
                     seco.setPesoLiquidoEmGramas(Integer.parseInt(campos[5]));
                     ingrediente = seco;

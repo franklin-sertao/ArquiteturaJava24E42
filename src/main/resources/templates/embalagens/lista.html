@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="h-full bg-gray-100">
-<head>
-    <title>Lista de Embalagens</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="h-full">
-    <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold text-gray-700 mb-6">Embalagens</h1>
-        <div class="mb-6">
-            <a href="/embalagens/nova" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                Nova Embalagem
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+<body>
+    <div th:fragment="page">
+        <h1 class="text-2xl font-bold text-gray-700 mb-6 text-center">Embalagens</h1>
+        <div class="mb-6 text-end">
+            <a href="/embalagens/novo" class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+                <i class="fa-solid fa-plus mr-2"></i> Nova Embalagem
             </a>
         </div>
         <div class="overflow-x-auto bg-white rounded-lg shadow">
@@ -25,15 +21,18 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" th:each="embalagem : ${embalagens}">
                     <tr>
-                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.id}">1</td>
-                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.descricao}">Descrição</td>
-                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.quantidadePorPacote}">10</td>
-                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.precoPacote}">15.00</td>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.id}"></td>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.descricao}"></td>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.quantidadePorPacote}"></td>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.precoPacote}"></td>
                         <td class="px-6 py-4 text-sm text-gray-700">
-                            <a th:href="@{/embalagens/{id}/editar(id=${embalagem.id})}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                            <a th:href="@{/embalagens/{id}/editar(id=${embalagem.id})}" class="text-indigo-600 hover:text-indigo-900">
+                                <i class="fa-solid fa-pen-to-square mr-1"></i> Editar
+                            </a>
                             <span class="text-gray-400 mx-2">|</span>
-                            <a th:href="@{/embalagens/{id}/excluir(id=${embalagem.id})}" class="text-red-600 hover:text-red-900" 
-                               onclick="return confirm('Deseja realmente excluir esta embalagem?');">Excluir</a>
+                            <a th:href="@{/embalagens/{id}/excluir(id=${embalagem.id})}" class="text-red-600 hover:text-red-900" onclick="return confirm('Deseja realmente excluir esta embalagem?');">
+                                <i class="fa-solid fa-trash mr-1"></i> Excluir
+                            </a>
                         </td>
                     </tr>
                 </tbody>

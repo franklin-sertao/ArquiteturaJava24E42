@@ -1,28 +1,23 @@
 package br.edu.infnet.franklin.loader;
 
-import br.edu.infnet.franklin.model.domain.Receita;
-import br.edu.infnet.franklin.service.ReceitaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
-public class ReceitaLoader implements CommandLineRunner {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-    @Autowired
+import br.edu.infnet.franklin.model.domain.Receita;
+import br.edu.infnet.franklin.service.ReceitaService;
+
+@Component
+public class ReceitaLoader{
+
+	@Autowired
     private ReceitaService receitaService;
 
-    @Override
-    public void run(String... args) throws Exception {
-        carregarReceitas();
-    }
-
-    private void carregarReceitas() throws Exception {
+    public void carregarReceitas() throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(
                 this.getClass().getResourceAsStream("/data/receitas.txt")));
 
@@ -30,9 +25,16 @@ public class ReceitaLoader implements CommandLineRunner {
         while ((line = reader.readLine()) != null) {
             String[] campos = line.split(";", 4); // id,nome,modoPreparo,resto
             Long id = Long.parseLong(campos[0]);
-            String nome = campos[1];
+			String nome = campos[1];
             String modoPreparo = campos[2];
             String resto = campos[3];
+
+			if(receitaService.obterPorId(id) != null) {
+				System.out.println("Receita " + nome + " já cadastrada.");
+				continue;
+			}
+			
+			System.out.println("Carregando receita " + nome + "...");
 
             Receita receita = new Receita();
             receita.setId(id);

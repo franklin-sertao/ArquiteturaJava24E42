@@ -3,6 +3,8 @@ package br.edu.infnet.franklin.service;
 import br.edu.infnet.franklin.model.domain.Receita;
 import br.edu.infnet.franklin.model.domain.ReceitaIngrediente;
 import br.edu.infnet.franklin.repository.ReceitaIngredienteRepository;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,14 @@ public class ReceitaIngredienteService {
         return receitaIngredienteRepository.save(receitaIngrediente);
     }
 
+	@Transactional
     public void excluirPorReceita(Receita receita) {
-        receitaIngredienteRepository.deleteByReceita(receita);
+		if (receita != null) {
+        	receitaIngredienteRepository.deleteByReceita(receita);
+		}
     }
 
-    public List<ReceitaIngrediente> obterLista() {
+    public Iterable<ReceitaIngrediente> obterLista() {
         return receitaIngredienteRepository.findAll();
     }
 
@@ -30,6 +35,7 @@ public class ReceitaIngredienteService {
         return receitaIngredienteRepository.findById(id).orElse(null);
     }
 
+	@Transactional
     public void excluir(Long id) {
         receitaIngredienteRepository.deleteById(id);
     }

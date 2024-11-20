@@ -1,15 +1,22 @@
 package br.edu.infnet.franklin.controller;
 
-import br.edu.infnet.franklin.model.domain.Produto;
-import br.edu.infnet.franklin.service.ProdutoService;
-import br.edu.infnet.franklin.service.ReceitaService;
-import br.edu.infnet.franklin.service.IngredienteService;
-import br.edu.infnet.franklin.service.EmbalagemService;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import br.edu.infnet.franklin.model.domain.Produto;
+import br.edu.infnet.franklin.service.EmbalagemService;
+import br.edu.infnet.franklin.service.IngredienteService;
+import br.edu.infnet.franklin.service.ProdutoService;
+import br.edu.infnet.franklin.service.ReceitaService;
 
 @Controller
 @RequestMapping("/produtos")
@@ -43,32 +50,31 @@ public class ProdutoController {
     }
 
     @PostMapping("/salvar")
-    public String salvar(@RequestParam(required = false) Long id,
-                         @ModelAttribute Produto produto,
-                         @RequestParam Map<String, String> params) {
-        // Extrai receitas e quantidades
-        Map<Long, Double> receitasQuantidade = params.entrySet().stream()
-                .filter(e -> e.getKey().startsWith("quantidade_receita_"))
-                .collect(
-                        java.util.stream.Collectors.toMap(
-                                e -> Long.parseLong(e.getKey().split("_")[2]),
-                                e -> Double.parseDouble(e.getValue())
-                        )
-                );
+	public String salvar(@RequestParam(required = false) Long id, @ModelAttribute Produto produto, @RequestParam Map<String, String> params) {
+    // Extrai receitas e quantidades usando índices de array
+    Map<Long, Double> receitasQuantidade = params.entrySet().stream()
+            .filter(e -> e.getKey().matches("receitas\\[\\d+\\]\\.id"))
+            .collect(
+                    java.util.stream.Collectors.toMap(
+                            e -> Long.parseLong(params.get(e.getKey())),
+                            e -> Double.parseDouble(params.get(e.getKey().replace(".id", ".quantidade")))
+                    )
+            );
 
-        // Extrai ingredientes e quantidades
-        Map<Long, Double> ingredientesQuantidade = params.entrySet().stream()
-                .filter(e -> e.getKey().startsWith("quantidade_ingrediente_"))
-                .collect(
-                        java.util.stream.Collectors.toMap(
-                                e -> Long.parseLong(e.getKey().split("_")[2]),
-                                e -> Double.parseDouble(e.getValue())
-                        )
-                );
+    // Extrai ingredientes e quantidades usando índices de array
+    Map<Long, Double> ingredientesQuantidade = params.entrySet().stream()
+            .filter(e -> e.getKey().matches("ingredientes\\[\\d+\\]\\.id"))
+            .collect(
+                    java.util.stream.Collectors.toMap(
+                            e -> Long.parseLong(params.get(e.getKey())),
+                            e -> Double.parseDouble(params.get(e.getKey().replace(".id", ".quantidade")))
+                    )
+            );
 
-        produtoService.salvar(id, produto, receitasQuantidade, ingredientesQuantidade);
-        return "redirect:/produtos";
-    }
+    produtoService.salvar(id, produto, receitasQuantidade, ingredientesQuantidade);
+    return "redirect:/produtos";
+}
+
 
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model) {

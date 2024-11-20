@@ -4,6 +4,8 @@ import br.edu.infnet.franklin.model.domain.Ingrediente;
 import br.edu.infnet.franklin.model.domain.Receita;
 import br.edu.infnet.franklin.model.domain.ReceitaIngrediente;
 import br.edu.infnet.franklin.repository.ReceitaRepository;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class ReceitaService {
     @Autowired
     private ReceitaIngredienteService receitaIngredienteService;
 
+	@Transactional
     public Receita salvar(Receita receita, Map<Long, Double> ingredientesQuantidade) {
         // Salva ou atualiza a receita
         Receita receitaSalva = receitaRepository.save(receita);
@@ -58,7 +61,7 @@ public class ReceitaService {
         return receitaRepository.findById(id).orElse(null);
     }
 
-    public List<Receita> obterLista() {
+    public Iterable<Receita> obterLista() {
         return receitaRepository.findAll();
     }
 }

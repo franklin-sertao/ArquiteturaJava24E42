@@ -1,5 +1,4 @@
 package br.edu.infnet.franklin.controller;
-
 import br.edu.infnet.franklin.model.domain.*;
 import br.edu.infnet.franklin.model.dto.IngredienteForm;
 import br.edu.infnet.franklin.service.IngredienteService;
@@ -18,7 +17,7 @@ public class IngredienteController {
 
     @GetMapping
     public String lista(Model model) {
-        List<Ingrediente> ingredientes = ingredienteService.obterLista();
+        Iterable<Ingrediente> ingredientes = ingredienteService.obterLista();
         model.addAttribute("ingredientes", ingredientes);
         return "ingredientes/lista";
     }
@@ -74,7 +73,6 @@ public class IngredienteController {
 		ingredienteService.salvar(ingrediente);
 		return "redirect:/ingredientes";
 	}
-
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model) {
         Ingrediente ingrediente = ingredienteService.obterPorId(id);
@@ -85,8 +83,8 @@ public class IngredienteController {
 
         // Mapear os dados para o DTO
         IngredienteForm ingredienteForm = new IngredienteForm();
-		ingredienteForm.setId(ingrediente.getId());
-        ingredienteForm.setTipo(ingrediente.getTipo());
+
+		ingredienteForm.setId(ingrediente.getId());        ingredienteForm.setTipo(ingrediente.getTipo());
         ingredienteForm.setNome(ingrediente.getNome());
         ingredienteForm.setPrecoTotal(ingrediente.getPrecoTotal());
         ingredienteForm.setOrganico(ingrediente.isOrganico());

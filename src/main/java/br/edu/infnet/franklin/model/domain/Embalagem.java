@@ -16,7 +16,7 @@ public class Embalagem {
     private Integer quantidadePorPacote;
     private BigDecimal precoPacote;
 
-    @ManyToMany(mappedBy = "embalagens")
+    @ManyToMany(mappedBy = "embalagens", fetch = FetchType.EAGER)
     private List<Produto> produtos = new ArrayList<>();
 
     // Getters e Setters

@@ -15,17 +15,17 @@ public class Produto {
     private String modoPreparo;
     private boolean conservadoGelado;
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "produto",  fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdutoReceita> produtoReceitas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "produto",  fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdutoIngrediente> produtoIngredientes = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
         name = "produto_embalagem",
-        joinColumns = @JoinColumn(name = "produto_id"),
-        inverseJoinColumns = @JoinColumn(name = "embalagem_id")
+        joinColumns = @JoinColumn(name = "idProduto"),
+        inverseJoinColumns = @JoinColumn(name = "idEmbalagem")
     )
     private List<Embalagem> embalagens = new ArrayList<>();
 

@@ -1,8 +1,17 @@
 package br.edu.infnet.franklin.model.domain;
 
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Receita {
@@ -14,7 +23,8 @@ public class Receita {
     private String nome;
     private String modoPreparo;
 
-    @OneToMany(mappedBy = "receita", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "receita", fetch = FetchType.EAGER,  cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<ReceitaIngrediente> receitaIngredientes = new ArrayList<>();
 
     // Getters e Setters

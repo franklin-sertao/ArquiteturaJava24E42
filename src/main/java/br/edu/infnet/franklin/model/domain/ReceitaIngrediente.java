@@ -1,5 +1,7 @@
 package br.edu.infnet.franklin.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,11 +14,13 @@ public class ReceitaIngrediente {
     private Double quantidade;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "receita_id")
+    @JoinColumn(name = "idReceita")
+	@JsonIgnore
     private Receita receita;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "ingrediente_id")
+    @JoinColumn(name = "idIngrediente")
+	@JsonIgnore
     private Ingrediente ingrediente;
 
     // Getters e Setters

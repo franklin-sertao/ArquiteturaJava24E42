@@ -2,10 +2,10 @@ package br.edu.infnet.franklin.service;
 
 import br.edu.infnet.franklin.model.domain.Embalagem;
 import br.edu.infnet.franklin.repository.EmbalagemRepository;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EmbalagemService {
@@ -26,6 +26,7 @@ public class EmbalagemService {
         return embalagemRepository.save(embalagem);
     }
 
+	@Transactional
     public void excluir(Long id) {
         embalagemRepository.deleteById(id);
     }
@@ -34,7 +35,7 @@ public class EmbalagemService {
         return embalagemRepository.findById(id).orElse(null);
     }
 
-    public List<Embalagem> obterLista() {
+    public Iterable<Embalagem> obterLista() {
         return embalagemRepository.findAll();
     }
 }
