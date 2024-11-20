@@ -15,10 +15,8 @@
 					<tr>
 						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
 						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descrição</th>
-						<!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modo de Preparo</th> -->
 						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conservado Gelado</th>
-						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Receitas</th>
-						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ingredientes</th>
+						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Receita e Ingredientes</th>
 						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
 					</tr>
 				</thead>
@@ -26,18 +24,13 @@
 					<tr>
 						<td class="px-6 py-4  text-sm text-gray-700" th:text="${produto.id}">1</td>
 						<td class="px-6 py-4  text-sm text-gray-700" th:text="${produto.descricao}">Descrição</td>
-						<td class="px-6 py-4  text-sm text-gray-700" th:text="${produto.modoPreparo}">Modo</td>
 						<td class="px-6 py-4  text-sm text-gray-700" th:text="${produto.conservadoGelado} ? 'Sim' : 'Não'">true/false</td>
 						<td class="px-6 py-4  text-sm text-gray-700">
 							<ul class="list-disc pl-5">
 								<li th:each="pr : ${produto.produtoReceitas}">
-									<span class="font-medium text-indigo-600" th:text="${pr.receita.nome}">Receita</span>:
+									<span class="font-medium text-indigo-600" th:text="${pr.receita.nome}">Receitas e ingredientes</span>:
 									<span th:text=" x + ${pr.quantidade}">Quantidade</span>
 								</li>
-							</ul>
-						</td>
-						<td class="px-6 py-4 text-sm text-gray-700">
-							<ul class="list-disc pl-5">
 								<li th:each="pi : ${produto.produtoIngredientes}">
 									<span class="font-medium text-green-600" th:text="${pi.ingrediente.nome}">Ingrediente</span>:
 									<span th:text="'Quantidade: ' + ${pi.quantidade}">Quantidade</span>
