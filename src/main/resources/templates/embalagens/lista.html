@@ -25,8 +25,8 @@
                         <td class="px-6 py-4 text-center text-sm text-gray-700" th:text="${embalagem.id}"></td>
                         <td class="px-6 py-4 text-leaft text-sm text-gray-700" th:text="${embalagem.descricao}"></td>
                         <td class="px-6 py-4 text-center text-sm text-gray-700" th:text="${embalagem.quantidadePorPacote}"></td>
-                        <td class="px-6 py-4 text-center text-sm text-gray-700" th:text="${#numbers.formatCurrency(embalagem.precoPacote)}"></td>
-                        <td class="px-6 py-4 text-center text-sm text-gray-700 font-medium" th:text="${#numbers.formatCurrency(embalagem.getPrecoUnitario())}"></td>
+                        <td class="px-6 py-4 text-center text-sm text-gray-700" th:text="${embalagem.precoPacote}"></td>
+                        <td class="px-6 py-4 text-center text-sm text-gray-700 font-medium" th:text="${embalagem.getPrecoUnitario()}"></td>
                         <td class="px-6 py-4 text-center text-sm text-gray-700">
                             <a th:href="@{/embalagens/{id}/editar(id=${embalagem.id})}" class="text-indigo-600 hover:text-indigo-900">
                                 <i class="fa-solid fa-pen-to-square mr-1"></i> Editar

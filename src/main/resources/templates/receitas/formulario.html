@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
 <body>
     <div th:fragment="page">
         <h1 class="text-2xl font-bold text-indigo-600 mb-6 text-center" th:text="${receita.id != null} ? 'Editar Receita' : 'Nova Receita'"></h1>

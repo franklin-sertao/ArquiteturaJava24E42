@@ -23,12 +23,42 @@ public class Receita {
 
     private String nome;
     private String modoPreparo;
+	private Double rendimento;
+	private String tipoRendimento;
 
     @OneToMany(mappedBy = "receita", fetch = FetchType.EAGER,  cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<ReceitaIngrediente> receitaIngredientes = new ArrayList<>();
+	
+	// Metodos
+	public Double getPrecoTotal() {
+		Double total = 0.0;
+		
+		for (ReceitaIngrediente receitaIngrediente : receitaIngredientes) {
+			total += receitaIngrediente.getIngrediente().getPrecoUnitario() * receitaIngrediente.getQuantidade();
+		}
 
-    // Getters e Setters
+		return total;
+	}
+
+	public Double getPrecoUnitario() {
+		Double precoTotal = getPrecoTotal();
+		Double rendimento = getRendimento();
+
+		if(precoTotal == null || rendimento == null) {
+			return null;
+		}
+
+		if (precoTotal == 0 || rendimento == 0) {
+			return 0.0;
+		}
+
+
+
+		return precoTotal / rendimento;
+	}
+
+	// Getters e Setters
     public Long getId() {
         return id;
     }
@@ -60,4 +90,21 @@ public class Receita {
     public void setReceitaIngredientes(List<ReceitaIngrediente> receitaIngredientes) {
         this.receitaIngredientes = receitaIngredientes;
     }
+
+	public Double getRendimento() {
+		return rendimento;
+	}
+
+	public void setRendimento(Double rendimento) {
+		this.rendimento = rendimento;
+	}
+
+	public String getTipoRendimento() {
+		return tipoRendimento;
+	}
+
+	public void setTipoRendimento(String tipoRendimento) {
+		this.tipoRendimento = tipoRendimento;
+	}
+	
 }
