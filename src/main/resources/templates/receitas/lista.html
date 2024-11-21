@@ -17,9 +17,8 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modo de Preparo</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Custo Total</th>
 						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rendimento</th>
-						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Custo por porção</th>
+						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Custo por unidade</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
-
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" th:each="receita : ${receitas}">
@@ -27,14 +26,24 @@
                         <td class="px-6 py-4 text-sm text-gray-700" th:text="${receita.id}"></td>
                         <td class="px-6 py-4 text-sm text-gray-700" th:text="${receita.nome}"></td>
                         <td class="px-6 py-4 text-sm text-gray-700" th:text="${receita.modoPreparo}"></td>
-						<td class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatCurrency(receita.getPrecoTotal())}"></td>
-						<td class="px-6 py-4 text-sm text-gray-700" th:text="${receita.rendimento}"></td>
-						<td class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatCurrency(receita.getPrecoUnitario())}"></td>
-                        <td class="px-6 py-4 text-sm text-gray-700">
+						<td class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatCurrency(receita.precoTotal)}"></td>
+
+						<th:block th:switch="${receita.tipoRendimento}">
+							<td th:case="'p'" class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(receita.rendimento,1,2) + ' porções'}"></td>
+							<td th:case="'f'" class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(receita.rendimento,1,2) + ' fatias'}"></td>
+							<td th:case="'c'" class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(receita.rendimento,1,2) + ' camadas'}"></td>
+							<td th:case="'g'" class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(receita.rendimento,1,2) + ' g'}"></td>
+							<td th:case="'ml'" class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(receita.rendimento,1,2) + ' ml'}"></td>
+							<td th:case="'un'" class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(receita.rendimento,1,2) + ' un'}"></td>
+						</th:block>
+						
+						<td class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatCurrency(receita.precoUnitario)}"></td>
+                        <td class="px-6 py-4 text-sm text-gray-700 text-nowrap">
                             <a th:href="@{/receitas/{id}/editar(id=${receita.id})}" class="text-indigo-600 hover:text-indigo-900">
                                 <i class="fa-solid fa-pen-to-square mr-1"></i> Editar
                             </a>
                             <span class="text-gray-400 mx-2">|</span>
+
                             <a th:href="@{/receitas/{id}/excluir(id=${receita.id})}" class="text-red-600 hover:text-red-900" onclick="return confirm('Deseja realmente excluir esta receita?');">
                                 <i class="fa-solid fa-trash mr-1"></i> Excluir
                             </a>
@@ -42,6 +51,7 @@
                     </tr>
                 </tbody>
             </table>
+			
         </div>
     </div>
 </body>

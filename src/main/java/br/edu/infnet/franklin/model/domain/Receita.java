@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
+import br.edu.infnet.franklin.service.ProdutoReceitaService;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,9 +29,8 @@ public class Receita {
 	private String tipoRendimento;
 
     @OneToMany(mappedBy = "receita", fetch = FetchType.EAGER,  cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
+    @JsonIdentityReference
     private List<ReceitaIngrediente> receitaIngredientes = new ArrayList<>();
-	
 	// Metodos
 	public Double getPrecoTotal() {
 		Double total = 0.0;
@@ -52,8 +53,6 @@ public class Receita {
 		if (precoTotal == 0 || rendimento == 0) {
 			return 0.0;
 		}
-
-
 
 		return precoTotal / rendimento;
 	}

@@ -1,6 +1,8 @@
 package br.edu.infnet.franklin.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
@@ -15,12 +17,12 @@ public class ReceitaIngrediente {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "idReceita")
-	@JsonIgnore
+	@JsonBackReference
     private Receita receita;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "idIngrediente")
-	@JsonIgnore
+	@JsonManagedReference
     private Ingrediente ingrediente;
 
     // Getters e Setters

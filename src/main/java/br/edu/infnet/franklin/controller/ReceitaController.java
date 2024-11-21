@@ -37,15 +37,18 @@ public class ReceitaController {
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Receita receita,
                          @RequestParam Map<String, String> params) {
-        // Extrai ingredientes e quantidades
-        Map<Long, Double> ingredientesQuantidade = params.entrySet().stream()
-                .filter(e -> e.getKey().startsWith("quantidade_"))
-                .collect(
-                        java.util.stream.Collectors.toMap(
-                                e -> Long.parseLong(e.getKey().split("_")[1]),
-                                e -> Double.parseDouble(e.getValue())
-                        )
-                );
+
+    	// Extrai ingredientes e quantidades usando índices de array
+    	Map<Long, Double> ingredientesQuantidade = params.entrySet().stream()
+            .filter(e -> e.getKey().matches("ingredientes\\[\\d+\\]\\.id"))
+            .collect(
+                    java.util.stream.Collectors.toMap(
+                            e -> Long.parseLong(params.get(e.getKey())),
+                            e -> Double.parseDouble(params.get(e.getKey().replace(".id", ".quantidade")))
+                    )
+            );
+							
+
         receitaService.salvar(receita, ingredientesQuantidade);
         return "redirect:/receitas";
     }

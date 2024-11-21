@@ -23,11 +23,13 @@ public class ReceitaLoader{
 
         String line;
         while ((line = reader.readLine()) != null) {
-            String[] campos = line.split(";", 4); // id,nome,modoPreparo,resto
+            String[] campos = line.split(";", 6); // id,nome,modoPreparo,resto
             Long id = Long.parseLong(campos[0]);
 			String nome = campos[1];
             String modoPreparo = campos[2];
-            String resto = campos[3];
+			Double rendimento = Double.parseDouble(campos[3]);
+			String tipoRendimento = campos[4];
+            String resto = campos[5];
 
 			if(receitaService.obterPorId(id) != null) {
 				System.out.println("Receita " + nome + " já cadastrada.");
@@ -40,6 +42,8 @@ public class ReceitaLoader{
             receita.setId(id);
             receita.setNome(nome);
             receita.setModoPreparo(modoPreparo);
+			receita.setRendimento(rendimento);
+			receita.setTipoRendimento(tipoRendimento);
 
             // Processa os ingredientes e quantidades
             String[] ingredientesCampos = resto.split(";");

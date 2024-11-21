@@ -7,12 +7,50 @@
             <input type="hidden" th:field="*{id}" />
             <div class="mb-4">
                 <label for="nome" class="block text-sm font-medium text-gray-700">Nome:</label>
-                <input type="text" id="nome" th:field="*{nome}" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
+                <input type="text" id="nome" th:field="*{nome}" class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
             </div>
+
+			<div class="mb-4">
+				<label for="nome" class="block text-sm font-medium text-gray-700">Rendimento</label>
+				<div class="flex gap-4">
+					<input type="number" id="rendimento" th:field="*{rendimento}" class="text-center block rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required/>
+					<select id="tipoRendimento" th:field="*{tipoRendimento}" class="block w-min rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
+						<option value="">Selecione uma unidade</option>
+						<option value="p">porções</option>
+						<option value="f">fatias</option>
+						<option value="c">camadas</option>
+						<option value="g">g</option>
+						<option value="ml">ml</option>
+						<option value="un">un</option>
+					</select>
+				</div>
+			</div>
+				
             <div class="mb-4">
                 <label for="modoPreparo" class="block text-sm font-medium text-gray-700">Modo de Preparo:</label>
-                <textarea id="modoPreparo" th:field="*{modoPreparo}" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required></textarea>
+                <textarea id="modoPreparo" th:field="*{modoPreparo}" class="mt-1 block min-h-[150px] w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required></textarea>
             </div>
+			<div class="mb-3 p-3 rounded-lg bg-green-50 ">
+				<div class="flex justify-between items-center w-full">
+					<h3 class="text-lg font-medium text-gray-700 mb-4">Ingredientes</h3>
+					<button type="button" id="add-ingrediente" class="mb-4 rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700">
+						<i class="fa fa-plus"></i> Adicionar Ingrediente
+					</button>
+				</div>
+				<table class="min-w-full divide-y divide-gray-200 mb-4 bg-white rounded-lg shadow">
+					<thead class="bg-gray-50">
+						<tr>
+							<th class="p-3 text-center text-sm font-medium text-gray-500 w-6/12">Ingrediente</th>
+							<th class="p-3 text-center text-sm font-medium text-gray-500 w-2/12">Quantidade</th>
+							<th class="p-3 text-center text-sm font-medium text-gray-500 w-2/12">Custo</th>
+							<th class="p-3 text-center text-sm font-medium text-gray-500 w-2/12">Ações</th>
+						</tr>
+					</thead>
+					<tbody id="ingredientes-table-body">
+						<!-- Linhas dinâmicas de ingredientes serão adicionadas aqui -->
+					</tbody>
+				</table>
+			</div>
             <div class="flex justify-end mt-6 space-x-4">
                 <a href="/receitas" class="inline-flex items-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
                     <i class="fa-solid fa-arrow-left mr-2"></i> Cancelar
@@ -22,6 +60,112 @@
                 </button>
             </div>
         </form>
+		<script th:inline="javascript">
+			
+			const ingredientes            = /*[[${ingredientes}]]*/[];                 // Ingredientes disponíveis
+			const ingredientesVinculados  = /*[[${receita.receitaIngredientes}]]*/[];  // Ingredientes ao produto
+
+			const addIngredienteButton    = document.getElementById('add-ingrediente');			
+			const ingredientesTableBody   = document.getElementById('ingredientes-table-body');
+
+			let ingredienteIndex = 0; // Índice para ingredientes
+	
+			// Função para adicionar uma linha na tabela de ingredientes
+			// Seleciona automaticamente as unidades de medida conforme o tipo de ingrediente
+			function addIngredienteRow(ingredienteId = '', quantidade = '') {
+				const row = document.createElement('tr');
+				row.innerHTML = `
+					<td class="p-2">
+						<select class="w-full rounded-md border border-gray-300" name="ingredientes[${ingredienteIndex}].id" required>
+							<option value="">Selecione</option>
+							${ingredientes.map(i => `
+								<option value="${i.id}" ${i.id === ingredienteId ? 'selected' : ''}>${i.nome}</option>
+							`).join('')}
+						</select>
+					</td>
+					<td class="p-2 text-center text-nowrap">
+						<input type="number" name="ingredientes[${ingredienteIndex}].quantidade" class="w-[6em] text-center rounded-md border border-gray-300"  min="0" value="${quantidade}" required><label class="inline-block w-[2em]" for="ingredientes[${ingredienteIndex}].quantidade" data-field="unidade"></label>
+					</td>
+					<td class="p-2 text-center" data-field="custo"></td>
+					<td class="p-2 text-center">
+						<button type="button" class="text-red-600 hover:text-red-900" onclick="removeIngredienteRow(this)"><i class="fa fa-trash"></i></button>
+					</td>
+				`;
+
+				function atualizaUnidade(id){
+					const unidade = row.querySelector('[data-field="unidade"]');
+
+					if(!id) {
+						unidade.innerText = '';
+						return;
+					}
+
+					const tipo = ingredientes.find(i => i.id == id).tipo;
+
+					switch(tipo){
+						case 'Líquido':
+							unidade.innerText = 'ml';
+							break;
+						case 'Seco':
+							unidade.innerText = 'g';
+							break;
+						case 'Unitário':
+							unidade.innerText = 'un';
+							break;
+						default:
+							unidade.innerText = '';
+					}
+				}
+
+				function atualizaCusto(id, q){
+					
+					const custoField = row.querySelector('[data-field="custo"]');
+					if(!id) {
+						custoField.innerText = '';
+						return;
+					}
+					
+					const custo = ingredientes.find(i => i.id == id).precoUnitario * (q || quantidade);
+
+					console.log(q);
+					
+
+					custoField.innerText = formataReais(custo);
+				}
+
+				function atualiza(id){
+					atualizaUnidade(id);
+					atualizaCusto(id);
+				}
+
+
+				const selectIngrediente = row.querySelector('select');
+				const inputQuantidade = row.querySelector(`input[name="ingredientes[${ingredienteIndex}].quantidade"`)
+				
+				selectIngrediente.addEventListener('change', e => atualiza(selectIngrediente.value));
+				inputQuantidade.addEventListener('change', e => atualizaCusto(selectIngrediente.value, inputQuantidade.value));
+				
+				ingredientesTableBody.appendChild(row);
+				ingredienteIndex++;
+
+				atualiza(ingredienteId);
+			}
+	
+			// Função para remover uma linha da tabela de ingredientes
+			function removeIngredienteRow(button) {
+				const row = button.closest('tr');
+				row.remove();
+			}
+
+			ingredientesVinculados.forEach(pi => addIngredienteRow  (pi.ingrediente.id, pi.quantidade));
+	
+			addIngredienteButton.addEventListener('click', () => addIngredienteRow());
+
+			function formataReais(valor){
+				return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+			}
+
+		</script>
     </div>
 </body>
 </html>

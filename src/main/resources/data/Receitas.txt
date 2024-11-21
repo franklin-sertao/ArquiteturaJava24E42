@@ -1,8 +1,8 @@
-1;massa de bolo de chocolate;Pré-aqueça o forno a 180°C. Misture os ingredientes secos, adicione os líquidos e os ovos, asse por 40 minutos.;1;300.0;2;200.0;3;3.0;4;200.0;5;250.0;6;100.0;7;10.0
-2;recheio de brigadeiro;Cozinhe o leite condensado com manteiga até desgrudar do fundo da panela.;8;400.0;5;50.0;14;100.0
-3;cobertura de chocolate;Derreta o chocolate e misture com o creme de leite até obter uma mistura homogênea.;14;200.0;13;200.0
-4;massa de cookie tradicional;Misture a manteiga e o açúcar, adicione os ovos, misture a farinha e o fermento. Acrescente os chocolate chips, coloque em assadeiras e asse por 15 minutos.;5;150.0;2;100.0;3;2.0;1;200.0;7;5.0;9;100.0
-5;recheio de nutella;Recheie os cookies com Nutella.;10;100.0
-6;base de biscoitos e manteiga;Misture os biscoitos triturados com manteiga derretida e pressione na forma.;11;200.0;5;100.0
-7;creme de banoffee;Misture o leite condensado cozido com bananas fatiadas e creme de leite.;8;400.0;12;6.0;13;200.0
-8;cobertura de chocolate para torta banoffe;Derreta o chocolate e misture com creme de leite até obter uma cobertura homogênea.;14;150.0;13;100.0
+1;massa de bolo de chocolate;Pré-aqueça o forno a 180°C. Misture os ingredientes secos, adicione os líquidos e os ovos, asse por 40 minutos.;12;p;1;300.0;2;200.0;3;3.0;4;200.0;5;250.0;6;100.0;7;10.0
+2;recheio de brigadeiro;Cozinhe o leite condensado com manteiga até desgrudar do fundo da panela.;500;g;8;400.0;5;50.0;14;100.0
+3;cobertura de chocolate;Derreta o chocolate e misture com o creme de leite até obter uma mistura homogênea.;400;g;14;200.0;13;200.0
+4;massa de cookie tradicional;Misture a manteiga e o açúcar, adicione os ovos, misture a farinha e o fermento. Acrescente os chocolate chips, coloque em assadeiras e asse por 15 minutos.;22;p;5;150.0;2;100.0;3;2.0;1;200.0;7;5.0;9;100.0
+5;recheio de nutella;Recheie os cookies com Nutella.;100;g;10;100.0
+6;base de biscoitos e manteiga;Misture os biscoitos triturados com manteiga derretida e pressione na forma.;300;g;11;200.0;5;100.0
+7;creme de banoffee;Misture o leite condensado cozido com bananas fatiadas e creme de leite.;800;g;8;400.0;12;6.0;13;200.0
+8;cobertura de chocolate para torta banoffe;Derreta o chocolate e misture com creme de leite até obter uma cobertura homogênea.;250;g;14;150.0;13;100.0
