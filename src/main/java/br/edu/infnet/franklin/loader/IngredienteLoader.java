@@ -50,20 +50,17 @@ public class IngredienteLoader {
             Ingrediente ingrediente = null;
             switch (tipo.toLowerCase()) {
                 case "liquido":
-                    if(campos.length < 6) continue;
                     IngredienteLiquido liquido = new IngredienteLiquido();
                     liquido.setVolumeLiquidoEmML(Double.parseDouble(campos[5]));
                     ingrediente = liquido;
                     break;
                 case "unitario":
-                    if(campos.length < 6) continue;
                     IngredienteUnitario unitario = new IngredienteUnitario();
                     unitario.setQuantidadeUnidades(Integer.parseInt(campos[5]));
                     ingrediente = unitario;
                     break;
                 case "seco":
                 default:
-                    if(campos.length < 6) continue;
                     IngredienteSeco seco = new IngredienteSeco();
                     seco.setPesoLiquidoEmGramas(Double.parseDouble(campos[5]));
                     ingrediente = seco;
