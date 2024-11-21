@@ -132,10 +132,15 @@
 	
 			// Função para adicionar uma linha na tabela de receitas
 			function addReceitaRow(receitaId = '', quantidade = '') {
+				//verifica se o registro já existe
+				if(receitasTableBody.querySelector(`select[name="receitas[${receitaIndex}].id"][value="${receitaId}"]`)){
+					alert('Receita já vinculada');
+					return;
+				}
 				const row = document.createElement('tr');
 				row.innerHTML = `
 					<td class="p-2">
-						<select class="w-full rounded-md border border-gray-300" name="receitas[${receitaIndex}].id" required>
+						<select class="w-full rounded-md border border-gray-300" name="receitas[${receitaIndex}].id"  onchange="checarSeExiste(this)" required>
 							<option value="">Selecione</option>
 							${receitas.map(r => `
 								<option value="${r.id}" ${r.id === receitaId ? 'selected' : ''}>${r.nome}</option>
@@ -164,7 +169,7 @@
 				const row = document.createElement('tr');
 				row.innerHTML = `
 					<td class="p-2">
-						<select class="w-full rounded-md border border-gray-300" name="ingredientes[${ingredienteIndex}].id" required>
+						<select class="w-full rounded-md border border-gray-300" name="ingredientes[${ingredienteIndex}].id" onchange="checarSeExiste(this)" required>
 							<option value="">Selecione</option>
 							${ingredientes.map(i => `
 								<option value="${i.id}" ${i.id === ingredienteId ? 'selected' : ''}>${i.nome}</option>
@@ -193,7 +198,7 @@
 				const row = document.createElement('tr');
 				row.innerHTML = `
 					<td class="p-2">
-						<select class="w-full rounded-md border border-gray-300" name="embalagens[${embalagemIndex}]" required>
+						<select class="w-full rounded-md border border-gray-300" name="embalagens[${embalagemIndex}]" onchange="checarSeExiste(this)" required>
 							<option value="">Selecione</option>
 							${embalagens.map(e => `
 								<option value="${e.id}" ${e.id === embalagemId ? 'selected' : ''}>${e.descricao}</option>
@@ -212,6 +217,18 @@
 			function removeEmbalagemRow(button) {
 				const row = button.closest('tr');
 				row.remove();
+			}
+
+			function checarSeExiste(select){
+				const tbody = select.closest('tbody');
+				const selects = tbody.querySelectorAll('select');
+				const values = Array.from(selects).map(s => s.value);
+				const uniqueValues = new Set(values);
+				
+				if(values.length !== uniqueValues.size){
+					alert('Este item já existe na lista');
+					select.value = '';
+				}
 			}
 
 			// Adicionar linhas de receitas e ingredientes vinculados ao carregar a página

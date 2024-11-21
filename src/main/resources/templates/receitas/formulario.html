@@ -76,7 +76,7 @@
 				const row = document.createElement('tr');
 				row.innerHTML = `
 					<td class="p-2">
-						<select class="w-full rounded-md border border-gray-300" name="ingredientes[${ingredienteIndex}].id" required>
+						<select class="w-full rounded-md border border-gray-300" name="ingredientes[${ingredienteIndex}].id" onchange="checarSeExiste(this)" required>
 							<option value="">Selecione</option>
 							${ingredientes.map(i => `
 								<option value="${i.id}" ${i.id === ingredienteId ? 'selected' : ''}>${i.nome}</option>
@@ -163,6 +163,18 @@
 
 			function formataReais(valor){
 				return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+			}
+
+			function checarSeExiste(select){
+				const tbody = select.closest('tbody');
+				const selects = tbody.querySelectorAll('select');
+				const values = Array.from(selects).map(s => s.value);
+				const uniqueValues = new Set(values);
+				
+				if(values.length !== uniqueValues.size){
+					alert('Este item já existe na lista');
+					select.value = '';
+				}
 			}
 
 		</script>

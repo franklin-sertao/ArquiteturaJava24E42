@@ -1,14 +1,14 @@
-1;seco;Farinha de Trigo;2.50;true;500
-2;seco;Açúcar;1.80;false;300
-3;unitario;Ovos;0.50;true;12
-4;liquido;Leite;1.20;false;1000
-5;seco;Manteiga;3.00;true;250
-6;seco;Chocolate em Pó;4.00;false;200
-7;seco;Fermento em Pó;1.00;false;50
-8;liquido;Leite Condensado;2.00;false;400
-9;seco;Chocolate Chips;3.50;false;150
-10;liquido;Nutella;3.00;false;500
-11;unitario;Biscoitos;2.50;false;100
-12;unitario;Bananas;1.20;true;6
-13;liquido;Creme de Leite;2.50;false;500
-14;seco;Chocolate para Cobertura;3.00;false;200
+1;seco;Farinha de Trigo Rosa Branca Premium;36.89;true;5000
+2;seco;Açúcar União;4.69;true;1000
+3;unitario;Ovos Brancos Mantiqueira - Jumbo;6.75;true;10
+4;liquido;Leite UHT Integral Piracanjuba;5.19;false;1000
+5;seco;Manteiga;13.9;true;200
+6;seco;Chocolate em Pó 100% - Sicao;33.24;false;1000
+7;seco;Fermento Químico em Pó - Dr.Oetker;4.29;false;100
+8;liquido;Leite Condensado;6.62;false;365
+9;seco;Chocolate Chips;66.99;false;1010
+10;liquido;Nutella;8.00;false;350
+11;seco;Biscoito Maizena Pìraquê;5.35;false;175
+12;unitario;Bananas;7.69;true;12
+13;liquido;Creme de Leite Piracanjuba;3.50;false;200
+14;seco;Chocolate para Cobertura;26.99;false;1010

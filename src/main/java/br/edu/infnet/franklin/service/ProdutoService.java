@@ -114,6 +114,22 @@ public class ProdutoService {
         }
     }
 
+	public static Double calcularPrecoTotal(Produto produto) {
+		
+		if (produto == null) return null;
+		
+		Double precoTotal = 0.0;
+		Collection<ProdutoReceita> produtoReceitas = produto.getProdutoReceitas();
+		for (ProdutoReceita produtoReceita : produtoReceitas) {
+			precoTotal += produtoReceita.getReceita().getPrecoUnitario() * produtoReceita.getQuantidade();
+		}
+		Collection<ProdutoIngrediente> produtoIngredientes = produto.getProdutoIngredientes();
+		for (ProdutoIngrediente produtoIngrediente : produtoIngredientes) {
+			precoTotal += produtoIngrediente.getIngrediente().getPrecoUnitario() * produtoIngrediente.getQuantidade();
+		}
+		return precoTotal;
+	}
+
     public Produto obterPorId(Long id) {
         return produtoRepository.findById(id).orElse(null);
     }

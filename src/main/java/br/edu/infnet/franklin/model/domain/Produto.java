@@ -3,9 +3,15 @@ package br.edu.infnet.franklin.model.domain;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.ReadOnlyProperty;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import br.edu.infnet.franklin.service.ProdutoService;
 
 @Entity
 public class Produto {
@@ -61,6 +67,10 @@ public class Produto {
     public List<Embalagem> getEmbalagens() {
         return embalagens;
     }
+
+	public Double getPrecoTotal() {		
+		return ProdutoService.calcularPrecoTotal(this);
+	}
 
     public void setId(Long id) {
         this.id = id;

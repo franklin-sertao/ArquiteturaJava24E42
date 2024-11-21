@@ -18,6 +18,7 @@
 						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conservado Gelado</th>
 						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Receita e Ingredientes</th>
 						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Embalagens</th>
+						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço de Custo</th>
 						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
 					</tr>
 				</thead>
@@ -45,6 +46,8 @@
 								</li>
 							</ul>
 						</td>
+
+						<td class="px-6 py-4  text-sm text-gray-700" th:text="${#numbers.formatCurrency(produto.precoTotal)}"></td>
 						<td class="px-6 py-4 text-sm text-gray-700 text-nowrap">
 							<a th:href="@{/produtos/{id}/editar(id=${produto.id})}" class="text-indigo-600 hover:text-indigo-900">
 								<i class="fa-solid fa-pen-to-square mr-1"></i>	Editar
