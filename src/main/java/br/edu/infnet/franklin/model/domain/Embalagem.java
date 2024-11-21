@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Embalagem {
 
@@ -17,6 +19,7 @@ public class Embalagem {
     private BigDecimal precoPacote;
 
     @ManyToMany(mappedBy = "embalagens", fetch = FetchType.EAGER)
+	@JsonBackReference
     private List<Produto> produtos = new ArrayList<>();
 
     // Getters e Setters
@@ -35,6 +38,13 @@ public class Embalagem {
     public BigDecimal getPrecoPacote() {
         return precoPacote;
     }
+
+	public BigDecimal getPrecoUnitario() {
+		if (this.precoPacote != null) {
+			return this.precoPacote.divide(new BigDecimal(this.quantidadePorPacote));
+		}
+		return null;
+	}
 
     public List<Produto> getProdutos() {
         return produtos;

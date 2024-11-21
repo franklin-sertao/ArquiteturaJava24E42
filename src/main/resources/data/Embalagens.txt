@@ -1,3 +1,4 @@
-1;Pote de Acetato 20x20x20 com Alça de Transporte;10;15.00
-2;Caixa Premium 25x25x25 em Papelão Kraft com Tampa;20;25.50
-3;Pote de Vidro Transparente 15x15x15 com Tampa Hermética;30;35.75
+1;Caixa de Acetato 20x20x20cm;5;23.0
+2;Base Para Bolo Redonda Branca 19cm ULTRAFEST;1;0.99
+3;Saco Celofane Transparente 15x22cm;100;25.50
+4;Embalagem 56M Torta Média 50 Unidades 9026 PRAFESTA;50;112.0
