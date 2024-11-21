@@ -16,6 +16,8 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço Total</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Qtd por lote/embalagem</th>
+						<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço Unitário</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                     </tr>
                 </thead>
@@ -24,7 +26,13 @@
                         <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.id}"></td>
                         <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.nome}"></td>
                         <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.tipo}"></td>
-                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.precoTotal}"></td>
+                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatCurrency(ingrediente.precoTotal)}"></td>
+						<th:block th:switch="${ingrediente.tipo}">
+							<td th:case="'Líquido'" class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(ingrediente.volumeLiquidoEmML,1,2) + ' ml'}"></td>
+							<td th:case="'Seco'"    class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(ingrediente.pesoLiquidoEmGramas,1,2) + ' g'}"></td>
+							<td th:case="'Unitário'" class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.quantidadeUnidades + ' un'}"></td>
+						</th:block>
+						<td class="px-6 py-4 text-sm text-gray-700" th:text="${'R$ ' + #numbers.formatDecimal(ingrediente.precoUnitario,1,2)}"></td>
                         <td class="px-6 py-4 text-sm text-gray-700">
                             <a th:href="@{/ingredientes/{id}/editar(id=${ingrediente.id})}" class="text-indigo-600 hover:text-indigo-900">
                                 <i class="fa-solid fa-pen-to-square mr-1"></i> Editar

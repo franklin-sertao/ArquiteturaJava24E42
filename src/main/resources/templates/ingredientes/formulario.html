@@ -20,6 +20,10 @@
                 <label for="precoTotal" class="block text-sm font-medium text-gray-700">Preço Total:</label>
                 <input type="number" step="0.01" id="precoTotal" th:field="*{precoTotal}" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
             </div>
+			<div class="mb-4" id="quantidade">
+                <label for="precoTotal" class="block text-sm font-medium text-gray-700"></label>
+                <input type="number" id="precoTotal" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
+            </div>
             <div class="mb-4">
                 <label for="organico" class="inline-flex items-center">
                     <input type="checkbox" id="organico" th:field="*{organico}" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
@@ -35,6 +39,48 @@
                 </button>
             </div>
         </form>
+		<script th:inline="javascript">
+			const tipoPropriedades = {
+				'Líquido': {
+					label: 'Volume (ml)',
+					step: '0.1',
+					name: 'volumeLiquidoEmML'
+				},
+				'Seco': {
+					label: 'Peso (g)',
+					step: '1',
+					name: 'pesoLiquidoEmGramas'
+				},
+				'Unitário': {
+					label: 'Quantidade',
+					step: '1',
+					name: 'quantidadeUnidades'
+				}
+			};
+
+			function atualizaTipo(tipo, valor = null) {
+				const propriedades = tipoPropriedades[tipo];
+				const quantidade   = document.getElementById('quantidade');
+				const label        = quantidade.querySelector('label');
+				const input        = quantidade.querySelector('input');
+
+				label.textContent  = propriedades.label;
+				input.step         = propriedades.step;
+				input.name         = propriedades.name;
+				input.value        = valor;
+			}
+
+			const tipo = /*[[${ingredienteForm.tipo}]]*/ null;
+			console.log(tipo);
+
+					//retorna a quantidade independente do tipo
+			const valorInicial = /*[[${ingredienteForm.volumeLiquidoEmML} ?: (${ingredienteForm.pesoLiquidoEmGramas} ?: ${ingredienteForm.quantidadeUnidades})]]*/ null;
+			console.log(valorInicial);
+
+			atualizaTipo(tipo, valorInicial);
+	
+
+		</script>
     </div>
 </body>
 </html>
