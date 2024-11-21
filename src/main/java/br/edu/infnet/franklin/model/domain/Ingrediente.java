@@ -13,7 +13,6 @@ public abstract class Ingrediente {
 
     private String nome;
     private Double precoTotal;
-	private Double quantidade;
     private boolean organico;
 
     // Getters e Setters
@@ -28,10 +27,6 @@ public abstract class Ingrediente {
     public Double getPrecoTotal() {
         return precoTotal;
     }
-
-	public Double getQuantidade() {
-		return quantidade;
-	}
 
     public boolean isOrganico() {
         return organico;
@@ -48,10 +43,6 @@ public abstract class Ingrediente {
     public void setPrecoTotal(Double precoTotal) {
         this.precoTotal = precoTotal;
     }
-
-	public void setQuantidade(Double quantidade) {
-		this.quantidade = quantidade;
-	}
 
     public void setOrganico(boolean organico) {
         this.organico = organico;
