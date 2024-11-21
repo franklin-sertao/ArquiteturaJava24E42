@@ -29,11 +29,11 @@
 						<td class="px-6 py-4  text-sm text-gray-700">
 							<ul class="list-disc pl-5">
 								<li th:each="pr : ${produto.produtoReceitas}">
-									<span class="font-medium text-indigo-600" th:text="${pr.receita.nome}">Receitas e ingredientes</span>:
+									<span th:text="${pr.receita.nome}">Receitas e ingredientes</span>:
 									<span th:text=" 'x '+ ${pr.quantidade}">Quantidade</span>
 								</li>
 								<li th:each="pi : ${produto.produtoIngredientes}">
-									<span class="font-medium text-green-600" th:text="${pi.ingrediente.nome}">Ingrediente</span>:
+									<span th:text="${pi.ingrediente.nome}">Ingrediente</span>:
 									<span th:text="'x ' + ${pi.quantidade}">Quantidade</span>
 								</li>
 							</ul>
@@ -41,7 +41,7 @@
 						<td class="px-6 py-4  text-sm text-gray-700">
 							<ul class="list-disc pl-5">
 								<li th:each="emb : ${produto.embalagens}">
-									<span class="font-medium text-indigo-600" th:text="${emb.descricao}">Embalagens</span>
+									<span th:text="${emb.descricao}">Embalagens</span>
 								</li>
 							</ul>
 						</td>

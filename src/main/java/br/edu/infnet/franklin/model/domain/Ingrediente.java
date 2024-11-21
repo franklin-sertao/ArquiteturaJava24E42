@@ -12,7 +12,8 @@ public abstract class Ingrediente {
     private Long id;
 
     private String nome;
-    private java.math.BigDecimal precoTotal;
+    private Double precoTotal;
+	private Double quantidade;
     private boolean organico;
 
     // Getters e Setters
@@ -24,9 +25,13 @@ public abstract class Ingrediente {
         return nome;
     }
 
-    public java.math.BigDecimal getPrecoTotal() {
+    public Double getPrecoTotal() {
         return precoTotal;
     }
+
+	public Double getQuantidade() {
+		return quantidade;
+	}
 
     public boolean isOrganico() {
         return organico;
@@ -40,13 +45,18 @@ public abstract class Ingrediente {
         this.nome = nome;
     }
 
-    public void setPrecoTotal(java.math.BigDecimal precoTotal) {
+    public void setPrecoTotal(Double precoTotal) {
         this.precoTotal = precoTotal;
     }
+
+	public void setQuantidade(Double quantidade) {
+		this.quantidade = quantidade;
+	}
 
     public void setOrganico(boolean organico) {
         this.organico = organico;
     }
 
+	public abstract Double getPrecoUnitario();
     public abstract String getTipo();
 }

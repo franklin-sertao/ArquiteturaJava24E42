@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
 <body>
     <div th:fragment="page">
         <h1 class="text-2xl font-bold text-indigo-600 mb-6 text-center">Embalagens</h1>
@@ -12,20 +12,22 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descrição</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantidade por Pacote</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço Pacote</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Descrição</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Quantidade<br>por Pacote</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Preço<br>do Pacote</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Preço<br>Unitário</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" th:each="embalagem : ${embalagens}">
                     <tr>
-                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.id}"></td>
-                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.descricao}"></td>
-                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.quantidadePorPacote}"></td>
-                        <td class="px-6 py-4 text-sm text-gray-700" th:text="${embalagem.precoPacote}"></td>
-                        <td class="px-6 py-4 text-sm text-gray-700">
+                        <td class="px-6 py-4 text-center text-sm text-gray-700" th:text="${embalagem.id}"></td>
+                        <td class="px-6 py-4 text-leaft text-sm text-gray-700" th:text="${embalagem.descricao}"></td>
+                        <td class="px-6 py-4 text-center text-sm text-gray-700" th:text="${embalagem.quantidadePorPacote}"></td>
+                        <td class="px-6 py-4 text-center text-sm text-gray-700" th:text="${#numbers.formatCurrency(embalagem.precoPacote)}"></td>
+                        <td class="px-6 py-4 text-center text-sm text-gray-700 font-medium" th:text="${#numbers.formatCurrency(embalagem.getPrecoUnitario())}"></td>
+                        <td class="px-6 py-4 text-center text-sm text-gray-700">
                             <a th:href="@{/embalagens/{id}/editar(id=${embalagem.id})}" class="text-indigo-600 hover:text-indigo-900">
                                 <i class="fa-solid fa-pen-to-square mr-1"></i> Editar
                             </a>

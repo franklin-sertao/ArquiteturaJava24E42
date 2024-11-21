@@ -36,7 +36,8 @@ public class IngredienteLoader {
             Long id = Long.parseLong(campos[0]);
 			String nome = campos[2];
 			String tipo = campos[1];
-			java.math.BigDecimal precoTotal = new java.math.BigDecimal(campos[3]);
+			Double precoTotal = Double.valueOf(campos[3]);
+		
 			boolean organico = Boolean.parseBoolean(campos[4]);
 
 			if(ingredienteService.obterPorId(id) != null) {
@@ -51,7 +52,7 @@ public class IngredienteLoader {
                 case "liquido":
                     if(campos.length < 6) continue;
                     IngredienteLiquido liquido = new IngredienteLiquido();
-                    liquido.setVolumeLiquidoEmML(Integer.parseInt(campos[5]));
+                    liquido.setVolumeLiquidoEmML(Double.parseDouble(campos[5]));
                     ingrediente = liquido;
                     break;
                 case "unitario":
@@ -64,7 +65,7 @@ public class IngredienteLoader {
                 default:
                     if(campos.length < 6) continue;
                     IngredienteSeco seco = new IngredienteSeco();
-                    seco.setPesoLiquidoEmGramas(Integer.parseInt(campos[5]));
+                    seco.setPesoLiquidoEmGramas(Double.parseDouble(campos[5]));
                     ingrediente = seco;
                     break;
             }

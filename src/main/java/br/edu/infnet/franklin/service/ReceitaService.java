@@ -64,4 +64,14 @@ public class ReceitaService {
     public Iterable<Receita> obterLista() {
         return receitaRepository.findAll();
     }
+
+	//Obter preço total da receita
+	public Double obterPrecoTotal(Receita receita) {
+		Double precoTotal = 0.0;
+		for (ReceitaIngrediente receitaIngrediente : receita.getReceitaIngredientes()) {
+			precoTotal = precoTotal + receitaIngrediente.getIngrediente().getPrecoUnitario() * receitaIngrediente.getQuantidade();
+		}
+		return precoTotal;
+	}
+
 }

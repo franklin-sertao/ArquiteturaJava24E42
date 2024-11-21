@@ -50,6 +50,7 @@ public class ProdutoService {
 			// Remove associações antigas
 			produtoExistente.getProdutoReceitas().clear();
 			produtoExistente.getProdutoIngredientes().clear();
+			produtoExistente.getEmbalagens().clear();
 		}
 
 

@@ -7,14 +7,14 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("seco")
 public class IngredienteSeco extends Ingrediente {
 
-    private Integer pesoLiquidoEmGramas;
+    private Double pesoLiquidoEmGramas;
 
     // Getters e Setters
-    public Integer getPesoLiquidoEmGramas() {
+    public Double getPesoLiquidoEmGramas() {
         return pesoLiquidoEmGramas;
     }
 
-    public void setPesoLiquidoEmGramas(Integer pesoLiquidoEmGramas) {
+    public void setPesoLiquidoEmGramas(Double pesoLiquidoEmGramas) {
         this.pesoLiquidoEmGramas = pesoLiquidoEmGramas;
     }
 
@@ -22,4 +22,9 @@ public class IngredienteSeco extends Ingrediente {
     public String getTipo() {
         return "Seco";
     }
+
+	@Override
+	public Double getPrecoUnitario() {
+		return pesoLiquidoEmGramas != null ? getPrecoTotal() / getPesoLiquidoEmGramas() : null;
+	}
 }

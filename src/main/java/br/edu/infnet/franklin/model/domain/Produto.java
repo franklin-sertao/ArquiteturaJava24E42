@@ -1,8 +1,11 @@
 package br.edu.infnet.franklin.model.domain;
 
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Produto {
@@ -27,6 +30,7 @@ public class Produto {
         joinColumns = @JoinColumn(name = "idProduto"),
         inverseJoinColumns = @JoinColumn(name = "idEmbalagem")
     )
+	@JsonManagedReference
     private List<Embalagem> embalagens = new ArrayList<>();
 
     // Getters e Setters

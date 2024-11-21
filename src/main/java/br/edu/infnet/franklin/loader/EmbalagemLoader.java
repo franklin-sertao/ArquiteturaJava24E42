@@ -2,7 +2,6 @@ package br.edu.infnet.franklin.loader;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,7 @@ public class EmbalagemLoader {
             Long id = Long.parseLong(campos[0]);
 			String descricao = campos[1];
             Integer quantidadePorPacote = Integer.parseInt(campos[2]);
-            BigDecimal precoPacote = new BigDecimal(campos[3]);
+            Double precoPacote = Double.valueOf(campos[3]);
 
 			if(embalagemService.obterPorId(id) != null) {
 				System.out.println("Embalagem " + descricao + " já cadastrada.");

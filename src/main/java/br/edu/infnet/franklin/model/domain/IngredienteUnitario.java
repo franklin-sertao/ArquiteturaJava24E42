@@ -22,4 +22,9 @@ public class IngredienteUnitario extends Ingrediente {
     public String getTipo() {
         return "Unitário";
     }
+
+	@Override
+	public Double getPrecoUnitario() {
+		return getQuantidadeUnidades() != null ? getPrecoTotal() / getQuantidadeUnidades() : null;
+	}
 }

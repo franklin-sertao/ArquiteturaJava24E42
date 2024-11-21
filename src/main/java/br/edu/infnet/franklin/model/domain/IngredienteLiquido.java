@@ -7,14 +7,14 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("liquido")
 public class IngredienteLiquido extends Ingrediente {
 
-    private Integer volumeLiquidoEmML;
+    private Double volumeLiquidoEmML;
 
     // Getters e Setters
-    public Integer getVolumeLiquidoEmML() {
+    public Double getVolumeLiquidoEmML() {
         return volumeLiquidoEmML;
     }
 
-    public void setVolumeLiquidoEmML(Integer volumeLiquidoEmML) {
+    public void setVolumeLiquidoEmML(Double volumeLiquidoEmML) {
         this.volumeLiquidoEmML = volumeLiquidoEmML;
     }
 
@@ -22,4 +22,9 @@ public class IngredienteLiquido extends Ingrediente {
     public String getTipo() {
         return "Líquido";
     }
+
+	@Override
+	public Double getPrecoUnitario() {
+		return getVolumeLiquidoEmML() != null ? getPrecoTotal() / getVolumeLiquidoEmML() : null;
+	}
 }

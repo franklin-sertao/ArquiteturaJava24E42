@@ -1,5 +1,9 @@
 package br.edu.infnet.franklin.loader;
 
+import br.edu.infnet.franklin.Constantes;
+import br.edu.infnet.franklin.model.domain.Produto;
+import br.edu.infnet.franklin.service.ProdutoService;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -10,8 +14,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.edu.infnet.franklin.model.domain.Produto;
-import br.edu.infnet.franklin.service.ProdutoService;
 
 
 @Component
@@ -32,12 +34,12 @@ public class ProdutoLoader {
 		while ((line = reader.readLine()) != null) {
 			
 
-			String[] items = line.split("#", -1);
+			String[] items = line.split("#", Constantes.SPLIT_PERMITIR_VAZIO);
 
-			String[] camposProduto      = items[0].split(";", -1);
-			String[] camposReceitas     = items[1].split(";", -1);
-			String[] camposIngredientes = items[2].split(";", -1);
-			String[] stringsEmbalagens  = items[3].split(";", -1);
+			String[] camposProduto      = items[0].split(";", Constantes.SPLIT_PERMITIR_VAZIO);
+			String[] camposReceitas     = items[1].split(";", Constantes.SPLIT_PERMITIR_VAZIO);
+			String[] camposIngredientes = items[2].split(";", Constantes.SPLIT_PERMITIR_VAZIO);
+			String[] stringsEmbalagens  = items[3].split(";", Constantes.SPLIT_PERMITIR_VAZIO);
 			
 			Long id = Long.parseLong(camposProduto[0]);
 			String descricao = camposProduto[1];

@@ -79,7 +79,7 @@ class Embalagem {
     - id: Long
     - descricao: String
     - quantidadePorPacote: Integer
-    - precoPacote: BigDecimal
+    - precoPacote: Double
 }
 
 class Receita {
@@ -91,7 +91,7 @@ class Receita {
 abstract class Ingrediente {
     - id: Long
     - nome: String
-    - precoTotal: BigDecimal
+    - precoTotal: Double
     - organico: boolean
 }
 

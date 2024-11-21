@@ -5,13 +5,14 @@ public class IngredienteForm {
     private Long id;
     private String tipo;
     private String nome;
-    private java.math.BigDecimal precoTotal;
+    private Double precoTotal;
     private boolean organico;
 
     // Campos específicos
-    private Integer pesoLiquidoEmGramas;      // Para "seco"
-    private Integer volumeLiquidoEmML;        // Para "liquido"
-    private Integer quantidadeUnidades;       // Para "unitario"
+    private Double pesoLiquidoEmGramas;      // Para "seco"
+    private Double volumeLiquidoEmML;        // Para "liquido"
+    private Integer quantidadeUnidades;      // Para "unitario"
+
 
     // Getters e Setters
     public Long getId() {
@@ -38,11 +39,11 @@ public class IngredienteForm {
         this.nome = nome;
     }
 
-    public java.math.BigDecimal getPrecoTotal() {
+    public Double getPrecoTotal() {
         return precoTotal;
     }
 
-    public void setPrecoTotal(java.math.BigDecimal precoTotal) {
+    public void setPrecoTotal(Double precoTotal) {
         this.precoTotal = precoTotal;
     }
 
@@ -54,19 +55,19 @@ public class IngredienteForm {
         this.organico = organico;
     }
 
-    public Integer getPesoLiquidoEmGramas() {
+    public Double getPesoLiquidoEmGramas() {
         return pesoLiquidoEmGramas;
     }
 
-    public void setPesoLiquidoEmGramas(Integer pesoLiquidoEmGramas) {
+    public void setPesoLiquidoEmGramas(Double pesoLiquidoEmGramas) {
         this.pesoLiquidoEmGramas = pesoLiquidoEmGramas;
     }
 
-    public Integer getVolumeLiquidoEmML() {
+    public Double getVolumeLiquidoEmML() {
         return volumeLiquidoEmML;
     }
 
-    public void setVolumeLiquidoEmML(Integer volumeLiquidoEmML) {
+    public void setVolumeLiquidoEmML(Double volumeLiquidoEmML) {
         this.volumeLiquidoEmML = volumeLiquidoEmML;
     }
 

@@ -6,96 +6,147 @@
         <form th:action="@{/produtos/salvar}" th:object="${produto}" method="post" class="bg-white p-6 rounded-lg shadow-lg">
             <input type="hidden" th:field="*{id}" />
             
-            <div class="mb-4">
-                <label for="descricao" class="block text-sm font-medium text-gray-700">Descrição:</label>
-                <input type="text" id="descricao" th:field="*{descricao}" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
+			
+            <div class="flex gap-4 mb-4">
+				<div class="grow">
+					<label for="descricao" class="block text-sm font-medium text-gray-700">Descrição:</label>
+					<input type="text" id="descricao" th:field="*{descricao}" class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
+				</div>
+
+				<div class="w-max">
+					<label class="block text-sm font-medium text-gray-700">Deve ser conservado gelado?
+						<input type="checkbox" value="" class="sr-only peer" th:field="*{conservadoGelado}">
+						<div class="relative w-11 h-6 bg-gray-200  rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+					</label>
+				</div>
+
             </div>
             
             <div class="mb-4">
                 <label for="modoPreparo" class="block text-sm font-medium text-gray-700">Modo de Preparo:</label>
-                <textarea id="modoPreparo" th:field="*{modoPreparo}" class="mt-1 block min-h-[150px] w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required></textarea>
+                <textarea id="modoPreparo" th:field="*{modoPreparo}" class="mt-1 block min-h-[150px] w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required></textarea>
             </div>
+			<hr class="my-5">
+			<div class="w-full">
+				<div class="mb-3 p-3 col-span-2 rounded-lg bg-indigo-50 ">
+					<div class="flex justify-between items-center w-full">
+						<div>
+							<h3 class="text-lg font-medium text-gray-700 mb-4 text-nowrap">Receitas Vinculadas</h3>
+						</div>
+						<div>
+							<button type="button" id="add-receita" class="mb-4 rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm text-nowrap font-medium text-white shadow-sm hover:bg-indigo-700">
+								<i class="fa fa-plus"></i>  Adicionar Receita
+							</button>
+						</div>
+					</div>
+					
+					<table class="min-w-full divide-y divide-gray-200 mb-4 bg-white rounded-lg shadow">
+						<thead class="bg-gray-50">
+							<tr>
+								<th class="p-3 text-center text-sm font-medium text-gray-500 w-8/12">Receita</th>
+								<th class="p-3 text-center text-sm font-medium text-gray-500 w-2/12">Quantidade</th>
+								<th class="p-3 text-center text-sm font-medium text-gray-500 w-2/12">Ações</th>
+							</tr>
+						</thead>
+						<tbody id="receitas-table-body">
+							<!-- Linhas dinâmicas de receitas serão adicionadas aqui -->
+						</tbody>
+					</table>
+				</div>
 
-            <h3 class="text-lg font-medium text-gray-700 mb-4">Receitas Vinculadas</h3>
-            <table class="min-w-full divide-y divide-gray-200 mb-4 bg-white rounded-lg shadow">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Receita</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Quantidade</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="receitas-table-body">
-                    <!-- Linhas dinâmicas de receitas serão adicionadas aqui -->
-                </tbody>
-            </table>
-            <button type="button" id="add-receita" class="mb-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
-                Adicionar Receita
-            </button>
+				<div class="mb-3 p-3 rounded-lg bg-green-50 ">
+					<div class="flex justify-between items-center w-full">
+						<h3 class="text-lg font-medium text-gray-700 mb-4">Ingredientes</h3>
+						<button type="button" id="add-ingrediente" class="mb-4 rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700">
+							<i class="fa fa-plus"></i> Adicionar Ingrediente
+						</button>
+					</div>
+					<table class="min-w-full divide-y divide-gray-200 mb-4 bg-white rounded-lg shadow">
+						<thead class="bg-gray-50">
+							<tr>
+								<th class="p-3 text-center text-sm font-medium text-gray-500 w-8/12">Ingrediente</th>
+								<th class="p-3 text-center text-sm font-medium text-gray-500 w-2/12">Quantidade</th>
+								<th class="p-3 text-center text-sm font-medium text-gray-500 w-2/12">Ações</th>
+							</tr>
+						</thead>
+						<tbody id="ingredientes-table-body">
+							<!-- Linhas dinâmicas de ingredientes serão adicionadas aqui -->
+						</tbody>
+					</table>
+				</div>
 
-            <!-- Nova Tabela para Ingredientes Vinculados -->
-            <h3 class="text-lg font-medium text-gray-700 mb-4">Ingredientes Vinculados</h3>
-            <table class="min-w-full divide-y divide-gray-200 mb-4 bg-white rounded-lg shadow">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Ingrediente</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Quantidade</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="ingredientes-table-body">
-                    <!-- Linhas dinâmicas de ingredientes serão adicionadas aqui -->
-                </tbody>
-            </table>
-            <button type="button" id="add-ingrediente" class="mb-4 inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700">
-                Adicionar Ingrediente
-            </button>
+				<div class="mb-3 p-3 rounded-lg bg-fuchsia-50">
+					<div class="flex justify-between items-center w-full">
+						<h3 class="text-lg font-medium text-gray-700 mb-4">Embalagens</h3>
+						<button type="button" id="add-embalagem" class="mb-4 justify-center rounded-md border border-transparent bg-fuchsia-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-fuchsia-700">
+							<i class="fa fa-plus"></i> Adicionar Embalagem
+						</button>
+					</div>
+					<table class="min-w-full divide-y divide-gray-200 mb-4 bg-white rounded-lg shadow">
+						<thead class="bg-gray-50">
+							<tr>
+								<th class="p-3 text-center text-sm font-medium text-gray-500 w-10/12">Embalagem</th>
+								<th class="p-3 text-center text-sm font-medium text-gray-500 w-2/12">Ações</th>
+							</tr>
+						</thead>
+						<tbody id="embalagens-table-body">
+							<!-- Linhas dinâmicas de embalagens serão adicionadas aqui -->
+						</tbody>
+					</table>
+				</div>
+			</div>
             
             <div class="flex justify-end mt-6 space-x-4">
-                <a href="/produtos" class="inline-flex justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    Cancelar
+                <a href="/produtos" class="rounded-md border border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <i class="fa fa-arrow-left"></i> Voltar
                 </a>
-                <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    Salvar
+                <button type="submit" class="rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                   <i class="fa fa-save"></i> Salvar
                 </button>
             </div>
+
         </form>
 		<script th:inline="javascript">
-			const receitas = /*[[${receitas}]]*/ []; // Receitas disponíveis
-			const receitasVinculadas = /*[[${produto.produtoReceitas}]]*/ []; // Receitas vinculadas ao produto
-	
-			console.log(receitasVinculadas);
-			console.log(receitas);
-	
-			const ingredientes = /*[[${ingredientes}]]*/ []; // Ingredientes disponíveis
-			const ingredientesVinculados = /*[[${produto.produtoIngredientes}]]*/ []; // Ingredientes vinculados ao produto
-	
-			const receitasTableBody = document.getElementById('receitas-table-body');
-			const addReceitaButton = document.getElementById('add-receita');
-	
-			const ingredientesTableBody = document.getElementById('ingredientes-table-body');
-			const addIngredienteButton = document.getElementById('add-ingrediente');
+			const receitas                = /*[[${receitas}]]*/[];                     // Receitas disponíveis
+			const ingredientes            = /*[[${ingredientes}]]*/[];                 // Ingredientes disponíveis
+			const embalagens              = /*[[${embalagens}]]*/[];                   // Embalagens disponíveis
+			
+			const receitasVinculadas      = /*[[${produto.produtoReceitas}]]*/[];      // Receitas vinculadas ao produto
+			const ingredientesVinculados  = /*[[${produto.produtoIngredientes}]]*/[];  // Ingredientes ao produto
+			const embalagensVinculadas    = /*[[${produto.embalagens}]]*/[];           // Embalagens vinculadas ao produto
+
+			console.log(embalagensVinculadas);
+			
+			const addReceitaButton        = document.getElementById('add-receita');
+			const addIngredienteButton    = document.getElementById('add-ingrediente');
+			const addEmbalagemButton      = document.getElementById('add-embalagem');
+
+			const receitasTableBody       = document.getElementById('receitas-table-body');
+			const ingredientesTableBody   = document.getElementById('ingredientes-table-body');
+			const embalagensTableBody     = document.getElementById('embalagens-table-body');
+
 	
 			let receitaIndex = 0; // Índice para receitas
 			let ingredienteIndex = 0; // Índice para ingredientes
+			let embalagemIndex = 0; // Índice para embalagens
 	
 			// Função para adicionar uma linha na tabela de receitas
 			function addReceitaRow(receitaId = '', quantidade = '') {
 				const row = document.createElement('tr');
 				row.innerHTML = `
-					<td class="px-6 py-4">
-						<select class="w-full rounded-md border-gray-300" name="receitas[${receitaIndex}].id" required>
+					<td class="p-2">
+						<select class="w-full rounded-md border border-gray-300" name="receitas[${receitaIndex}].id" required>
 							<option value="">Selecione</option>
 							${receitas.map(r => `
 								<option value="${r.id}" ${r.id === receitaId ? 'selected' : ''}>${r.nome}</option>
 							`).join('')}
 						</select>
 					</td>
-					<td class="px-6 py-4">
-						<input type="number" name="receitas[${receitaIndex}].quantidade" class="w-full rounded-md border-gray-300" step="0.01" min="0" value="${quantidade}" required>
+					<td class="p-2">
+						<input type="number" name="receitas[${receitaIndex}].quantidade" class="w-full text-center rounded-md border border-gray-300" step="0.01" min="0" value="${quantidade}" required>
 					</td>
-					<td class="px-6 py-4 text-right">
-						<button type="button" class="text-red-600 hover:text-red-900" onclick="removeReceitaRow(this)">Remover</button>
+					<td class="p-2 text-center">
+						<button type="button" class="text-red-600 hover:text-red-900" onclick="removeReceitaRow(this)"><i class="fa fa-trash"></i></button>
 					</td>
 				`;
 				receitasTableBody.appendChild(row);
@@ -112,19 +163,19 @@
 			function addIngredienteRow(ingredienteId = '', quantidade = '') {
 				const row = document.createElement('tr');
 				row.innerHTML = `
-					<td class="px-6 py-4">
-						<select class="w-full rounded-md border-gray-300" name="ingredientes[${ingredienteIndex}].id" required>
+					<td class="p-2">
+						<select class="w-full rounded-md border border-gray-300" name="ingredientes[${ingredienteIndex}].id" required>
 							<option value="">Selecione</option>
 							${ingredientes.map(i => `
 								<option value="${i.id}" ${i.id === ingredienteId ? 'selected' : ''}>${i.nome}</option>
 							`).join('')}
 						</select>
 					</td>
-					<td class="px-6 py-4">
-						<input type="number" name="ingredientes[${ingredienteIndex}].quantidade" class="w-full rounded-md border-gray-300" step="0.01" min="0" value="${quantidade}" required>
+					<td class="p-2">
+						<input type="number" name="ingredientes[${ingredienteIndex}].quantidade" class="w-full text-center rounded-md border border-gray-300" step="0.01" min="0" value="${quantidade}" required>
 					</td>
-					<td class="px-6 py-4 text-right">
-						<button type="button" class="text-red-600 hover:text-red-900" onclick="removeIngredienteRow(this)">Remover</button>
+					<td class="p-2 text-center">
+						<button type="button" class="text-red-600 hover:text-red-900" onclick="removeIngredienteRow(this)"><i class="fa fa-trash"></i></button>
 					</td>
 				`;
 				ingredientesTableBody.appendChild(row);
@@ -136,18 +187,43 @@
 				const row = button.closest('tr');
 				row.remove();
 			}
+
+			// Função para adicionar uma linha na tabela de embalagens
+			function addEmbalagemRow(embalagemId = '') {
+				const row = document.createElement('tr');
+				row.innerHTML = `
+					<td class="p-2">
+						<select class="w-full rounded-md border border-gray-300" name="embalagens[${embalagemIndex}]" required>
+							<option value="">Selecione</option>
+							${embalagens.map(e => `
+								<option value="${e.id}" ${e.id === embalagemId ? 'selected' : ''}>${e.descricao}</option>
+							`).join('')}
+						</select>
+					</td>
+					<td class="p-2 text-center">
+						<button type="button" class="text-red-600 hover:text-red-900" onclick="removeEmbalagemRow(this)"><i class="fa fa-trash"></i></button>
+					</td>
+				`;
+				embalagensTableBody.appendChild(row);
+				embalagemIndex++;
+			}
+
+			// Função para remover uma linha da tabela de embalagens
+			function removeEmbalagemRow(button) {
+				const row = button.closest('tr');
+				row.remove();
+			}
+
+			// Adicionar linhas de receitas e ingredientes vinculados ao carregar a página
+			embalagensVinculadas  .forEach( e => addEmbalagemRow    (e.id));
+			receitasVinculadas    .forEach(pr => addReceitaRow      (pr.receita.id, pr.quantidade));
+			ingredientesVinculados.forEach(pi => addIngredienteRow  (pi.ingrediente.id, pi.quantidade));
 	
-			// Adicionar as receitas vinculadas ao carregar a página
-			receitasVinculadas.forEach(pr => addReceitaRow(pr.receita.id, pr.quantidade));
-	
-			// Adicionar as ingredientes vinculados ao carregar a página
-			ingredientesVinculados.forEach(pi => addIngredienteRow(pi.ingrediente.id, pi.quantidade));
-	
-			// Adicionar linha ao clicar no botão de adicionar receita
-			addReceitaButton.addEventListener('click', () => addReceitaRow());
-	
-			// Adicionar linha ao clicar no botão de adicionar ingrediente
-			addIngredienteButton.addEventListener('click', () => addIngredienteRow());
+			
+			addReceitaButton      .addEventListener('click', () => addReceitaRow());
+			addIngredienteButton  .addEventListener('click', () => addIngredienteRow());
+			addEmbalagemButton    .addEventListener('click', () => addEmbalagemRow());
+
 		</script>
     </div>
     

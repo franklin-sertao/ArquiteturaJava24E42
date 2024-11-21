@@ -1,7 +1,6 @@
 package br.edu.infnet.franklin.model.domain;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class Embalagem {
 
     private String descricao;
     private Integer quantidadePorPacote;
-    private BigDecimal precoPacote;
+    private Double precoPacote;
 
     @ManyToMany(mappedBy = "embalagens", fetch = FetchType.EAGER)
 	@JsonBackReference
@@ -35,13 +34,13 @@ public class Embalagem {
         return quantidadePorPacote;
     }
 
-    public BigDecimal getPrecoPacote() {
+    public Double getPrecoPacote() {
         return precoPacote;
     }
 
-	public BigDecimal getPrecoUnitario() {
+	public Double getPrecoUnitario() {
 		if (this.precoPacote != null) {
-			return this.precoPacote.divide(new BigDecimal(this.quantidadePorPacote));
+			return this.precoPacote / this.quantidadePorPacote.doubleValue();
 		}
 		return null;
 	}
@@ -62,7 +61,7 @@ public class Embalagem {
         this.quantidadePorPacote = quantidadePorPacote;
     }
 
-    public void setPrecoPacote(BigDecimal precoPacote) {
+    public void setPrecoPacote(Double precoPacote) {
         this.precoPacote = precoPacote;
     }
 
