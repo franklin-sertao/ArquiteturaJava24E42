@@ -16,14 +16,14 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     public DataLoader(
         IngredienteLoader ingredienteLoader,
-        EmbalagemLoader embalagemLoader,
-        ReceitaLoader receitaLoader,
-        ProdutoLoader produtoLoader
+        EmbalagemLoader   embalagemLoader,
+        ReceitaLoader     receitaLoader,
+        ProdutoLoader     produtoLoader
     ) {
         this.ingredienteLoader = ingredienteLoader;
-        this.embalagemLoader = embalagemLoader;
-        this.receitaLoader = receitaLoader;
-        this.produtoLoader = produtoLoader;
+        this.embalagemLoader   = embalagemLoader;
+        this.receitaLoader     = receitaLoader;
+        this.produtoLoader     = produtoLoader;
     }
 
     @Override
