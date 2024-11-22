@@ -20,7 +20,7 @@ public class IngredienteSeco extends Ingrediente {
 
     @Override
     public String getTipo() {
-        return "Seco";
+        return "seco";
     }
 
 	@Override

@@ -20,7 +20,7 @@ public class IngredienteLiquido extends Ingrediente {
 
     @Override
     public String getTipo() {
-        return "Líquido";
+        return "liquido";
     }
 
 	@Override

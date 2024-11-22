@@ -2,6 +2,59 @@ package br.edu.infnet.franklin.model.domain;
 
 import java.util.List;
 
+/*
+ *
+ {
+    "description": "ACHOCOLATADO PÓ NESCAU PACOTE 800G EMBALAGEM ECONÔMICA",
+    "gtin": 7891000067178,
+    "thumbnail": "https://cdn-cosmos.bluesoft.com.br/products/7891000067178",
+    "width": null,
+    "height": null,
+    "length": null,
+    "net_weight": null,
+    "gross_weight": null,
+    "created_at": "2014-04-24T11:07:34.000-03:00",
+    "updated_at": "2024-11-22T00:05:01.000-03:00",
+    "release_date": null,
+    "price": "R$ 24,99",
+    "avg_price": 24.99,
+    "max_price": 24.99,
+    "min_price": 24.99,
+    "gtins": [
+        {
+            "gtin": 7891000067178,
+            "commercial_unit": {
+                "type_packaging": "Unidade",
+                "quantity_packaging": 1,
+                "ballast": null,
+                "layer": null
+            }
+        },
+        {
+            "gtin": 7891000067185,
+            "commercial_unit": {
+                "type_packaging": "Unidade",
+                "quantity_packaging": 12,
+                "ballast": 8,
+                "layer": 8
+            }
+        }
+    ],
+    "origin": "COSMOS",
+    "barcode_image": "https://api.cosmos.bluesoft.com.br/products/barcode/8C86D6ABFCFEA86DE8847BAC3D363519.png",
+    "brand": {
+        "name": "NESTLE",
+        "picture": "https://cdn-cosmos.bluesoft.com.br/brands/brand_nestle"
+    },
+    "ncm": {
+        "code": "18069000",
+        "description": "Outros",
+        "full_description": "Cacau e suas preparações - Chocolate e outras preparações alimentícias que contenham cacau. - Outros",
+        "ex": null
+    }
+}
+ */
+ 
 public class Cosmos {
 	private String description;
 	private long gtin;

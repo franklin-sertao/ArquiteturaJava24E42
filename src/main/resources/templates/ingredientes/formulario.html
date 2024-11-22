@@ -3,84 +3,214 @@
 <body>
     <div th:fragment="page">
         <h1 class="text-2xl font-bold text-indigo-600 mb-6 text-center" th:text="${ingredienteForm.id != null} ? 'Editar Ingrediente' : 'Novo Ingrediente'"></h1>
-        <form th:action="@{/ingredientes/salvar}" th:object="${ingredienteForm}" method="post" class="bg-white p-6 rounded-lg shadow-lg">
-            <input type="hidden" th:field="*{id}" />
-            <div class="mb-4">
-                <label for="tipo" class="block text-sm font-medium text-gray-700">Tipo:</label>
-                <select id="tipo" th:field="*{tipo}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                    <option value="" disabled th:if="${ingredienteForm.tipo == null}">Selecione o tipo</option>
-                    <option th:each="tipoOption : ${tipos}" th:value="${tipoOption}" th:text="${tipoOption}"></option>
-                </select>
-            </div>
-            <div class="mb-4">
-                <label for="nome" class="block text-sm font-medium text-gray-700">Nome:</label>
-                <input type="text" id="nome" th:field="*{nome}" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
-            </div>
-            <div class="mb-4">
-                <label for="precoTotal" class="block text-sm font-medium text-gray-700">Preço Total:</label>
-                <input type="number" step="0.01" id="precoTotal" th:field="*{precoTotal}" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
-            </div>
-			<div class="mb-4" id="quantidade">
-                <label for="precoTotal" class="block text-sm font-medium text-gray-700"></label>
-                <input type="number" id="precoTotal" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
-            </div>
-            <div class="mb-4">
-                <label for="organico" class="inline-flex items-center">
-                    <input type="checkbox" id="organico" th:field="*{organico}" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
-                    <span class="ml-2 text-sm text-gray-700">Orgânico</span>
-                </label>
-            </div>
-            <div class="flex justify-end mt-6 space-x-4">
-                <a href="/ingredientes" class="inline-flex items-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-                    <i class="fa-solid fa-arrow-left mr-2"></i> Cancelar
-                </a>
-                <button type="submit" class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
-                    <i class="fa-solid fa-save mr-2"></i> Salvar
-                </button>
-            </div>
-        </form>
-		<script th:inline="javascript">
-			const tipoPropriedades = {
-				'Líquido': {
-					label: 'Volume (ml)',
-					step: '0.1',
-					name: 'volumeLiquidoEmML'
-				},
-				'Seco': {
-					label: 'Peso (g)',
-					step: '1',
-					name: 'pesoLiquidoEmGramas'
-				},
-				'Unitário': {
-					label: 'Quantidade',
-					step: '1',
-					name: 'quantidadeUnidades'
+		<div class="bg-white p-6 rounded-lg shadow-lg">
+			<div class="flex mb-4 w-4/12 m-auto">
+				<input type="text" onkeydown="handleQKeyDown()" id="busca" placeholder="Busque informações do produto pelo Código de Barras" class="px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+				<button type="button" onclick="buscaCosmos.busca()" class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+					<i class="fa-solid fa-search"></i>
+				</button>
+			</div>
+			<form th:action="@{/ingredientes/salvar}" th:object="${ingredienteForm}" method="post">
+				<input type="hidden" th:field="*{id}" />
+				
+				<div class="mb-4">
+					<label for="tipo" class="block text-sm font-medium text-gray-700">Tipo de ingrediente:</label>
+					<select id="tipo" th:field="*{tipo}" class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" onchange="atualizaTipo(this.value)" required>
+						<option value="" disabled th:if="${ingredienteForm.tipo == null}">Selecione o tipo</option>
+						<option th:each="tipoOption : ${tipos}" th:value="${tipoOption}" th:text="${tipoOption}"></option>
+					</select>
+				</div>
+				<div class="mb-4">
+					<label for="nome" class="block text-sm font-medium text-gray-700">Nome:</label>
+					<input type="text" id="nome" th:field="*{nome}" class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
+				</div>
+				<div class="mb-4">
+					<label for="precoTotal" class="block text-sm font-medium text-gray-700">Preço Total:</label>
+					<input type="number" step="0.01" id="precoTotal" th:field="*{precoTotal}" class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
+				</div>
+				<div class="mb-4" id="quantidade">
+					<label class="block text-sm font-medium text-gray-700"></label>
+					<input type="number" class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required />
+				</div>
+				<div class="mb-4">
+					<label for="organico" class="inline-flex items-center">
+						<input type="checkbox" id="organico" th:field="*{organico}" class="h-4 w-4 text-indigo-600 border border-gray-300 rounded focus:ring-indigo-500" />
+						<span class="ml-2 text-sm text-gray-700">Orgânico</span>
+					</label>
+				</div>
+				<div class="flex justify-end mt-6 space-x-4">
+					<a href="/ingredientes" class="inline-flex items-center rounded-md border border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+						<i class="fa-solid fa-arrow-left mr-2"></i> Cancelar
+					</a>
+					<button type="submit" class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+						<i class="fa-solid fa-save mr-2"></i> Salvar
+					</button>
+				</div>
+			</form>
+
+			<div id="modal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-titulo" role="dialog" aria-modal="true">
+				<div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+					<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+					<span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+					<div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+						<div>
+							<div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100">
+								<img id="modal-thumbnail" src="" alt="Product Thumbnail" class="h-10 w-10">
+							</div>
+							<div class="mt-3 text-center sm:mt-5">
+								<h3 class="text-lg leading-6 font-medium text-gray-900">Produto Encontrado</h3>
+								<div class="mt-2">
+									<p class="text-sm text-gray-500" id="modal-desc"></p>
+									<p class="text-sm text-gray-500" id="modal-preco"></p>
+									<p class="text-sm text-gray-500" id="modal-peso"></p>
+								</div>
+							</div>
+						</div>
+						<div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
+							<button type="button" onclick="buscaCosmos.aceitarProduto()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">Aceitar</button>
+							<button type="button" onclick="buscaCosmos.fecharModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">Cancelar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script th:inline="javascript">
+
+				const tipoPropriedades = {
+					'liquido': {
+						label: 'Volume (ml)',
+						step: '0.1',
+						name: 'volumeLiquidoEmML'
+					},
+					'seco': {
+						label: 'Peso (g)',
+						step: '1',
+						name: 'pesoLiquidoEmGramas'
+					},
+					'unitario': {
+						label: 'Quantidade',
+						step: '1',
+						name: 'quantidadeUnidades'
+					},
+					'': {
+						label: 'Peso (g)',
+						step: '1',
+						name: ''
+					}
+				};
+
+				function atualizaTipo(tipo, valor = null) {
+					if(!tipo) tipo = '';
+
+					const propriedades = tipoPropriedades[tipo];
+
+					const campoQuantidade = document.getElementById('quantidade');
+					const labelQuantidade = campoQuantidade.querySelector('label');
+					const inputQuantidade = campoQuantidade.querySelector('input');
+
+					labelQuantidade.textContent  = propriedades.label;
+					labelQuantidade.htmlFor 	 = propriedades.name;
+					inputQuantidade.step         = propriedades.step;
+					inputQuantidade.name         = propriedades.name;
+
+					if(valor != null){
+						inputQuantidade.value = valor;
+					}
 				}
-			};
 
-			function atualizaTipo(tipo, valor = null) {
-				const propriedades = tipoPropriedades[tipo];
-				const quantidade   = document.getElementById('quantidade');
-				const label        = quantidade.querySelector('label');
-				const input        = quantidade.querySelector('input');
+				const tipo = /*[[${ingredienteForm.tipo}]]*/ null;
 
-				label.textContent  = propriedades.label;
-				input.step         = propriedades.step;
-				input.name         = propriedades.name;
-				input.value        = valor;
-			}
+				const valorInicial = /*[[${ingredienteForm.volumeLiquidoEmML} ?: (${ingredienteForm.pesoLiquidoEmGramas} ?: ${ingredienteForm.quantidadeUnidades})]]*/ null;
 
-			const tipo = /*[[${ingredienteForm.tipo}]]*/ null;
-			console.log(tipo);
+				atualizaTipo(tipo, valorInicial);
 
-					//retorna a quantidade independente do tipo
-			const valorInicial = /*[[${ingredienteForm.volumeLiquidoEmML} ?: (${ingredienteForm.pesoLiquidoEmGramas} ?: ${ingredienteForm.quantidadeUnidades})]]*/ null;
-			console.log(valorInicial);
+				class BuscaCosmos {
+					thumbnail;
+					desc;
+					preco;
+					peso;
 
-			atualizaTipo(tipo, valorInicial);
-	
+					constructor() {
+						// Passa o modal para o escopo de body para evitar problemas com o Thymeleaf
+						const modal = document.getElementById('modal')
+						document.body.appendChild(modal.cloneNode(true));
+						modal.remove();
 
-		</script>
+						// Obtém os elementos necessários para o funcionamento da classe
+						this.modal           = document.getElementById('modal');
+						this.modalThumbnail  = document.getElementById('modal-thumbnail');
+						this.modalDesc       = document.getElementById('modal-desc');
+						this.modalPreco      = document.getElementById('modal-preco');
+						this.modalPeso       = document.getElementById('modal-peso');
+						this.campoBusca      = document.getElementById('busca');
+						this.campoNome       = document.getElementById('nome');
+						this.campoQuantidade = document.getElementById('quantidade').querySelector('input');
+						this.campoPrecoTotal = document.getElementById('precoTotal');
+					}
+
+					busca() {
+						const q = encodeURIComponent(this.campoBusca.value).trim();
+						
+						if(!q) {
+							alert('Informe um código de barras para buscar informações.');
+							return;
+						}
+
+						const url = '/cosmos/gtin/' + q;
+
+						fetch(url)
+							.then(response => response.json())
+							.then(data => {
+								if (data.description) {
+									this.abrirModal(data);
+								} else {
+									alert('Não foram encontradas informações para este código de barras.');
+								}
+							})
+							.catch(error => alert('Não foram encontradas informações para este código de barras.'));
+					}
+
+					abrirModal(data) {
+						this.modalThumbnail.src      = data.thumbnail;
+						this.modalDesc.textContent   = data.description;
+						this.modalPreco.textContent  = data.avg_price ? 'Preço Médio: R$ ' + data.avg_price.toFixed(2) : '';
+						this.modalPeso.textContent   = data.weight ? 'Peso: ' + data.weight : '';
+
+						this.thumbnail = data.thumbnail;
+						this.desc      = data.description;
+						this.preco     = data.avg_price;
+						this.peso      = data.weight;
+
+						this.modal.classList.remove('hidden');
+					}
+
+					aceitarProduto() {
+						if(this.desc)  this.campoNome.value       = this.desc;
+						if(this.preco) this.campoPrecoTotal.value = this.preco;
+						if(this.peso)  this.campoQuantidade.value = this.peso;
+
+						this.fecharModal();
+					}
+
+					fecharModal() {
+						this.modal.classList.add('hidden');
+					}
+				}
+
+				var buscaCosmos = new BuscaCosmos();
+
+				function handleQKeyDown() {
+					if(event.key === 'Enter') {
+						buscaCosmos.busca();
+					}
+				}
+			</script>
+		</div>
     </div>
+
+
+
+
+						
 </body>
 </html>

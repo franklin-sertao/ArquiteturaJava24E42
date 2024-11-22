@@ -20,7 +20,7 @@ public class IngredienteUnitario extends Ingrediente {
 
     @Override
     public String getTipo() {
-        return "Unitário";
+        return "unitario";
     }
 
 	@Override

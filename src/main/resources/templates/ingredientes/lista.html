@@ -28,9 +28,9 @@
                         <td class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.tipo}"></td>
                         <td class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatCurrency(ingrediente.precoTotal)}"></td>
 						<th:block th:switch="${ingrediente.tipo}">
-							<td th:case="'Líquido'" class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(ingrediente.volumeLiquidoEmML,1,2) + ' ml'}"></td>
-							<td th:case="'Seco'"    class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(ingrediente.pesoLiquidoEmGramas,1,2) + ' g'}"></td>
-							<td th:case="'Unitário'" class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.quantidadeUnidades + ' un'}"></td>
+							<td th:case="'liquido'" class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(ingrediente.volumeLiquidoEmML,1,2) + ' ml'}"></td>
+							<td th:case="'seco'"    class="px-6 py-4 text-sm text-gray-700" th:text="${#numbers.formatDecimal(ingrediente.pesoLiquidoEmGramas,1,2) + ' g'}"></td>
+							<td th:case="'unitario'" class="px-6 py-4 text-sm text-gray-700" th:text="${ingrediente.quantidadeUnidades + ' un'}"></td>
 						</th:block>
 						<td class="px-6 py-4 text-sm text-gray-700" th:text="${'R$ ' + #numbers.formatDecimal(ingrediente.precoUnitario,1,2)}"></td>
                         <td class="px-6 py-4 text-sm text-gray-700">
