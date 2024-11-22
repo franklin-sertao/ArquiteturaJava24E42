@@ -1,6 +1,10 @@
 package br.edu.infnet.franklin.model.domain;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -11,8 +15,12 @@ public abstract class Ingrediente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@NotNull (message = "O campo nome é obrigatório")
     private String nome;
+	
+	@PositiveOrZero (message = "O campo preço total deve ser maior que zero")
     private Double precoTotal;
+
     private boolean organico;
 
     // Getters e Setters

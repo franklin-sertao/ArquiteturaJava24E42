@@ -2,11 +2,13 @@ package br.edu.infnet.franklin.model.domain;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @DiscriminatorValue("unitario")
 public class IngredienteUnitario extends Ingrediente {
 
+	@PositiveOrZero (message = "O campo Quantidade deve ser maior ou igual a zero")
     private Integer quantidadeUnidades;
 
     // Getters e Setters

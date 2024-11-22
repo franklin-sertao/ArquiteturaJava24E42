@@ -15,6 +15,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class Receita {
@@ -23,9 +26,15 @@ public class Receita {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@NotBlank (message = "O campo nome é obrigatório")
     private String nome;
     private String modoPreparo;
+
+	@NotNull (message = "O campo rendimento é obrigatório")
+	@Positive (message = "O campo rendimento deve ser maior que zero")
 	private Double rendimento;
+
+	@NotBlank (message = "O campo tipo de rendimento é obrigatório")
 	private String tipoRendimento;
 
     @OneToMany(mappedBy = "receita", fetch = FetchType.EAGER,  cascade = CascadeType.ALL, orphanRemoval = true)

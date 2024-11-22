@@ -2,11 +2,17 @@ package br.edu.infnet.franklin.controller;
 import br.edu.infnet.franklin.model.domain.*;
 import br.edu.infnet.franklin.model.dto.IngredienteForm;
 import br.edu.infnet.franklin.service.IngredienteService;
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+
+
 
 @Controller
 @RequestMapping("/ingredientes")
@@ -23,13 +29,25 @@ public class IngredienteController {
     }
 
     @GetMapping("/novo")
-    public String novo(Model model) {
+    public String showFormNovo(Model model) {
         model.addAttribute("ingredienteForm", new IngredienteForm());
         model.addAttribute("tipos", List.of("seco", "liquido", "unitario"));
+		model.addAttribute("isNew", true);
         return "ingredientes/formulario";
     }
 
-    @PostMapping("/salvar")
+	@PostMapping("/novo")
+	public String novo(@Valid @ModelAttribute IngredienteForm ingredienteForm, BindingResult result, Model model){
+		if(result.hasErrors()){
+			model.addAttribute("ingredienteForm", ingredienteForm);
+			model.addAttribute("tipos", List.of("seco", "liquido", "unitario"));
+			model.addAttribute("isNew", true);
+			return "ingredientes/formulario";
+		}
+
+		return this.salvar(ingredienteForm);
+	}
+	
 	public String salvar(@ModelAttribute IngredienteForm ingredienteForm) {
 		Ingrediente ingrediente;
 
@@ -57,9 +75,9 @@ public class IngredienteController {
 		}
 
 		// Atualizar os campos comuns
-		ingrediente.setNome(ingredienteForm.getNome());
-		ingrediente.setPrecoTotal(ingredienteForm.getPrecoTotal());
-		ingrediente.setOrganico(ingredienteForm.isOrganico());
+		ingrediente.setNome       (ingredienteForm.getNome());
+		ingrediente.setPrecoTotal (ingredienteForm.getPrecoTotal());
+		ingrediente.setOrganico   (ingredienteForm.isOrganico());
 
 		// Atualizar campos específicos
 		if (ingrediente instanceof IngredienteSeco) {
@@ -73,34 +91,59 @@ public class IngredienteController {
 		ingredienteService.salvar(ingrediente);
 		return "redirect:/ingredientes";
 	}
+
+
     @GetMapping("/{id}/editar")
-    public String editar(@PathVariable Long id, Model model) {
-        Ingrediente ingrediente = ingredienteService.obterPorId(id);
-        if (ingrediente == null) {
+    public String showFormEditar(@PathVariable  Long id, Model model) {
+		Ingrediente ingrediente = ingredienteService.obterPorId(id);
+        
+		if (ingrediente == null) {
             // Tratar caso o ingrediente não seja encontrado
             return "redirect:/ingredientes";
         }
 
-        // Mapear os dados para o DTO
-        IngredienteForm ingredienteForm = new IngredienteForm();
+		IngredienteForm ingredienteForm = new IngredienteForm();
+		
+		ingredienteForm.setId         (ingrediente.getId());
+		ingredienteForm.setTipo       (ingrediente.getTipo());
+		ingredienteForm.setNome       (ingrediente.getNome());
+		ingredienteForm.setPrecoTotal (ingrediente.getPrecoTotal());
+		ingredienteForm.setOrganico   (ingrediente.isOrganico());
 
-		ingredienteForm.setId(ingrediente.getId());        ingredienteForm.setTipo(ingrediente.getTipo());
-        ingredienteForm.setNome(ingrediente.getNome());
-        ingredienteForm.setPrecoTotal(ingrediente.getPrecoTotal());
-        ingredienteForm.setOrganico(ingrediente.isOrganico());
+		if (ingrediente instanceof IngredienteSeco) {
+			ingredienteForm.setPesoLiquidoEmGramas(((IngredienteSeco) ingrediente).getPesoLiquidoEmGramas());
+		} else if (ingrediente instanceof IngredienteLiquido) {
+			ingredienteForm.setVolumeLiquidoEmML(((IngredienteLiquido) ingrediente).getVolumeLiquidoEmML());
+		} else if (ingrediente instanceof IngredienteUnitario) {
+			ingredienteForm.setQuantidadeUnidades(((IngredienteUnitario) ingrediente).getQuantidadeUnidades());
+		}
 
-        if (ingrediente instanceof IngredienteSeco) {
-            ingredienteForm.setPesoLiquidoEmGramas(((IngredienteSeco) ingrediente).getPesoLiquidoEmGramas());
-        } else if (ingrediente instanceof IngredienteLiquido) {
-            ingredienteForm.setVolumeLiquidoEmML(((IngredienteLiquido) ingrediente).getVolumeLiquidoEmML());
-        } else if (ingrediente instanceof IngredienteUnitario) {
-            ingredienteForm.setQuantidadeUnidades(((IngredienteUnitario) ingrediente).getQuantidadeUnidades());
+		model.addAttribute("ingredienteForm", ingredienteForm);
+		model.addAttribute("tipos", List.of("seco", "liquido", "unitario"));
+		model.addAttribute("isNew", false);
+		
+		return "ingredientes/formulario";
+    }
+
+	@PostMapping("/{id}/editar")
+	public String editar(@Valid @ModelAttribute IngredienteForm ingredienteForm,  BindingResult result, Model model, @PathVariable Long id){ 
+		Ingrediente ingrediente = ingredienteService.obterPorId(id);
+		if (ingrediente == null) {
+            // Tratar caso o ingrediente não seja encontrado
+            return "redirect:/ingredientes";
         }
 
-        model.addAttribute("ingredienteForm", ingredienteForm);
-        model.addAttribute("tipos", List.of("seco", "liquido", "unitario"));
-        return "ingredientes/formulario";
-    }
+		if(result.hasErrors()){
+			model.addAttribute("ingredienteForm", ingredienteForm);
+			model.addAttribute("tipos", List.of("seco", "liquido", "unitario"));
+			model.addAttribute("isNew", false);
+			
+			return "ingredientes/formulario";
+		}
+
+		return this.salvar(ingredienteForm);
+		
+	}
 
     @GetMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id) {

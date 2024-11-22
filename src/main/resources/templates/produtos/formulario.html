@@ -3,7 +3,7 @@
 <body>
     <div th:fragment="page">
         <h1 class="text-2xl text-center font-bold text-indigo-600 mb-6" th:text="${produto.id != null} ? 'Editar Produto' : 'Novo Produto'">Título</h1>
-        <form th:action="@{/produtos/salvar}" th:object="${produto}" method="post" class="bg-white p-6 rounded-lg shadow-lg">
+        <form th:action="${isNew} ? @{/produtos/novo} : @{/produtos/{id}/editar(id=${id})}" th:object="${produto}" method="post" class="bg-white p-6 rounded-lg shadow-lg">
             <input type="hidden" th:field="*{id}" />
             
 			
@@ -104,7 +104,7 @@
                    <i class="fa fa-save"></i> Salvar
                 </button>
             </div>
-
+			<th:block th:replace="~{fragments/modalErro :: modalErro}"></th:block>
         </form>
 		<script th:inline="javascript">
 			const receitas                = /*[[${receitas}]]*/[];                     // Receitas disponíveis

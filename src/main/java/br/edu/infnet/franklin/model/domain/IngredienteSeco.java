@@ -2,11 +2,13 @@ package br.edu.infnet.franklin.model.domain;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @DiscriminatorValue("seco")
 public class IngredienteSeco extends Ingrediente {
 
+	@PositiveOrZero (message = "O campo Peso (g) deve ser maior ou igual a zero")
     private Double pesoLiquidoEmGramas;
 
     // Getters e Setters

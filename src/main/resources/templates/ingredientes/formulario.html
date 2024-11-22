@@ -10,7 +10,8 @@
 					<i class="fa-solid fa-search"></i>
 				</button>
 			</div>
-			<form th:action="@{/ingredientes/salvar}" th:object="${ingredienteForm}" method="post">
+			
+			<form th:action="${isNew} ? @{/ingredientes/novo} : @{/ingredientes/{id}/editar(id=${id})}" th:object="${ingredienteForm}" method="post">
 				<input type="hidden" th:field="*{id}" />
 				
 				<div class="mb-4">
@@ -46,6 +47,7 @@
 						<i class="fa-solid fa-save mr-2"></i> Salvar
 					</button>
 				</div>
+				<th:block th:replace="~{fragments/modalErro :: modalErro}"></th:block>
 			</form>
 
 			<div id="modal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-titulo" role="dialog" aria-modal="true">
@@ -94,8 +96,8 @@
 					},
 					'': {
 						label: 'Peso (g)',
-						step: '1',
-						name: ''
+						step: '0.1',
+						name: 'pesoLiquidoEmGramas'
 					}
 				};
 

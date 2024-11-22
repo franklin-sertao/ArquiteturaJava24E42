@@ -3,7 +3,7 @@
 <body>
     <div th:fragment="page">
         <h1 class="text-2xl font-bold text-indigo-600 mb-6 text-center" th:text="${receita.id != null} ? 'Editar Receita' : 'Nova Receita'"></h1>
-        <form th:action="@{/receitas/salvar}" th:object="${receita}" method="post" class="bg-white p-6 rounded-lg shadow-lg">
+        <form th:action="${isNew} ? @{/receitas/novo} : @{/receitas/{id}/editar(id=${id})}" th:object="${receita}" method="post" class="bg-white p-6 rounded-lg shadow-lg">
             <input type="hidden" th:field="*{id}" />
             <div class="mb-4">
                 <label for="nome" class="block text-sm font-medium text-gray-700">Nome:</label>
@@ -59,6 +59,7 @@
                     <i class="fa-solid fa-save mr-2"></i> Salvar
                 </button>
             </div>
+			<th:block th:replace="~{fragments/modalErro :: modalErro}"></th:block>
         </form>
 		<script th:inline="javascript">
 			
@@ -178,6 +179,8 @@
 			}
 
 		</script>
+
+
     </div>
 </body>
 </html>

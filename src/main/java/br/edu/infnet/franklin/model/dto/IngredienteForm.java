@@ -1,16 +1,32 @@
 package br.edu.infnet.franklin.model.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+
 public class IngredienteForm {
 
     private Long id;
-    private String tipo;
+	
+	@NotBlank (message = "O campo tipo é obrigatório")
+	private String tipo;
+
+	@NotBlank (message = "O campo nome é obrigatório")
     private String nome;
+
+	@NotNull (message = "O campo preço total é obrigatório")
+	@PositiveOrZero (message = "O campo preço total deve ser maior ou igual a zero")
     private Double precoTotal;
+
     private boolean organico;
 
     // Campos específicos
+	@PositiveOrZero (message = "O campo Peso (g) deve ser maior ou igual a zero")
     private Double pesoLiquidoEmGramas;      // Para "seco"
+	@PositiveOrZero (message = "O campo Volume(ml) deve ser maior ou igual a zero")
     private Double volumeLiquidoEmML;        // Para "liquido"
+	@PositiveOrZero (message = "O campo Quantidade deve ser maior ou igual a zero")
     private Integer quantidadeUnidades;      // Para "unitario"
 
 

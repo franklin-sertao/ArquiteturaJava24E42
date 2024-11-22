@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.naming.Binding;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,9 @@ import br.edu.infnet.franklin.service.EmbalagemService;
 import br.edu.infnet.franklin.service.IngredienteService;
 import br.edu.infnet.franklin.service.ProdutoService;
 import br.edu.infnet.franklin.service.ReceitaService;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/produtos")
@@ -43,7 +49,8 @@ public class ProdutoController {
     }
 
     @GetMapping("/novo")
-    public String novo(Model model) {
+    public String showFormNovo(Model model) {
+		model.addAttribute("isNew", true);
         model.addAttribute("produto", new Produto());
         model.addAttribute("receitas", receitaService.obterLista());
         model.addAttribute("ingredientes", ingredienteService.obterLista());
@@ -51,8 +58,22 @@ public class ProdutoController {
         return "produtos/formulario";
     }
 
-    @PostMapping("/salvar")
-	public String salvar(@RequestParam(required = false) Long id, @ModelAttribute Produto produto, @RequestParam Map<String, String> params) {
+	@PostMapping("/novo")
+	public String novo(@Valid @ModelAttribute Produto produto, BindingResult result, Model model, @RequestParam Map<String, String> params) {
+		if(result.hasErrors()) {
+			model.addAttribute("isNew", true);
+			model.addAttribute("produto", produto);
+			model.addAttribute("receitas", receitaService.obterLista());
+			model.addAttribute("ingredientes", ingredienteService.obterLista());
+			model.addAttribute("embalagens", embalagemService.obterLista());
+			return "produtos/formulario";
+		}
+		return salvar(null, produto, params);
+	}
+
+	@PostMapping
+
+	public String salvar(Long id, Produto produto, Map<String, String> params) {
     // Extrai receitas e quantidades usando índices de array
     Map<Long, Double> receitasQuantidade = params.entrySet().stream()
             .filter(e -> e.getKey().matches("receitas\\[\\d+\\]\\.id"))
@@ -89,12 +110,28 @@ public class ProdutoController {
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model) {
         Produto produto = produtoService.obterPorId(id);
+		model.addAttribute("isNew", false);
         model.addAttribute("produto", produto);
         model.addAttribute("receitas", receitaService.obterLista());
         model.addAttribute("ingredientes", ingredienteService.obterLista());
         model.addAttribute("embalagens", embalagemService.obterLista());
         return "produtos/formulario";
     }
+
+	@PostMapping("/{id}/editar")
+	public String showFormEditar( @Valid @ModelAttribute Produto produto, BindingResult result, Model model, @RequestParam Map<String, String> params, @PathVariable Long id) {
+		if(result.hasErrors()) {
+			model.addAttribute("isNew", false);
+			model.addAttribute("produto", produto);
+			model.addAttribute("receitas", receitaService.obterLista());
+			model.addAttribute("ingredientes", ingredienteService.obterLista());
+			model.addAttribute("embalagens", embalagemService.obterLista());
+			return "produtos/formulario";
+		}
+
+		return salvar(id, produto, params);
+	}
+	
 
     @GetMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id) {

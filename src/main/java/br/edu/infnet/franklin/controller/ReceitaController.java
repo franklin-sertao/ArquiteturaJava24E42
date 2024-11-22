@@ -2,11 +2,13 @@ package br.edu.infnet.franklin.controller;
 
 import br.edu.infnet.franklin.model.domain.Receita;
 import br.edu.infnet.franklin.service.ReceitaService;
+import jakarta.validation.Valid;
 import br.edu.infnet.franklin.service.IngredienteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -28,15 +30,26 @@ public class ReceitaController {
     }
 
     @GetMapping("/novo")
-    public String nova(Model model) {
+    public String showFormNovo(Model model) {
+		model.addAttribute("isNew", true);
         model.addAttribute("receita", new Receita());
         model.addAttribute("ingredientes", ingredienteService.obterLista());
         return "receitas/formulario";
     }
 
-    @PostMapping("/salvar")
-    public String salvar(@ModelAttribute Receita receita,
-                         @RequestParam Map<String, String> params) {
+	@PostMapping("/novo")
+    public String novo(@Valid @ModelAttribute Receita receita, BindingResult result, Model model, @RequestParam Map<String, String> params) {
+		if (result.hasErrors()) {
+			model.addAttribute("isNew", true);
+			model.addAttribute("receita", receita);
+			model.addAttribute("ingredientes", ingredienteService.obterLista());
+			return "receitas/formulario";
+		}
+
+		return this.salvar(receita, params);
+    }
+
+    public String salvar(Receita receita, Map<String, String> params) {
 
     	// Extrai ingredientes e quantidades usando índices de array
     	Map<Long, Double> ingredientesQuantidade = params.entrySet().stream()
@@ -54,11 +67,25 @@ public class ReceitaController {
     }
 
     @GetMapping("/{id}/editar")
-    public String editar(@PathVariable Long id, Model model) {
+    public String showFormEditar(@PathVariable Long id, Model model) {
         Receita receita = receitaService.obterPorId(id);
+		model.addAttribute("isNew", false);
         model.addAttribute("receita", receita);
         model.addAttribute("ingredientes", ingredienteService.obterLista());
         return "receitas/formulario";
+    }
+
+	@PostMapping("/{id}/editar")
+    public String editar(@Valid @ModelAttribute Receita receita, BindingResult result, Model model, @PathVariable Long id, @RequestParam Map<String, String> params) {
+		if (result.hasErrors()) {
+			model.addAttribute("isNew", false);
+			model.addAttribute("receita", receita);
+			model.addAttribute("ingredientes", ingredienteService.obterLista());
+
+        	return "receitas/formulario";
+		}
+
+		return this.salvar(receita, params);
     }
 
     @GetMapping("/{id}/excluir")

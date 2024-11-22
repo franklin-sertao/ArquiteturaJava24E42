@@ -1,6 +1,10 @@
 package br.edu.infnet.franklin.model.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +17,14 @@ public class Embalagem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@NotBlank (message = "O campo descrição é obrigatório")
     private String descricao;
+
+	@NotNull (message = "O campo quantidade por pacote é obrigatório")
+	@Positive (message = "O campo quantidade por pacote deve ser maior que zero")
     private Integer quantidadePorPacote;
+
+	@NotNull (message = "O campo preço do pacote é obrigatório")
     private Double precoPacote;
 
     @ManyToMany(mappedBy = "embalagens", fetch = FetchType.EAGER)
