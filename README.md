@@ -1,4 +1,4 @@
-# Franklin - Sistema de Gerenciamento de Ingredientes e Produtos
+# Sistema de Gerenciamento de Ingredientes e Produtos
 
 ## Visão Geral
 Este projeto faz parte da disciplina de **Arquitetura Java**. É um sistema de gerenciamento de ingredientes, receitas e produtos desenvolvido com **Spring Boot** e **Thymeleaf**, com o principal objetivo de precificar produtos de confeitaria. 
