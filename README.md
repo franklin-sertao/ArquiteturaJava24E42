@@ -90,6 +90,17 @@ Os dados iniciais são carregados a partir de arquivos `.txt` localizados em `sr
 
 Os **Loaders** correspondentes (`IngredienteLoader`, `ReceitaLoader`, etc.) leem esses arquivos e populam o banco de dados ao iniciar a aplicação.
 
+> [!NOTE]
+> Para mais informações sobre o uso do sistema e seu detalhamento técnico, consulte o arquivo [`funcionamento.md`](/funcionamento.md).
+
+## Licença
+
+Este projeto está licenciado sob a [GNU General Public License v3.0](LICENSE).
+
+# Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e enviar pull requests.
+Para contribuir, siga os seguintes passos:
 
 1. **Fork o Repositório**
 2. **Crie uma Branch para sua Feature**
@@ -106,18 +117,12 @@ Os **Loaders** correspondentes (`IngredienteLoader`, `ReceitaLoader`, etc.) leem
     ```
 5. **Abra um Pull Request**
 
-> [!NOTE]
-> Para mais informações sobre o uso do sistema e seu detalhamento técnico, consulte o arquivo [`funcionamento.md`](/funcionamento.md).
-
-## Licença
-
-Este projeto está licenciado sob a [GNU General Public License v3.0](LICENSE).
-
 ## Contato
 
 Para dúvidas ou sugestões, entre em contato:
 
 - **LinkedIn**: [Meu Perfil](https://www.linkedin.com/in/franklin-v%C3%A9ras-sert%C3%A3o)
 - **GitHub**: [Meu Usuário](https://github.com/franklinveras)
+
 
 ---
