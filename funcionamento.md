@@ -152,7 +152,3 @@ O projeto foi estruturado da seguinte forma:
     - `data/`: Arquivos `.txt` para carga de dados.
     - `application.properties`: Configurações da aplicação.
 - `src/test/java/br/edu/infnet/franklin/`: Testes unitários e de integração.
-
-# Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e enviar pull requests.
