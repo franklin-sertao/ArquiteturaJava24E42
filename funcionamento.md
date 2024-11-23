@@ -11,10 +11,13 @@
 
 <p align="center">
 	<a href="/assets/img/ingredientes_lista.jpg">
-		<img src="/assets/img/ingredientes_lista.jpg" alt="Tela da listagem de ingredientes" height=300px />
+		<img src="/assets/img/ingredientes_lista.jpg" alt="Tela da listagem de ingredientes" height=400px />
 	</a>
 	<a href="/assets/img/ingrediente_form.jpg">
-		<img src="/assets/img/ingrediente_form.jpg" alt="Tela do formulário de cadastro de ingredientes" height=300px />
+		<img src="/assets/img/ingrediente_form.jpg" alt="Tela do formulário de cadastro de ingredientes" height=400px />
+	</a>
+	<a href="/assets/img/ingrediente_form.jpg">
+		<img src="/assets/img/codigodebarras.jpg" alt="Tela do formulário de cadastro de ingredientes" height=400px />
 	</a>
 </p>
 
@@ -26,10 +29,10 @@
 
 <p align="center">
 	<a href="/assets/img/receitas_lista.jpg">
-		<img src="/assets/img/receitas_lista.jpg" alt="Tela da listagem de receitas" height=300px />
+		<img src="/assets/img/receitas_lista.jpg" alt="Tela da listagem de receitas" height=400px />
 	</a>
 	<a href="/assets/img/receita_form.jpg">
-		<img src="/assets/img/receita_form.jpg" alt="Tela do formulário de cadastro de receitas" height=300px />
+		<img src="/assets/img/receita_form.jpg" alt="Tela do formulário de cadastro de receitas" height=400px />
 	</a>
 </p>
 
@@ -40,10 +43,10 @@
 
 <p align="center">
 	<a href="/assets/img/embalagens_lista.jpg">
-		<img src="/assets/img/embalagens_lista.jpg" alt="Tela da listagem de embalagens" height=300px />
+		<img src="/assets/img/embalagens_lista.jpg" alt="Tela da listagem de embalagens" height=400px />
 	</a>
 	<a href="/assets/img/embalagem_form.jpg">
-		<img src="/assets/img/embalagem_form.jpg" alt="Tela do formulário de cadastro de embalagens" height=300px />
+		<img src="/assets/img/embalagem_form.jpg" alt="Tela do formulário de cadastro de embalagens" height=400px />
 	</a>
 </p>
 
@@ -54,10 +57,10 @@
 
 <p align="center">
 	<a href="/assets/img/produtos_lista.jpg">
-		<img src="/assets/img/produtos_lista.jpg" alt="Tela da listagem de produtos" height=300px />
+		<img src="/assets/img/produtos_lista.jpg" alt="Tela da listagem de produtos" height=400px />
 	</a>
 	<a href="/assets/img/produto_form.jpg">
-		<img src="/assets/img/produto_form.jpg" alt="Tela do formulário de cadastro de produtos" height=300px />
+		<img src="/assets/img/produto_form.jpg" alt="Tela do formulário de cadastro de produtos" height=400px />
 	</a>
 </p>
 
@@ -120,7 +123,7 @@ No nosso sistema, os ingredientes podem ser de três tipos:
 No diagrama de classes abaixo, é possível visualizar a estrutura do projeto e as relações entre as entidades.
 o diagrama foi gerado com a ferramenta PlantUML e está disponível em [`/assets/src/diagrama_classes.puml`](/assets/diagrama_classes.puml):
 
-![Diagrama de Classes](http://www.plantuml.com/plantuml/proxy?src=https://github.com/franklin-sertao/ArquiteturaJava24E42/main/assets/diagrama_classes.puml)
+![Diagrama de Classes](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/franklin-sertao/ArquiteturaJava24E42/refs/heads/main/assets/diagrama_classes.puml)
 
 ## Tecnologias Utilizadas
 Como parte do conhecimento adquirido no curso de Arquitetura Java, no Instituto Infnet, foram utilizadas as seguintjson tecnologias:
